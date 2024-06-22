@@ -17,7 +17,7 @@ use App\Http\Controllers\HomeController;
 
 Route::get('/', function () {
     return view('welcome');
-})->name('firstpage');
+})->name('firstpage')->middleware('guest');
 
 
 // Auth::routes();
@@ -47,6 +47,10 @@ Route::get('/home', function(){
 
 Route::prefix('superadmin')->middleware(['auth','role:superadmin'])->group(function(){
     Route::get('/dashboard',[HomeController::class, 'index'])->name('superadmin.dashboard');
+
+    Route::prefix('account')->group(function(){
+        
+    });
 });
 
 Route::prefix('admin')->middleware(['auth','role:admin'])->group(function(){
@@ -72,5 +76,7 @@ Route::prefix('dosen')->middleware(['auth','role:dosen'])->group(function(){
 Route::prefix('mahasiswa')->middleware(['auth','role:mahasiswa'])->group(function(){
     Route::get('/dashboard',[HomeController::class, 'index'])->name('mahasiswa.dashboard');
 });
+
+
 
 

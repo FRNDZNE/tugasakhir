@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('agencies', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('uuid')->unique()->nullable();
             $table->string('name');
             $table->longText('address');
             $table->string('contact');
             $table->longText('desc');
-            $table->integer('day');
+            $table->integer('day')->unsigned();
             $table->timestamps();
             $table->softDeletes();
         });

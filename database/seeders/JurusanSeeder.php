@@ -21,7 +21,7 @@ class JurusanSeeder extends Seeder
                 'display_name' => "Teknik ". ucfirst($jurusans),
             ]);
 
-        $elektro = ['tif','trse','listrik'];
+        $elektro = ['informatika','elektronika','listrik'];
         $elektro2 = ['Informatika','Rekayasa Sistem Elektronika','Listrik'];
         $findJurusan1 = Jurusan::where('name','elektro')->first();
         foreach ($elektro as $e) {

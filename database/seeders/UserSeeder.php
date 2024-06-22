@@ -46,8 +46,96 @@ class UserSeeder extends Seeder
             'user_id' => $admin->id,
             'jurusan_id' => $findJurusan->id,
         ]);
-        
-        
+
+        // create akun staff prodi
+        $findRoleStaff = Role::where('name','staff')->first();
+        $findProdi = Prodi::where('name','informatika')->first();
+        $staff = User::create([
+            'role_id' => $findRoleStaff->id,
+            'name' => 'staff',
+            'email' => 'staff@polnep.com',
+            'password' => bcrypt('polnepmantap'),
+        ]);
+
+        Staff::create([
+            'name' => 'Siti Sarah',
+            'uuid' => '958746583657465426',
+            'user_id' => $staff->id,
+            'prodi_id' => $findProdi->id,
+        ]);
+
+        // Create Agenct User
+        $findRoleAgency = Role::where('name','agency')->first();
+        $agency = User::create([
+            'role_id' => $findRoleAgency->id,
+            'name' => 'agency',
+            'email' => 'agency@polnep.com',
+            'password' => bcrypt('polnepmantap'),
+        ]);
+
+        $magang = Agency::create([
+            'user_id' => $agency->id,
+            'name' => 'PT. Pelabuhan Indonesia',
+            'uuid' => '12345',
+            'address' => 'Coming Soon',
+            'contact' => 'Coming Soon',
+            'desc' => 'Coming Soon',
+            'day' => 6,
+        ]);
+
+        // Create Mentor Account 
+        $findRoleMentor = Role::where('name','mentor')->first();
+        $mentor = User::create([
+            'role_id' => $findRoleMentor->id,
+            'name' => 'mentor',
+            'email' => 'mentor@polnep.com',
+            'password' => bcrypt('polnepmantap'),
+        ]);
+
+        Mentor::create([
+            'user_id' => $mentor->id,
+            'agency_id' => $magang->id,
+            'name' => 'John Doe',
+            'uuid' => '86756473645',
+        ]);
+
+        // Create Account Mahasiswa
+        $findRoleMahasiswa = Role::where('name','mahasiswa')->first();
+        $mahasiswa = User::create([
+            'role_id' => $findRoleMahasiswa->id,
+            'name' => 'mahasiswa',
+            'email' => 'mahasiswa@polnep.com',
+            'password' => bcrypt('polnepmantap'),
+        ]);
+
+        Mahasiswa::create([
+            'user_id' => $mahasiswa->id,
+            'prodi_id' => $findProdi->id,
+            'year_id' => 1,
+            'uuid' => '3202116021',
+            'name' => 'Hafiz Putra Pratama',
+            'grade' => '6',
+            'class' => 'B',
+            'phone' => '085157267750',
+        ]);
+
+        // Create Account Dosen
+        $findRoleDosen = Role::where('name','dosen')->first();
+        $dosen = User::Create([
+            'role_id' => $findRoleDosen->id,
+            'name' => 'dosen',
+            'email' => 'dosen@polnep.com',
+            'password' => bcrypt('polnepmantap'),
+        ]);        
+
+        $dosen2 = Dosen::create([
+            'user_id' => $dosen->id,
+            'uuid' => '868574656745674',
+            'name' => 'Dosen Senang',
+            'phone' => '078767564'
+        ]);
+
+        $dosen2->prodi()->attach($findProdi);
 
         
     }
