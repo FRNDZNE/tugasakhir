@@ -48,8 +48,16 @@ Route::get('/home', function(){
 Route::prefix('superadmin')->middleware(['auth','role:superadmin'])->group(function(){
     Route::get('/dashboard',[HomeController::class, 'index'])->name('superadmin.dashboard');
 
-    Route::prefix('account')->group(function(){
-        
+    Route::prefix('jurusan')->group(function(){
+        Route::get('/',[JurusanController::class,'index'])->name('superadmin.jurusan.index');
+        Route::post('/store',[JurusanController::class,'store'])->name('superadmin.jurusan.store');
+        Route::post('/update',[JurusanController::class,'update'])->name('superadmin.jurusan.update');
+        Route::delete('/delete/{jurusan}',[JurusanController::class,'delete'])->name('superadmin.jurusan.delete');
+
+        Route::get('/{jurusan}',[ProdiController::class,'index'])->name('superadmin.prodi.index');
+        Route::get('/{jurusan}/store',[ProdiController::class,'index'])->name('superadmin.prodi.store');
+        Route::get('/{jurusan}/update',[ProdiController::class,'index'])->name('superadmin.prodi.update');
+        Route::get('/{jurusan}/delete/{prodi}',[ProdiController::class,'index'])->name('superadmin.prodi.delete');
     });
 });
 

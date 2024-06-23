@@ -39,12 +39,12 @@
                                 <form action="{{ route('login') }}" method="POST">
                                     @csrf
                                     <div class="mb-3">
-                                        <label for="emailaddress" class="form-label">Email address</label>
-                                        <input class="form-control" type="email" name="email" id="emailaddress" placeholder="Enter your email">
+                                        <label for="uuid" class="form-label">Username</label>
+                                        <input class="form-control" type="login" name="login" id="uuid" placeholder="Username">
                                     </div>
                                     <div class="mb-3">
                                         <label for="password" class="form-label">Password</label>
-                                        <input class="form-control" type="password" name="password" id="password" placeholder="Enter your password">
+                                        <input class="form-control" type="password" name="password" id="password" placeholder="Password">
                                     </div>
                                     <div class="mb-3">
                                         <div class="form-check">
