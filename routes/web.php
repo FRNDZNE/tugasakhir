@@ -2,6 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\JurusanController;
+use App\Http\Controllers\ProdiController;
+use App\Http\Controllers\YearController;
+use App\Http\Controllers\PeriodController;
+use App\Http\Controllers\ScoreController;
+use App\Http\Controllers\UserController;
+
+
 
 
 /*
@@ -48,17 +56,79 @@ Route::get('/home', function(){
 Route::prefix('superadmin')->middleware(['auth','role:superadmin'])->group(function(){
     Route::get('/dashboard',[HomeController::class, 'index'])->name('superadmin.dashboard');
 
+    // CRUD untuk Jurusan dan Prodi
     Route::prefix('jurusan')->group(function(){
         Route::get('/',[JurusanController::class,'index'])->name('superadmin.jurusan.index');
         Route::post('/store',[JurusanController::class,'store'])->name('superadmin.jurusan.store');
         Route::post('/update',[JurusanController::class,'update'])->name('superadmin.jurusan.update');
         Route::delete('/delete/{jurusan}',[JurusanController::class,'delete'])->name('superadmin.jurusan.delete');
 
-        Route::get('/{jurusan}',[ProdiController::class,'index'])->name('superadmin.prodi.index');
-        Route::get('/{jurusan}/store',[ProdiController::class,'index'])->name('superadmin.prodi.store');
-        Route::get('/{jurusan}/update',[ProdiController::class,'index'])->name('superadmin.prodi.update');
-        Route::get('/{jurusan}/delete/{prodi}',[ProdiController::class,'index'])->name('superadmin.prodi.delete');
+        Route::prefix('{jurusan}')->group(function(){
+            Route::get('/',[ProdiController::class,'index'])->name('superadmin.prodi.index');
+            Route::post('/store',[ProdiController::class,'store'])->name('superadmin.prodi.store');
+            Route::post('/update',[ProdiController::class,'update'])->name('superadmin.prodi.update');
+            Route::delete('/delete/{prodi}',[ProdiController::class,'delete'])->name('superadmin.prodi.delete');
+        });
     });
+
+    // CRUD untuk Tahun dan Periode Magang
+    Route::prefix('year')->group(function(){
+        Route::get('/',[YearController::class,'index'])->name('superadmin.year.index');
+        Route::post('/store',[YearController::class,'store'])->name('superadmin.year.store');
+        Route::post('/update',[YearController::class,'update'])->name('superadmin.year.update');
+        Route::delete('/delete/{year}',[YearController::class,'delete'])->name('superadmin.year.delete');
+
+        Route::prefix('{year}')->group(function(){
+            Route::get('/',[PeriodController::class,'index'])->name('superadmin.period.index');
+            Route::post('/store',[PeriodController::class,'store'])->name('superadmin.period.store');
+            Route::post('/update',[PeriodController::class,'update'])->name('superadmin.period.update');
+            Route::delete('/delete/{period}',[PeriodController::class,'delete'])->name('superadmin.period.delete');
+        });
+    });
+
+    // CRUD untuk Penilaian
+    Route::prefix('scores')->group(function(){
+        Route::get('/',[ScoreController::class,'index'])->name('superadmin.score.index');
+        Route::post('/store',[ScoreController::class,'store'])->name('superadmin.score.store');
+        Route::post('/update',[ScoreController::class,'update'])->name('superadmin.score.update');
+        Route::delete('/delete/{score}',[ScoreController::class,'delete'])->name('superadmin.score.delete');
+
+    });
+
+    Route::prefix('account')->group(function(){
+        Route::prefix('admin')->group(function(){
+            Route::get('/',[UserController::class,'index_admin'])->name('superadmin.user.admin.index');
+            Route::get('/store',[UserController::class,'store_admin'])->name('superadmin.user.admin.store');
+            Route::get('/update',[UserController::class,'update_admin'])->name('superadmin.user.admin.update');
+            Route::get('/delete/{id}',[UserController::class,'delete_admin'])->name('superadmin.user.admin.delete');
+        });
+        Route::prefix('staff')->group(function(){
+            Route::get('/',[UserController::class,'index_staff'])->name('superadmin.user.staff.index');
+            Route::get('/store',[UserController::class,'store_staff'])->name('superadmin.user.staff.store');
+            Route::get('/update',[UserController::class,'update_staff'])->name('superadmin.user.staff.update');
+            Route::get('/delete/{id}',[UserController::class,'delete_staff'])->name('superadmin.user.staff.delete');
+        });
+        Route::prefix('agency')->group(function(){
+            Route::get('/',[UserController::class,'index_agency'])->name('superadmin.user.agency.index');
+            Route::get('/store',[UserController::class,'store_agency'])->name('superadmin.user.agency.store');
+            Route::get('/update',[UserController::class,'update_agency'])->name('superadmin.user.agency.update');
+            Route::get('/delete/{id}',[UserController::class,'delete_agency'])->name('superadmin.user.agency.delete');
+        });
+        Route::prefix('dosen')->group(function(){
+            Route::get('/',[UserController::class,'index_dosen'])->name('superadmin.user.dosen.index');
+            Route::get('/store',[UserController::class,'store_dosen'])->name('superadmin.user.dosen.store');
+            Route::get('/update',[UserController::class,'update_dosen'])->name('superadmin.user.dosen.update');
+            Route::get('/delete/{id}',[UserController::class,'delete_dosen'])->name('superadmin.user.dosen.delete');
+        });
+        Route::prefix('mahasiswa')->group(function(){
+            Route::get('/',[UserController::class,'index_mahasiswa'])->name('superadmin.user.mahasiswa.index');
+            Route::get('/store',[UserController::class,'store_mahasiswa'])->name('superadmin.user.mahasiswa.store');
+            Route::get('/update',[UserController::class,'update_mahasiswa'])->name('superadmin.user.mahasiswa.update');
+            Route::get('/delete/{id}',[UserController::class,'delete_mahasiswa'])->name('superadmin.user.mahasiswa.delete');
+        });
+    });
+
+
 });
 
 Route::prefix('admin')->middleware(['auth','role:admin'])->group(function(){

@@ -45,19 +45,19 @@
     </li>
     <li class="menu-title">Utilitas</li>
     <li>
-        <a href="index.html">
+        <a href="{{ route('superadmin.jurusan.index') }}">
             <i class="mdi mdi-view-dashboard-outline"></i>
             <span> Jurusan & Prodi </span>
         </a>
     </li>
     <li>
-        <a href="index.html">
+        <a href="{{ route('superadmin.year.index') }}">
             <i class="mdi mdi-view-dashboard-outline"></i>
             <span> Tahun & Periode Magang </span>
         </a>
     </li>
     <li>
-        <a href="index.html">
+        <a href="{{ route('superadmin.score.index') }}">
             <i class="mdi mdi-view-dashboard-outline"></i>
             <span> Penilaian </span>
         </a>

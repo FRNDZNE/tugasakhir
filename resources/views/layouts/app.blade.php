@@ -12,9 +12,14 @@
 
 		<!-- App css -->
         @yield('css')
+        <!-- third party css -->
+        <link href="{{ asset('/') }}/assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('/') }}/assets/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('/') }}/assets/libs/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('/') }}/assets/libs/datatables.net-select-bs5/css//select.bootstrap5.min.css" rel="stylesheet" type="text/css" />
 
+		<!-- css -->
 		<link href="{{ asset('/') }}/assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style" />
-
 		<!-- icons -->
 		<link href="{{ asset('/') }}/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
@@ -106,9 +111,9 @@
                     <li>
                         <h4 class="page-title-main">@yield('page-title')</h4>
                     </li>
-        
+
                 </ul>
-                <div class="clearfix"></div> 
+                <div class="clearfix"></div>
             </div>
             <!-- end Topbar -->
 
@@ -150,7 +155,7 @@
                                 {{ Auth::user()->role->display_name }}
                             @elseif (Auth::user()->role->name == 'mahasiswa')
                                 {{ Auth::user()->role->display_name }}
-                            @endif 
+                            @endif
                         </p>
                     </div>
                     @include('layouts.sidebar.sidebar')
@@ -159,7 +164,7 @@
                 <!-- Sidebar -left -->
             </div>
             <!-- Left Sidebar End -->
-            
+
             <!-- ============================================================== -->
             <!-- Start Page Content here -->
             <!-- ============================================================== -->
@@ -176,7 +181,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-6">
-                                <script>document.write(new Date().getFullYear())</script> &copy; SIMBKM BY <a href="">Hafiz Putra Pratama</a> 
+                                <script>document.write(new Date().getFullYear())</script> &copy; SIMBKM BY <a href="">Hafiz Putra Pratama</a>
                             </div>
                         </div>
                     </div>
@@ -198,7 +203,7 @@
                     <h4 class="font-16 m-0 text-white">Theme Customizer</h4>
                 </div>
                 <!-- Tab panes -->
-                <div class="tab-content pt-0">  
+                <div class="tab-content pt-0">
                     <div class="tab-pane active" id="settings-tab" role="tabpanel">
                         <div class="p-3">
                             <h6 class="fw-medium font-14 mt-4 mb-2 pb-1">Color Scheme</h6>
@@ -321,8 +326,8 @@
 
         <!-- Right bar overlay-->
         <div class="rightbar-overlay"></div>
+        @yield('js')
 
-        <!-- Vendor -->
         <script src="{{ asset('/') }}/assets/libs/jquery/jquery.min.js"></script>
         <script src="{{ asset('/') }}/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="{{ asset('/') }}/assets/libs/simplebar/simplebar.min.js"></script>
@@ -331,9 +336,26 @@
         <script src="{{ asset('/') }}/assets/libs/jquery.counterup/jquery.counterup.min.js"></script>
         <script src="{{ asset('/') }}/assets/libs/feather-icons/feather.min.js"></script>
 
-        @yield('js')
+        <!-- third party js -->
+        <script src="{{ asset('/') }}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+        <script src="{{ asset('/') }}/assets/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
+        <script src="{{ asset('/') }}/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="{{ asset('/') }}/assets/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js"></script>
+        <script src="{{ asset('/') }}/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+        <script src="{{ asset('/') }}/assets/libs/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js"></script>
+        <script src="{{ asset('/') }}/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+        <script src="{{ asset('/') }}/assets/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
+        <script src="{{ asset('/') }}/assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+        <script src="{{ asset('/') }}/assets/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+        <script src="{{ asset('/') }}/assets/libs/datatables.net-select/js/dataTables.select.min.js"></script>
+        <script src="{{ asset('/') }}/assets/libs/pdfmake/build/pdfmake.min.js"></script>
+        <script src="{{ asset('/') }}/assets/libs/pdfmake/build/vfs_fonts.js"></script>
+        <!-- third party js ends -->
+
+        <!-- Datatables init -->
+        <script src="{{ asset('/') }}/assets/js/pages/datatables.init.js"></script>
         <!-- App js -->
         <script src="{{ asset('/') }}/assets/js/app.min.js"></script>
-        
+
     </body>
 </html>

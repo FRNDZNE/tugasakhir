@@ -24,12 +24,12 @@ class JurusanSeeder extends Seeder
         $elektro = ['informatika','elektronika','listrik'];
         $elektro2 = ['Informatika','Rekayasa Sistem Elektronika','Listrik'];
         $findJurusan1 = Jurusan::where('name','elektro')->first();
-        foreach ($elektro as $e) {
-            foreach ($elektro2 as $d) {
+        if(count($elektro) == count($elektro2)) {
+            foreach ($elektro as $index => $e) {
                 Prodi::create([
                     'jurusan_id' => $findJurusan1->id,
                     'name' => $e,
-                    'display_name' => "Teknik ". $d,
+                    'display_name' => "Teknik ". $elektro2[$index],
                 ]);
             }
         }
