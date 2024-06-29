@@ -132,16 +132,9 @@
                                                         @csrf
                                                         <input type="hidden" name="id" value="{{ $y->id }}">
                                                         <div class="form-group">
-                                                            <label for="name" class="form-label">Kode</label>
+                                                            <label for="name" class="form-label">Tahun Ajaran</label>
                                                             <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" value="{{ $y->name }}">
                                                             @error('name')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="display" class="form-label">Nama</label>
-                                                            <input type="text" name="display" id="display" class="form-control @error('display') is-invalid @enderror" value="{{ $y->display_name }}">
-                                                            @error('display')
                                                                 <span class="text-danger">{{ $message }}</span>
                                                             @enderror
                                                         </div>

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('agency_id')->constrained()->onDelete('cascade');
             $table->string('uuid')->unique()->nullable();
             $table->string('name');
+            $table->string('contact');
             $table->timestamps();
             $table->softDeletes();
         });

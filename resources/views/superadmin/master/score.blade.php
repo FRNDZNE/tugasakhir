@@ -53,17 +53,20 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="prodi" class="form-label">Program Studi</label>
-                                            <select name="prodi" id="prodi" class="form-control">
+                                            <select name="prodi" id="prodi" class="form-control @error('prodi') is-invalid @enderror">
                                                 <option value="0">Pilih Program Studi</option>
                                                 @foreach ($data['prodi'] as $p)
                                                     <option value="{{ $p->id }}">{{ $p->display_name }}</option>
                                                 @endforeach
                                             </select>
+                                            @error('prodi')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-8">
+                                    <div class="col-md-9">
                                         <div class="form-group">
                                             <label for="name" class="form-label">Nama Penilaian</label>
                                             <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" placeholder="Masukan Penilaian">
@@ -72,10 +75,13 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="weight" class="form-label">Bobot SKS</label>
-                                            <input type="number" name="weight" id="weight" min="0" class="form-control">
+                                            <input type="number" name="weight" id="weight" min="0" class="form-control @error('weight') is-invalid @enderror">
+                                            @error('weight')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -163,17 +169,20 @@
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
                                                                     <label for="prodi" class="form-label">Program Studi</label>
-                                                                    <select name="prodi" id="prodi" class="form-control">
+                                                                    <select name="prodi" id="prodi" class="form-control @error('prodi') is-invalid @enderror">
                                                                         <option value="0">Pilih Program Studi</option>
                                                                         @foreach ($data['prodi'] as $p)
                                                                             <option value="{{ $p->id }}" @if($p->id == $s->prodi_id) selected @endif>{{ $p->display_name }}</option>
                                                                         @endforeach
                                                                     </select>
+                                                                    @error('prodi')
+                                                                        <span class="text-danger">{{ $message }}</span>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="row">
-                                                            <div class="col-md-8">
+                                                            <div class="col-md-9">
                                                                 <div class="form-group">
                                                                     <label for="name" class="form-label">Nama Penilaian</label>
                                                                     <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" placeholder="Masukan Penilaian" value="{{ $s->name }}">
@@ -182,10 +191,13 @@
                                                                     @enderror
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-4">
+                                                            <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="weight" class="form-label">Bobot SKS</label>
-                                                                    <input type="number" name="weight" id="weight" min="0" class="form-control" value="{{ $s->weight }}">
+                                                                    <input type="number" name="weight" id="weight" min="0" class="form-control @error('weight') is-invalid @enderror" value="{{ $s->weight }}">
+                                                                    @error('weight')
+                                                                        <span class="text-danger">{{ $message }}</span>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                         </div>

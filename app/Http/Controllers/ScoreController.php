@@ -26,13 +26,13 @@ class ScoreController extends Controller
         $attributes = [
             'name' => ucfirst('tahun'),
             'prodi' => ucfirst('prodi'),
-            'score' => ucfirst('penilaian')
+            'weight' => ucfirst('penilaian')
         ];
 
         $request->validate([
             'name' => 'required',
             'prodi' => 'gt:0',
-            'score' => 'gt:0',
+            'weight' => 'gt:0|required',
         ], $messages, $attributes);
 
         // Proses Simpan Data
@@ -55,13 +55,13 @@ class ScoreController extends Controller
         $attributes = [
             'name' => ucfirst('tahun'),
             'prodi' => ucfirst('prodi'),
-            'score' => ucfirst('penilaian')
+            'weight' => ucfirst('penilaian')
         ];
 
         $request->validate([
             'name' => 'required',
             'prodi' => 'gt:0',
-            'score' => 'gt:0',
+            'weight' => 'gt:0|required',
         ], $messages, $attributes);
 
         Score::updateOrCreate(

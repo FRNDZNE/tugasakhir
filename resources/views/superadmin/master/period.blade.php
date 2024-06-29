@@ -54,7 +54,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="prodi" class="form-label">Pilih Prodi</label>
-                                            <select name="prodi" id="prodi" class="form-control">
+                                            <select name="prodi" id="prodi" class="form-control @error('prodi') is-invalid @enderror">
                                                 <option value="0">Pilih  Prodi</option>
                                                 @foreach ($data['prodi'] as $prodi)
                                                     <option value="{{ $prodi->id }}">{{ $prodi->display_name }}</option>
@@ -72,16 +72,16 @@
                                             <label for="dateStart" class="form-label">Tanggal Mulai</label>
                                             <input type="date" name="start" id="dateStart" class="form-control @error('start') is-invalid @enderror">
                                             @error('start')
-                                                {{ $message }}
+                                                <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="dateEnd" class="form-label @error('end') is-invalid @enderror">Tanggal Selesai</label>
-                                            <input type="date" name="end" id="dateEnd" class="form-control">
+                                            <label for="dateEnd" class="form-label">Tanggal Selesai</label>
+                                            <input type="date" name="end" id="dateEnd" class="form-control @error('end') is-invalid @enderror">
                                             @error('end')
-                                                {{ $message }}
+                                                <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->longText('address');
             $table->string('contact');
-            $table->longText('desc');
+            $table->longText('desc')->nullable();
             $table->integer('day')->unsigned();
             $table->timestamps();
             $table->softDeletes();

@@ -98,37 +98,41 @@ Route::prefix('superadmin')->middleware(['auth','role:superadmin'])->group(funct
     Route::prefix('account')->group(function(){
         Route::prefix('admin')->group(function(){
             Route::get('/',[UserController::class,'index_admin'])->name('superadmin.user.admin.index');
-            Route::get('/store',[UserController::class,'store_admin'])->name('superadmin.user.admin.store');
-            Route::get('/update',[UserController::class,'update_admin'])->name('superadmin.user.admin.update');
-            Route::get('/delete/{id}',[UserController::class,'delete_admin'])->name('superadmin.user.admin.delete');
+            Route::post('/store',[UserController::class,'store_admin'])->name('superadmin.user.admin.store');
+            Route::post('/update',[UserController::class,'update_admin'])->name('superadmin.user.admin.update');
+            Route::delete('/delete/{id}',[UserController::class,'delete'])->name('superadmin.user.admin.delete');
         });
         Route::prefix('staff')->group(function(){
             Route::get('/',[UserController::class,'index_staff'])->name('superadmin.user.staff.index');
-            Route::get('/store',[UserController::class,'store_staff'])->name('superadmin.user.staff.store');
-            Route::get('/update',[UserController::class,'update_staff'])->name('superadmin.user.staff.update');
-            Route::get('/delete/{id}',[UserController::class,'delete_staff'])->name('superadmin.user.staff.delete');
+            Route::post('/store',[UserController::class,'store_staff'])->name('superadmin.user.staff.store');
+            Route::post('/update',[UserController::class,'update_staff'])->name('superadmin.user.staff.update');
+            Route::delete('/delete/{id}',[UserController::class,'delete'])->name('superadmin.user.staff.delete');
         });
         Route::prefix('agency')->group(function(){
             Route::get('/',[UserController::class,'index_agency'])->name('superadmin.user.agency.index');
-            Route::get('/store',[UserController::class,'store_agency'])->name('superadmin.user.agency.store');
-            Route::get('/update',[UserController::class,'update_agency'])->name('superadmin.user.agency.update');
-            Route::get('/delete/{id}',[UserController::class,'delete_agency'])->name('superadmin.user.agency.delete');
+            Route::post('/store',[UserController::class,'store_agency'])->name('superadmin.user.agency.store');
+            Route::post('/update',[UserController::class,'update_agency'])->name('superadmin.user.agency.update');
+            Route::delete('/delete/{id}',[UserController::class,'delete'])->name('superadmin.user.agency.delete');
         });
+        Route::prefix('mentor')->group(function(){
+                Route::get('/',[UserController::class,'index_mentor'])->name('superadmin.user.mentor.index');
+                Route::post('/store',[UserController::class,'store_mentor'])->name('superadmin.user.mentor.store');
+                Route::post('/update',[UserController::class,'update_mentor'])->name('superadmin.user.mentor.update');
+                Route::delete('/delete/{id}',[UserController::class,'delete'])->name('superadmin.user.mentor.delete');
+            });
         Route::prefix('dosen')->group(function(){
             Route::get('/',[UserController::class,'index_dosen'])->name('superadmin.user.dosen.index');
-            Route::get('/store',[UserController::class,'store_dosen'])->name('superadmin.user.dosen.store');
-            Route::get('/update',[UserController::class,'update_dosen'])->name('superadmin.user.dosen.update');
-            Route::get('/delete/{id}',[UserController::class,'delete_dosen'])->name('superadmin.user.dosen.delete');
+            Route::post('/store',[UserController::class,'store_dosen'])->name('superadmin.user.dosen.store');
+            Route::post('/update',[UserController::class,'update_dosen'])->name('superadmin.user.dosen.update');
+            Route::delete('/delete/{id}',[UserController::class,'delete'])->name('superadmin.user.dosen.delete');
         });
         Route::prefix('mahasiswa')->group(function(){
             Route::get('/',[UserController::class,'index_mahasiswa'])->name('superadmin.user.mahasiswa.index');
-            Route::get('/store',[UserController::class,'store_mahasiswa'])->name('superadmin.user.mahasiswa.store');
-            Route::get('/update',[UserController::class,'update_mahasiswa'])->name('superadmin.user.mahasiswa.update');
-            Route::get('/delete/{id}',[UserController::class,'delete_mahasiswa'])->name('superadmin.user.mahasiswa.delete');
+            Route::post('/store',[UserController::class,'store_mahasiswa'])->name('superadmin.user.mahasiswa.store');
+            Route::post('/update',[UserController::class,'update_mahasiswa'])->name('superadmin.user.mahasiswa.update');
+            Route::delete('/delete/{id}',[UserController::class,'delete'])->name('superadmin.user.mahasiswa.delete');
         });
     });
-
-
 });
 
 Route::prefix('admin')->middleware(['auth','role:admin'])->group(function(){
