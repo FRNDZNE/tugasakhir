@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\ProdiController;
@@ -8,9 +9,13 @@ use App\Http\Controllers\YearController;
 use App\Http\Controllers\PeriodController;
 use App\Http\Controllers\ScoreController;
 use App\Http\Controllers\UserController;
-
-
-
+use App\Http\Controllers\QuotaController;
+use App\Http\Controllers\UserAdminController;
+use App\Http\Controllers\UserStaffController;
+use App\Http\Controllers\UserAgencyController;
+use App\Http\Controllers\UserMentorController;
+use App\Http\Controllers\UserDosenController;
+use App\Http\Controllers\UserMahasiswaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,115 +54,102 @@ Route::get('/home', function(){
     } else if (Auth::user()->role->name == 'dosen') {
         return redirect()->route('dosen.dashboard');
     } else if (Auth::user()->role->name == 'mahasiswa') {
-        return redirect()->route('mahasiswa.dashboard');
+        if (Auth::user()->mahasiswa->status == true) {
+            return redirect()->route('mahasiswa.dashboard');
+        } else {
+            return redirect()->route('mahasiswa.forbidden');
+        }
     }
 })->middleware('auth');
 
-Route::prefix('superadmin')->middleware(['auth','role:superadmin'])->group(function(){
-    Route::get('/dashboard',[HomeController::class, 'index'])->name('superadmin.dashboard');
+Route::get('mahasiswa/forbidden',function(){
+    return view('layouts.forbidden');
+})->name('mahasiswa.forbidden');
 
-    // CRUD untuk Jurusan dan Prodi
-    Route::prefix('jurusan')->group(function(){
-        Route::get('/',[JurusanController::class,'index'])->name('superadmin.jurusan.index');
-        Route::post('/store',[JurusanController::class,'store'])->name('superadmin.jurusan.store');
-        Route::post('/update',[JurusanController::class,'update'])->name('superadmin.jurusan.update');
-        Route::delete('/delete/{jurusan}',[JurusanController::class,'delete'])->name('superadmin.jurusan.delete');
-
-        Route::prefix('{jurusan}')->group(function(){
-            Route::get('/',[ProdiController::class,'index'])->name('superadmin.prodi.index');
-            Route::post('/store',[ProdiController::class,'store'])->name('superadmin.prodi.store');
-            Route::post('/update',[ProdiController::class,'update'])->name('superadmin.prodi.update');
-            Route::delete('/delete/{prodi}',[ProdiController::class,'delete'])->name('superadmin.prodi.delete');
-        });
+$roles = ['superadmin', 'admin', 'staff', 'agency', 'mentor', 'dosen', 'mahasiswa'];
+foreach ($roles as $role) {
+    Route::prefix($role)->middleware(['auth', "role:$role"])->group(function () use ($role) {
+        Route::get('/dashboard', [HomeController::class, 'index'])->name("$role.dashboard");
     });
+}
+// CRUD Jurusan dan Prsodi
+Route::prefix('jurusan')->group(function(){
+    Route::get('/',[JurusanController::class,'index'])->name('jurusan.index');
+    Route::post('/store',[JurusanController::class,'store'])->name('jurusan.store');
+    Route::delete('/delete/{jurusan}',[JurusanController::class,'delete'])->name('jurusan.delete');
+});
 
-    // CRUD untuk Tahun dan Periode Magang
-    Route::prefix('year')->group(function(){
-        Route::get('/',[YearController::class,'index'])->name('superadmin.year.index');
-        Route::post('/store',[YearController::class,'store'])->name('superadmin.year.store');
-        Route::post('/update',[YearController::class,'update'])->name('superadmin.year.update');
-        Route::delete('/delete/{year}',[YearController::class,'delete'])->name('superadmin.year.delete');
+Route::prefix('jurusan/{jurusan}')->middleware(['auth','role:superadmin,admin'])->group(function(){
+    Route::get('/',[ProdiController::class,'index'])->name('prodi.index');
+    Route::post('/store',[ProdiController::class,'store'])->name('prodi.store');
+    Route::delete('/delete/{prodi}',[ProdiController::class,'delete'])->name('prodi.delete');
+});
 
-        Route::prefix('{year}')->group(function(){
-            Route::get('/',[PeriodController::class,'index'])->name('superadmin.period.index');
-            Route::post('/store',[PeriodController::class,'store'])->name('superadmin.period.store');
-            Route::post('/update',[PeriodController::class,'update'])->name('superadmin.period.update');
-            Route::delete('/delete/{period}',[PeriodController::class,'delete'])->name('superadmin.period.delete');
-        });
-    });
+Route::prefix('year')->group(function(){
+    Route::get('/',[YearController::class,'index'])->name('year.index');
+    Route::post('/store',[YearController::class,'store'])->name('year.store');
+    Route::delete('/delete/{year}',[YearController::class,'delete'])->name('year.delete');
 
-    // CRUD untuk Penilaian
-    Route::prefix('scores')->group(function(){
-        Route::get('/',[ScoreController::class,'index'])->name('superadmin.score.index');
-        Route::post('/store',[ScoreController::class,'store'])->name('superadmin.score.store');
-        Route::post('/update',[ScoreController::class,'update'])->name('superadmin.score.update');
-        Route::delete('/delete/{score}',[ScoreController::class,'delete'])->name('superadmin.score.delete');
-
-    });
-
-    Route::prefix('account')->group(function(){
-        Route::prefix('admin')->group(function(){
-            Route::get('/',[UserController::class,'index_admin'])->name('superadmin.user.admin.index');
-            Route::post('/store',[UserController::class,'store_admin'])->name('superadmin.user.admin.store');
-            Route::post('/update',[UserController::class,'update_admin'])->name('superadmin.user.admin.update');
-            Route::delete('/delete/{id}',[UserController::class,'delete'])->name('superadmin.user.admin.delete');
-        });
-        Route::prefix('staff')->group(function(){
-            Route::get('/',[UserController::class,'index_staff'])->name('superadmin.user.staff.index');
-            Route::post('/store',[UserController::class,'store_staff'])->name('superadmin.user.staff.store');
-            Route::post('/update',[UserController::class,'update_staff'])->name('superadmin.user.staff.update');
-            Route::delete('/delete/{id}',[UserController::class,'delete'])->name('superadmin.user.staff.delete');
-        });
-        Route::prefix('agency')->group(function(){
-            Route::get('/',[UserController::class,'index_agency'])->name('superadmin.user.agency.index');
-            Route::post('/store',[UserController::class,'store_agency'])->name('superadmin.user.agency.store');
-            Route::post('/update',[UserController::class,'update_agency'])->name('superadmin.user.agency.update');
-            Route::delete('/delete/{id}',[UserController::class,'delete'])->name('superadmin.user.agency.delete');
-        });
-        Route::prefix('mentor')->group(function(){
-                Route::get('/',[UserController::class,'index_mentor'])->name('superadmin.user.mentor.index');
-                Route::post('/store',[UserController::class,'store_mentor'])->name('superadmin.user.mentor.store');
-                Route::post('/update',[UserController::class,'update_mentor'])->name('superadmin.user.mentor.update');
-                Route::delete('/delete/{id}',[UserController::class,'delete'])->name('superadmin.user.mentor.delete');
-            });
-        Route::prefix('dosen')->group(function(){
-            Route::get('/',[UserController::class,'index_dosen'])->name('superadmin.user.dosen.index');
-            Route::post('/store',[UserController::class,'store_dosen'])->name('superadmin.user.dosen.store');
-            Route::post('/update',[UserController::class,'update_dosen'])->name('superadmin.user.dosen.update');
-            Route::delete('/delete/{id}',[UserController::class,'delete'])->name('superadmin.user.dosen.delete');
-        });
-        Route::prefix('mahasiswa')->group(function(){
-            Route::get('/',[UserController::class,'index_mahasiswa'])->name('superadmin.user.mahasiswa.index');
-            Route::post('/store',[UserController::class,'store_mahasiswa'])->name('superadmin.user.mahasiswa.store');
-            Route::post('/update',[UserController::class,'update_mahasiswa'])->name('superadmin.user.mahasiswa.update');
-            Route::delete('/delete/{id}',[UserController::class,'delete'])->name('superadmin.user.mahasiswa.delete');
-        });
+    Route::prefix('{year}')->group(function(){
+        Route::get('/',[PeriodController::class,'index'])->name('period.index');
+        Route::post('/store',[PeriodController::class,'store'])->name('period.store');
+        Route::delete('/delete/{period}',[PeriodController::class,'delete'])->name('period.delete');
     });
 });
 
-Route::prefix('admin')->middleware(['auth','role:admin'])->group(function(){
-    Route::get('/dashboard',[HomeController::class, 'index'])->name('admin.dashboard');
+Route::prefix('scores')->group(function(){
+    Route::get('/',[ScoreController::class,'index'])->name('score.index');
+    Route::post('/store',[ScoreController::class,'store'])->name('score.store');
+    Route::delete('/delete/{score}',[ScoreController::class,'delete'])->name('score.delete');
 });
 
-Route::prefix('staff')->middleware(['auth','role:staff'])->group(function(){
-    Route::get('/dashboard',[HomeController::class, 'index'])->name('staff.dashboard');
+// CRUD ACCOUNT
+
+Route::prefix('account')->group(function(){
+    Route::prefix('admin')->group(function(){
+        Route::get('/',[UserAdminController::class,'index'])->name('user.admin.index');
+        Route::post('/store',[UserAdminController::class,'store'])->name('user.admin.store');
+        Route::post('/update',[UserAdminController::class,'update'])->name('user.admin.update');
+        Route::delete('/delete/{id}',[UserController::class,'delete'])->name('user.admin.delete');
+    });
+    Route::prefix('staff')->group(function(){
+        Route::get('/',[UserStaffController::class,'index'])->name('user.staff.index');
+        Route::post('/store',[UserStaffController::class,'store'])->name('user.staff.store');
+        Route::post('/update',[UserStaffController::class,'update'])->name('user.staff.update');
+        Route::delete('/delete/{id}',[UserController::class,'delete'])->name('user.staff.delete');
+    });
+    Route::prefix('agency')->group(function(){
+        Route::get('/',[UserAgencyController::class,'index'])->name('user.agency.index');
+        Route::post('/store',[UserAgencyController::class,'store'])->name('user.agency.store');
+        Route::post('/update',[UserAgencyController::class,'update'])->name('user.agency.update');
+        Route::delete('/delete/{id}',[UserController::class,'delete'])->name('user.agency.delete');
+    });
+    Route::prefix('{agency}/mentor')->group(function(){
+        Route::get('/',[UserMentorController::class,'index'])->name('user.mentor.index');
+        Route::post('/store',[UserMentorController::class,'store'])->name('user.mentor.store');
+        Route::post('/update',[UserMentorController::class,'update'])->name('user.mentor.update');
+        Route::delete('/delete/{id}',[UserController::class,'delete'])->name('user.mentor.delete');
+    });
+    Route::prefix('dosen')->group(function(){
+        Route::get('/',[UserDosenController::class,'index'])->name('user.dosen.index');
+        Route::post('/store',[UserDosenController::class,'store'])->name('user.dosen.store');
+        Route::post('/update',[UserDosenController::class,'update'])->name('user.dosen.update');
+        Route::delete('/delete/{id}',[UserController::class,'delete'])->name('user.dosen.delete');
+    });
+    Route::prefix('mahasiswa')->group(function(){
+        Route::get('/',[UserMahasiswaController::class,'index'])->name('user.mahasiswa.index');
+        Route::post('/store',[UserMahasiswaController::class,'store'])->name('user.mahasiswa.store');
+        Route::post('/update',[UserMahasiswaController::class,'update'])->name('user.mahasiswa.update');
+        Route::delete('/delete/{id}',[UserController::class,'delete'])->name('user.mahasiswa.delete');
+    });
 });
 
-Route::prefix('agency')->middleware(['auth','role:agency'])->group(function(){
-    Route::get('/dashboard',[HomeController::class, 'index'])->name('agency.dashboard');
+Route::prefix('quota/{agency}')->group(function(){
+    Route::get('/',[QuotaController::class,'index'])->name('quota.index');
+    Route::post('/store-update',[QuotaController::class,'store'])->name('quota.store');
 });
 
-Route::prefix('mentor')->middleware(['auth','role:mentor'])->group(function(){
-    Route::get('/dashboard',[HomeController::class, 'index'])->name('mentor.dashboard');
-});
 
-Route::prefix('dosen')->middleware(['auth','role:dosen'])->group(function(){
-    Route::get('/dashboard',[HomeController::class, 'index'])->name('dosen.dashboard');
-});
-
-Route::prefix('mahasiswa')->middleware(['auth','role:mahasiswa'])->group(function(){
-    Route::get('/dashboard',[HomeController::class, 'index'])->name('mahasiswa.dashboard');
-});
 
 
 

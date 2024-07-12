@@ -1,20 +1,25 @@
 @extends('layouts.app')
-@section('title','Tahun Ajaran')
+@section('title', 'Tahun Ajaran')
 @section('css')
 @endsection
-@section('page-title','Tahun Ajaran')
+    @if (Auth::user()->role->name == 'staff')
+        @section('page-title','Daftar Periode Magang Tahun Ajaran ' . $data['year']->name ." " . Auth::user()->staff->prodi->display_name)
+    @else
+        @section('page-title','Daftar Periode Magang Tahun Ajaran ' . $data['year']->name)
+    @endif
 @section('content')
     <div class="card">
         <div class="card-body">
             {{-- Start Modal Tambah --}}
             <!-- Modal trigger button -->
+            <a href="{{ route('year.index') }}" class="btn btn-secondary btn-md">Kembali</a>
             <button
                 type="button"
                 class="btn btn-primary btn-md"
                 data-bs-toggle="modal"
                 data-bs-target="#modalTambah"
             >
-                Tambah Jurusan
+                Tambah Periode
             </button>
 
             <!-- Modal Body -->
@@ -37,7 +42,7 @@
                     <div class="modal-content">
                         <div class="modal-header bg-primary">
                             <h5 class="modal-title" id="modalTitleId">
-                                Tambah Tahun Ajaran
+                                Tambah Periode
                             </h5>
                             <button
                                 type="button"
@@ -47,14 +52,45 @@
                             ></button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('superadmin.year.store') }}" method="post" id="storeYear">
+                            <form action="{{ route('period.store', $data['year']->id) }}" method="post" id="storePeriod">
                                 @csrf
-                                <div class="form-group">
-                                    <label for="name" class="form-label">Tahun Ajaran</label>
-                                    <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror">
-                                    @error('name')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                @if (Auth::user()->role->name == 'superadmin' || Auth::user()->role->name == 'admin')
+                                <div class="row mb-2">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="prodi" class="form-label">Pilih Prodi</label>
+                                            <select name="prodi" id="prodi" class="form-control @error('prodi') is-invalid @enderror">
+                                                <option value="0">Pilih  Prodi</option>
+                                                @foreach ($data['prodi'] as $prodi)
+                                                    <option value="{{ $prodi->id }}">{{ $prodi->display_name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('prodi')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="dateStart" class="form-label">Tanggal Mulai</label>
+                                            <input type="date" name="start" id="dateStart" class="form-control @error('start') is-invalid @enderror">
+                                            @error('start')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="dateEnd" class="form-label">Tanggal Selesai</label>
+                                            <input type="date" name="end" id="dateEnd" class="form-control @error('end') is-invalid @enderror">
+                                            @error('end')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -66,7 +102,7 @@
                             >
                                 Close
                             </button>
-                            <button type="button" class="btn btn-primary" onclick="document.getElementById('storeYear').submit();">Save</button>
+                            <button type="button" class="btn btn-primary" onclick="document.getElementById('storePeriod').submit();">Save</button>
                         </div>
                     </div>
                 </div>
@@ -77,15 +113,23 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Tahun Ajaran</th>
+                        @if (Auth::user()->role->name == 'superadmin' || Auth::user()->role->name == 'admin')
+                        <th>Prodi</th>
+                        @endif
+                        <th>Mulai</th>
+                        <th>Selesai</th>
                         <th>Opsi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($year as $y)
+                    @foreach ($data['period'] as $p)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td><a href="{{ route('superadmin.period.index', $y->id) }}">{{ $y->name }}</a></td>
+                            @if (Auth::user()->role->name == 'superadmin' || Auth::user()->role->name == 'admin')
+                            <td>{{ $p->prodi->display_name }}</td>
+                            @endif
+                            <td>{{ $p->start }}</td>
+                            <td>{{ $p->end }}</td>
                             <td>
                                 {{-- Modal Update --}}
                                     <!-- Modal trigger button -->
@@ -93,7 +137,7 @@
                                         type="button"
                                         class="btn btn-warning btn-md"
                                         data-bs-toggle="modal"
-                                        data-bs-target="#modaledit-{{ $y->id }}"
+                                        data-bs-target="#modaledit-{{ $p->id }}"
                                     >
                                         <i class="fas fa-edit"></i>
                                     </button>
@@ -102,7 +146,7 @@
                                     <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
                                     <div
                                         class="modal fade"
-                                        id="modaledit-{{ $y->id }}"
+                                        id="modaledit-{{ $p->id }}"
                                         tabindex="-1"
                                         data-bs-backdrop="static"
                                         data-bs-keyboard="false"
@@ -118,7 +162,7 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="modalTitleId">
-                                                        Edit Tahun Ajaran
+                                                        Edit Periode
                                                     </h5>
                                                     <button
                                                         type="button"
@@ -128,15 +172,40 @@
                                                     ></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form action="{{ route('superadmin.year.update') }}" method="post" id="updateYear-{{ $y->id }}">
+                                                    <form action="{{ route('period.store', $data['year']->id) }}" method="post" id="updatePeriod-{{ $p->id }}">
                                                         @csrf
-                                                        <input type="hidden" name="id" value="{{ $y->id }}">
-                                                        <div class="form-group">
-                                                            <label for="name" class="form-label">Tahun Ajaran</label>
-                                                            <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" value="{{ $y->name }}">
-                                                            @error('name')
-                                                                <span class="text-danger">{{ $message }}</span>
-                                                            @enderror
+                                                        <input type="hidden" name="id" value="{{ $p->id }}">
+                                                        @if (Auth::user()->role->name == 'superadmin' || Auth::user()->role->name == 'admin')
+                                                        <div class="row mb-2">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label for="prodi" class="form-label">Pilih Prodi</label>
+                                                                    <select name="prodi" id="prodi" class="form-control">
+                                                                        <option value="0">Pilih  Prodi</option>
+                                                                        @foreach ($data['prodi'] as $prodi)
+                                                                            <option value="{{ $prodi->id }}" @if($prodi->id == $p->prodi_id) selected @endif>{{ $prodi->display_name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    @error('prodi')
+                                                                        <span class="invalid-feedback">{{ $message }}</span>
+                                                                    @enderror
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        @endif
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="dateStart" class="form-label">Tanggal Mulai</label>
+                                                                    <input type="date" name="start" id="dateStart" class="form-control" value="{{ $p->start }}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="dateEnd" class="form-label">Tanggal Selesai</label>
+                                                                    <input type="date" name="end" id="dateEnd" class="form-control" value="{{ $p->end }}">
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -148,7 +217,7 @@
                                                     >
                                                         Close
                                                     </button>
-                                                    <button type="button" class="btn btn-warning" onclick="document.getElementById('updateYear-{{ $y->id }}').submit();">Update</button>
+                                                    <button type="button" class="btn btn-warning" onclick="document.getElementById('updatePeriod-{{ $p->id }}').submit();">Update</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -161,7 +230,7 @@
                                         type="button"
                                         class="btn btn-danger btn-md"
                                         data-bs-toggle="modal"
-                                        data-bs-target="#modalDelete-{{ $y->id }}"
+                                        data-bs-target="#modalDelete-{{ $p->id }}"
                                     >
                                         <i class="fas fa-trash"></i>
                                     </button>
@@ -170,7 +239,7 @@
                                     <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
                                     <div
                                         class="modal fade"
-                                        id="modalDelete-{{ $y->id }}"
+                                        id="modalDelete-{{ $p->id }}"
                                         tabindex="-1"
                                         data-bs-backdrop="static"
                                         data-bs-keyboard="false"
@@ -186,7 +255,7 @@
                                             <div class="modal-content">
                                                 <div class="modal-header bg-danger">
                                                     <h5 class="modal-title" id="modalTitleId">
-                                                        Hapus Tahun Ajaran
+                                                        Hapus Prodi
                                                     </h5>
                                                     <button
                                                         type="button"
@@ -196,7 +265,7 @@
                                                     ></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Hapus Tahun Ajaran {{ $y->name }} ?
+                                                    Hapus Periode {{ $p->prodi->display_name }} ?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button
@@ -206,15 +275,16 @@
                                                     >
                                                         Close
                                                     </button>
-                                                    <form action="{{ route('superadmin.year.delete', $y->id) }}" method="post" id="deleteYear-{{ $y->id }}">
+                                                    <form action="{{ route('period.delete', [$data['year']->id, $p->id]) }}" method="post" id="deleteProdi-{{ $p->id }}">
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>
-                                                    <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteYear-{{ $y->id }}').submit();">Hapus</button>
+                                                    <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteProdi-{{ $p->id }}').submit();">Hapus</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
                                 {{-- End Modal Delete --}}
                             </td>
                         </tr>

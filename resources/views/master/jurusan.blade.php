@@ -1,21 +1,20 @@
 @extends('layouts.app')
-@section('title','Daftar Prodi ' . $data['jurusan']->display_name)
+@section('title','Daftar Jurusan')
 @section('css')
 @endsection
-@section('page-title','Daftar Prodi ' . $data['jurusan']->display_name)
+@section('page-title','Daftar Jurusan')
 @section('content')
     <div class="card">
         <div class="card-body">
             {{-- Start Modal Tambah --}}
             <!-- Modal trigger button -->
-            <a href="{{ route('superadmin.jurusan.index') }}" class="btn btn-secondary btn-md">Kembali</a>
             <button
                 type="button"
                 class="btn btn-primary btn-md"
                 data-bs-toggle="modal"
                 data-bs-target="#modalTambah"
             >
-                Tambah Prodi
+                Tambah Jurusan
             </button>
 
             <!-- Modal Body -->
@@ -38,7 +37,7 @@
                     <div class="modal-content">
                         <div class="modal-header bg-primary">
                             <h5 class="modal-title" id="modalTitleId">
-                                Tambah Prodi
+                                Tambah Jurusan
                             </h5>
                             <button
                                 type="button"
@@ -48,20 +47,20 @@
                             ></button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('superadmin.prodi.store', $data['jurusan']->id) }}" method="post" id="storeProdi">
+                            <form action="{{ route('jurusan.store') }}" method="post" id="storeJurusan">
                                 @csrf
                                 <div class="form-group">
                                     <label for="name" class="form-label">Kode</label>
                                     <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror">
                                     @error('name')
-                                        <span class="text-danger">{{ $message }}</span>
+                                        <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="display" class="form-label">Nama Prodi</label>
+                                    <label for="display" class="form-label">Nama Jurusan</label>
                                     <input type="text" name="display" id="display" class="form-control @error('display') is-invalid @enderror">
                                     @error('display')
-                                        <span class="text-danger">{{ $message }}</span>
+                                        <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </form>
@@ -74,7 +73,7 @@
                             >
                                 Close
                             </button>
-                            <button type="button" class="btn btn-primary" onclick="document.getElementById('storeProdi').submit();">Save</button>
+                            <button type="button" class="btn btn-primary" onclick="document.getElementById('storeJurusan').submit();">Save</button>
                         </div>
                     </div>
                 </div>
@@ -90,10 +89,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($data['prodi'] as $p)
+                    @foreach ($jurusan as $j)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $p->display_name }}</td>
+                            <td><a href="{{ route('prodi.index', $j->id) }}">{{ $j->display_name }}</a></td>
                             <td>
                                 {{-- Modal Update --}}
                                     <!-- Modal trigger button -->
@@ -101,7 +100,7 @@
                                         type="button"
                                         class="btn btn-warning btn-md"
                                         data-bs-toggle="modal"
-                                        data-bs-target="#modaledit-{{ $p->id }}"
+                                        data-bs-target="#modaledit-{{ $j->id }}"
                                     >
                                         <i class="fas fa-edit"></i>
                                     </button>
@@ -110,7 +109,7 @@
                                     <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
                                     <div
                                         class="modal fade"
-                                        id="modaledit-{{ $p->id }}"
+                                        id="modaledit-{{ $j->id }}"
                                         tabindex="-1"
                                         data-bs-backdrop="static"
                                         data-bs-keyboard="false"
@@ -126,7 +125,7 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="modalTitleId">
-                                                        Edit Prodi
+                                                        Edit Jurusan
                                                     </h5>
                                                     <button
                                                         type="button"
@@ -136,21 +135,21 @@
                                                     ></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form action="{{ route('superadmin.prodi.update', $data['jurusan']->id) }}" method="post" id="updateJurusan-{{ $p->id }}">
+                                                    <form action="{{ route('jurusan.store') }}" method="post" id="updateJurusan-{{ $j->id }}">
                                                         @csrf
-                                                        <input type="hidden" name="id" value="{{ $p->id }}">
+                                                        <input type="hidden" name="id" value="{{ $j->id }}">
                                                         <div class="form-group">
                                                             <label for="name" class="form-label">Kode</label>
-                                                            <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" value="{{ $p->name }}">
+                                                            <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" value="{{ $j->name }}">
                                                             @error('name')
-                                                                <span class="text-danger">{{ $message }}</span>
+                                                                <span class="invalid-feedback">{{ $message }}</span>
                                                             @enderror
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="display" class="form-label">Nama</label>
-                                                            <input type="text" name="display" id="display" class="form-control @error('display') is-invalid @enderror" value="{{ $p->display_name }}">
+                                                            <input type="text" name="display" id="display" class="form-control @error('display') is-invalid @enderror" value="{{ $j->display_name }}">
                                                             @error('display')
-                                                                <span class="text-danger">{{ $message }}</span>
+                                                                <span class="invalid-feedback">{{ $message }}</span>
                                                             @enderror
                                                         </div>
                                                     </form>
@@ -163,7 +162,7 @@
                                                     >
                                                         Close
                                                     </button>
-                                                    <button type="button" class="btn btn-warning" onclick="document.getElementById('updateJurusan-{{ $p->id }}').submit();">Update</button>
+                                                    <button type="button" class="btn btn-warning" onclick="document.getElementById('updateJurusan-{{ $j->id }}').submit();">Update</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -176,7 +175,7 @@
                                         type="button"
                                         class="btn btn-danger btn-md"
                                         data-bs-toggle="modal"
-                                        data-bs-target="#modalDelete-{{ $p->id }}"
+                                        data-bs-target="#modalDelete-{{ $j->id }}"
                                     >
                                         <i class="fas fa-trash"></i>
                                     </button>
@@ -185,7 +184,7 @@
                                     <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
                                     <div
                                         class="modal fade"
-                                        id="modalDelete-{{ $p->id }}"
+                                        id="modalDelete-{{ $j->id }}"
                                         tabindex="-1"
                                         data-bs-backdrop="static"
                                         data-bs-keyboard="false"
@@ -201,7 +200,7 @@
                                             <div class="modal-content">
                                                 <div class="modal-header bg-danger">
                                                     <h5 class="modal-title" id="modalTitleId">
-                                                        Hapus Prodi
+                                                        Hapus Jurusan
                                                     </h5>
                                                     <button
                                                         type="button"
@@ -211,7 +210,7 @@
                                                     ></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Hapus Prodi {{ $p->display_name }} ?
+                                                    Hapus Jurusan {{ $j->display_name }} ?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button
@@ -221,11 +220,11 @@
                                                     >
                                                         Close
                                                     </button>
-                                                    <form action="{{ route('superadmin.prodi.delete', [$data['jurusan']->id, $p->id]) }}" method="post" id="deleteProdi-{{ $p->id }}">
+                                                    <form action="{{ route('jurusan.delete', $j->id) }}" method="post" id="deleteJurusan-{{ $j->id }}">
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>
-                                                    <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteProdi-{{ $p->id }}').submit();">Hapus</button>
+                                                    <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteJurusan-{{ $j->id }}').submit();">Hapus</button>
                                                 </div>
                                             </div>
                                         </div>

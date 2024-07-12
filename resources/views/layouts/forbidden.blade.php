@@ -38,8 +38,11 @@
                                 <div class="text-center">
                                     <h1 class="text-error">Maaf !</h1>
                                     <h3 class="mt-3 mb-2">Kamu Tidak Bisa Akses</h3>
-                                    <p class="text-muted mb-3"> Route Ini Bukan Untuk Role Kamu</p>
-                                    <a href="{{ url('/home') }}" class="btn btn-danger waves-effect waves-light"><i class="fas fa-home me-1"></i> Dashboard</a>
+                                    <p class="text-muted mb-3">Silahkan Hubungi Staff Program Studi Untuk Aktivasi Akun</p>
+                                    <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout').submit();" class="btn btn-danger waves-effect waves-light"><i class="fas fa-home me-1"></i> Log Out</a>
+                                    <form action="{{ route('logout') }}" method="post" id="logout">
+                                        @csrf
+                                    </form>
                                 </div>
 
 

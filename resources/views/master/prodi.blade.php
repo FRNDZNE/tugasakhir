@@ -1,21 +1,23 @@
 @extends('layouts.app')
-@section('title', $data['year']->name)
+@section('title','Daftar Prodi ')
 @section('css')
 @endsection
-@section('page-title','Daftar Periode Magang Tahun Ajaran ' . $data['year']->name)
+@section('page-title','Daftar Prodi ' . $data['jurusan']->display_name)
 @section('content')
     <div class="card">
         <div class="card-body">
             {{-- Start Modal Tambah --}}
             <!-- Modal trigger button -->
-            <a href="{{ route('superadmin.year.index') }}" class="btn btn-secondary btn-md">Kembali</a>
+            @if (Auth::user()->role->name == 'superadmin')
+                <a href="{{ route('jurusan.index') }}" class="btn btn-secondary btn-md">Kembali</a>
+            @endif
             <button
                 type="button"
                 class="btn btn-primary btn-md"
                 data-bs-toggle="modal"
                 data-bs-target="#modalTambah"
             >
-                Tambah Periode
+                Tambah Prodi
             </button>
 
             <!-- Modal Body -->
@@ -38,7 +40,7 @@
                     <div class="modal-content">
                         <div class="modal-header bg-primary">
                             <h5 class="modal-title" id="modalTitleId">
-                                Tambah Periode
+                                Tambah Prodi
                             </h5>
                             <button
                                 type="button"
@@ -48,43 +50,21 @@
                             ></button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('superadmin.period.store', $data['year']->id) }}" method="post" id="storePeriod">
+                            <form action="{{ route('prodi.store', $data['jurusan']->id) }}" method="post" id="storeProdi">
                                 @csrf
-                                <div class="row mb-2">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="prodi" class="form-label">Pilih Prodi</label>
-                                            <select name="prodi" id="prodi" class="form-control @error('prodi') is-invalid @enderror">
-                                                <option value="0">Pilih  Prodi</option>
-                                                @foreach ($data['prodi'] as $prodi)
-                                                    <option value="{{ $prodi->id }}">{{ $prodi->display_name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('prodi')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="name" class="form-label">Kode</label>
+                                    <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror">
+                                    @error('name')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="dateStart" class="form-label">Tanggal Mulai</label>
-                                            <input type="date" name="start" id="dateStart" class="form-control @error('start') is-invalid @enderror">
-                                            @error('start')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="dateEnd" class="form-label">Tanggal Selesai</label>
-                                            <input type="date" name="end" id="dateEnd" class="form-control @error('end') is-invalid @enderror">
-                                            @error('end')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="display" class="form-label">Nama Prodi</label>
+                                    <input type="text" name="display" id="display" class="form-control @error('display') is-invalid @enderror">
+                                    @error('display')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </form>
                         </div>
@@ -96,7 +76,7 @@
                             >
                                 Close
                             </button>
-                            <button type="button" class="btn btn-primary" onclick="document.getElementById('storePeriod').submit();">Save</button>
+                            <button type="button" class="btn btn-primary" onclick="document.getElementById('storeProdi').submit();">Save</button>
                         </div>
                     </div>
                 </div>
@@ -107,19 +87,15 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Prodi</th>
-                        <th>Mulai</th>
-                        <th>Selesai</th>
+                        <th>Program Studi</th>
                         <th>Opsi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($data['period'] as $p)
+                    @foreach ($data['prodi'] as $p)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $p->prodi->display_name }}</td>
-                            <td>{{ $p->start }}</td>
-                            <td>{{ $p->end }}</td>
+                            <td>{{ $p->display_name }}</td>
                             <td>
                                 {{-- Modal Update --}}
                                     <!-- Modal trigger button -->
@@ -152,7 +128,7 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="modalTitleId">
-                                                        Edit Periode
+                                                        Edit Prodi
                                                     </h5>
                                                     <button
                                                         type="button"
@@ -162,38 +138,22 @@
                                                     ></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form action="{{ route('superadmin.period.update', $data['year']->id) }}" method="post" id="updatePeriod-{{ $p->id }}">
+                                                    <form action="{{ route('prodi.store', $p->jurusan->id) }}" method="post" id="updateJurusan-{{ $p->id }}">
                                                         @csrf
                                                         <input type="hidden" name="id" value="{{ $p->id }}">
-                                                        <div class="row mb-2">
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <label for="prodi" class="form-label">Pilih Prodi</label>
-                                                                    <select name="prodi" id="prodi" class="form-control">
-                                                                        <option value="0">Pilih  Prodi</option>
-                                                                        @foreach ($data['prodi'] as $prodi)
-                                                                            <option value="{{ $prodi->id }}" @if($prodi->id == $p->prodi_id) selected @endif>{{ $prodi->display_name }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                    @error('prodi')
-                                                                        <span class="text-danger">{{ $message }}</span>
-                                                                    @enderror
-                                                                </div>
-                                                            </div>
+                                                        <div class="form-group">
+                                                            <label for="name" class="form-label">Kode</label>
+                                                            <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" value="{{ $p->name }}">
+                                                            @error('name')
+                                                                <span class="invalid-feedback">{{ $message }}</span>
+                                                            @enderror
                                                         </div>
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label for="dateStart" class="form-label">Tanggal Mulai</label>
-                                                                    <input type="date" name="start" id="dateStart" class="form-control" value="{{ $p->start }}">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label for="dateEnd" class="form-label">Tanggal Selesai</label>
-                                                                    <input type="date" name="end" id="dateEnd" class="form-control" value="{{ $p->end }}">
-                                                                </div>
-                                                            </div>
+                                                        <div class="form-group">
+                                                            <label for="display" class="form-label">Nama</label>
+                                                            <input type="text" name="display" id="display" class="form-control @error('display') is-invalid @enderror" value="{{ $p->display_name }}">
+                                                            @error('display')
+                                                                <span class="invalid-feedback">{{ $message }}</span>
+                                                            @enderror
                                                         </div>
                                                     </form>
                                                 </div>
@@ -205,7 +165,7 @@
                                                     >
                                                         Close
                                                     </button>
-                                                    <button type="button" class="btn btn-warning" onclick="document.getElementById('updatePeriod-{{ $p->id }}').submit();">Update</button>
+                                                    <button type="button" class="btn btn-warning" onclick="document.getElementById('updateJurusan-{{ $p->id }}').submit();">Update</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -253,7 +213,7 @@
                                                     ></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Hapus Periode {{ $p->prodi->display_name }} ?
+                                                    Hapus Prodi {{ $p->display_name }} ?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button
@@ -263,7 +223,7 @@
                                                     >
                                                         Close
                                                     </button>
-                                                    <form action="{{ route('superadmin.period.delete', [$data['year']->id, $p->id]) }}" method="post" id="deleteProdi-{{ $p->id }}">
+                                                    <form action="{{ route('prodi.delete', [$p->jurusan->id, $p->id]) }}" method="post" id="deleteProdi-{{ $p->id }}">
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>

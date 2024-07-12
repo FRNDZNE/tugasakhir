@@ -47,7 +47,7 @@
                             ></button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('superadmin.score.store') }}" method="post" id="storeScore">
+                            <form action="{{ route('score.store') }}" method="post" id="storeScore">
                                 @csrf
                                 <div class="row mb-2">
                                     <div class="col-md-12">
@@ -60,7 +60,7 @@
                                                 @endforeach
                                             </select>
                                             @error('prodi')
-                                                <span class="text-danger">{{ $message }}</span>
+                                                <span class="invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
@@ -71,7 +71,7 @@
                                             <label for="name" class="form-label">Nama Penilaian</label>
                                             <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" placeholder="Masukan Penilaian">
                                             @error('name')
-                                                <span class="text-danger">{{ $message }}</span>
+                                                <span class="invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
@@ -80,7 +80,7 @@
                                             <label for="weight" class="form-label">Bobot SKS</label>
                                             <input type="number" name="weight" id="weight" min="0" class="form-control @error('weight') is-invalid @enderror">
                                             @error('weight')
-                                                <span class="text-danger">{{ $message }}</span>
+                                                <span class="invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
@@ -162,7 +162,7 @@
                                                     ></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form action="{{ route('superadmin.score.update') }}" method="post" id="updateScore-{{ $s->id }}">
+                                                    <form action="{{ route('score.update') }}" method="post" id="updateScore-{{ $s->id }}">
                                                         @csrf
                                                         <input type="hidden" name="id" value="{{ $s->id }}">
                                                         <div class="row mb-2">
@@ -176,7 +176,7 @@
                                                                         @endforeach
                                                                     </select>
                                                                     @error('prodi')
-                                                                        <span class="text-danger">{{ $message }}</span>
+                                                                        <span class="invalid-feedback">{{ $message }}</span>
                                                                     @enderror
                                                                 </div>
                                                             </div>
@@ -187,7 +187,7 @@
                                                                     <label for="name" class="form-label">Nama Penilaian</label>
                                                                     <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" placeholder="Masukan Penilaian" value="{{ $s->name }}">
                                                                     @error('name')
-                                                                        <span class="text-danger">{{ $message }}</span>
+                                                                        <span class="invalid-feedback">{{ $message }}</span>
                                                                     @enderror
                                                                 </div>
                                                             </div>
@@ -196,7 +196,7 @@
                                                                     <label for="weight" class="form-label">Bobot SKS</label>
                                                                     <input type="number" name="weight" id="weight" min="0" class="form-control @error('weight') is-invalid @enderror" value="{{ $s->weight }}">
                                                                     @error('weight')
-                                                                        <span class="text-danger">{{ $message }}</span>
+                                                                        <span class="invalid-feedback">{{ $message }}</span>
                                                                     @enderror
                                                                 </div>
                                                             </div>
@@ -269,7 +269,7 @@
                                                     >
                                                         Close
                                                     </button>
-                                                    <form action="{{ route('superadmin.score.delete', $s->id) }}" method="post" id="deleteScore-{{ $s->id }}">
+                                                    <form action="{{ route('score.delete', $s->id) }}" method="post" id="deleteScore-{{ $s->id }}">
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>

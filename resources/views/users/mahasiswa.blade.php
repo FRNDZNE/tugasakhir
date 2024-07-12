@@ -1,8 +1,8 @@
 @extends('layouts.app')
-@section('title','Staff Prodi')
+@section('title','Data Mahasiswa')
 @section('css')
 @endsection
-@section('page-title','Staff Prodi')
+@section('page-title','Data Mahasiswa')
 @section('content')
     <div class="card">
         <div class="card-body">
@@ -14,7 +14,7 @@
                 data-bs-toggle="modal"
                 data-bs-target="#modalTambah"
             >
-                Tambah Staff
+                Tambah Mahasiswa
             </button>
 
             <!-- Modal Body -->
@@ -37,7 +37,7 @@
                     <div class="modal-content">
                         <div class="modal-header bg-primary">
                             <h5 class="modal-title" id="modalTitleId">
-                                Tambah Staff Prodi
+                                Tambah Mahasiswa
                             </h5>
                             <button
                                 type="button"
@@ -47,10 +47,30 @@
                             ></button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('superadmin.user.staff.store') }}" method="post" id="storeAdmin">
+                            <form action="{{ route('superadmin.user.mahasiswa.store') }}" method="post" id="storeMahasiswa">
                                 @csrf
                                 <div class="row mb-2">
                                     <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="fullname" class="form-label">Nama Lengkap</label>
+                                            <input type="text" name="fullname" id="fullname" class="form-control @error('fullname') is-invalid @enderror">
+                                            @error('fullname')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="uuid" class="form-label">NIM</label>
+                                            <input type="text" name="uuid" id="uuid" class="form-control @error('uuid') is-invalid @enderror">
+                                            @error('uuid')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="prodi" class="form-label">Prodi</label>
                                             <select name="prodi" id="prodi" class="form-control @error('prodi') is-invalid @enderror">
@@ -64,22 +84,34 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="uuid" class="form-label">NIP/NUPTK</label>
-                                            <input type="text" name="uuid" id="uuid" class="form-control @error('uuid') is-invalid @enderror">
-                                            @error('uuid')
+                                            <label for="year" class="form-label">Tahun Ajaran</label>
+                                            <select name="year" id="year" class="form-control @error('year') is-invalid @enderror">
+                                                <option value="0">Pilih Tahun Ajaran</option>
+                                                @foreach ($data['year'] as $year)
+                                                    <option value="{{ $year->id }}">{{ $year->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('year')
                                                 <span class="invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-12">
+                                    <div class="col-md-2">
                                         <div class="form-group">
-                                            <label for="fullname" class="form-label">Nama Lengkap</label>
-                                            <input type="text" name="fullname" id="fullname" class="form-control @error('fullname') is-invalid @enderror">
-                                            @error('fullname')
+                                            <label for="class" class="form-label">Kelas</label>
+                                            <input type="text" name="class" id="class" class="form-control @error('class') is-invalid @enderror">
+                                            @error('class')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="grade" class="form-label">Semester</label>
+                                            <input type="text" name="grade" id="grade" class="form-control @error('grade') is-invalid @enderror">
+                                            @error('grade')
                                                 <span class="invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
@@ -105,6 +137,17 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="contact" class="form-label">No Telepon</label>
+                                            <input type="number" name="contact" min="0" id="contact" class="form-control @error('contact') is-invalid @enderror">
+                                            @error('contact')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -115,7 +158,7 @@
                             >
                                 Close
                             </button>
-                            <button type="button" class="btn btn-primary" onclick="document.getElementById('storeAdmin').submit();">Save</button>
+                            <button type="button" class="btn btn-primary" onclick="document.getElementById('storeMahasiswa').submit();">Save</button>
                         </div>
                     </div>
                 </div>
@@ -126,8 +169,12 @@
                 <thead>
                     <tr>
                         <th>No</th>
+                        <th>NIM</th>
                         <th>Nama</th>
-                        <th>Jurusan</th>
+                        <th>Kelas</th>
+                        <th>Semester</th>
+                        <th>Prodi</th>
+                        <th>Status</th>
                         <th>Opsi</th>
                     </tr>
                 </thead>
@@ -135,8 +182,18 @@
                     @foreach ($data['user'] as $u)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $u->staff->name }}</td>
-                            <td>{{ $u->staff->prodi->display_name }}</td>
+                            <td>{{ $u->mahasiswa->uuid }}</td>
+                            <td>{{ $u->mahasiswa->name }}</td>
+                            <td>{{ $u->mahasiswa->class }}</td>
+                            <td>{{ $u->mahasiswa->grade }}</td>
+                            <td>{{ $u->mahasiswa->prodi->display_name }}</td>
+                            <td>
+                                @if ($u->mahasiswa->status)
+                                    <span class="badge bg-success">Aktif</span>
+                                @else
+                                    <span class="badge bg-danger">Belum Aktif</span>
+                                @endif
+                            </td>
                             <td>
                                 {{-- Modal Update --}}
                                     <!-- Modal trigger button -->
@@ -169,7 +226,7 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="modalTitleId">
-                                                        Edit Staff
+                                                        Edit Mahasiswa
                                                     </h5>
                                                     <button
                                                         type="button"
@@ -179,28 +236,23 @@
                                                     ></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form action="{{ route('superadmin.user.staff.update') }}" method="post" id="updateStaff-{{ $u->id }}">
+                                                    <form action="{{ route('superadmin.user.mahasiswa.update') }}" method="post" id="updateMahasiswa-{{ $u->id }}">
                                                         @csrf
                                                         <input type="hidden" name="id" value="{{ $u->id }}">
                                                         <div class="row mb-2">
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <label for="prodi" class="form-label">Prodi</label>
-                                                                    <select name="prodi" id="prodi" class="form-control @error('prodi') is-invalid @enderror">
-                                                                        <option value="0">Pilih Prodi</option>
-                                                                        @foreach ($data['prodi'] as $p)
-                                                                            <option value="{{ $p->id }}" @if($p->id == $u->staff->prodi_id) selected @endif>{{ $p->display_name }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                    @error('prodi')
+                                                                    <label for="fullname" class="form-label">Nama Lengkap</label>
+                                                                    <input type="text" name="fullname" id="fullname" class="form-control @error('fullname') is-invalid @enderror" value="{{ $u->mahasiswa->name }}">
+                                                                    @error('fullname')
                                                                         <span class="invalid-feedback">{{ $message }}</span>
                                                                     @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <label for="uuid" class="form-label">NIP/NUPTK</label>
-                                                                    <input type="text" name="uuid" id="uuid" class="form-control @error('uuid') is-invalid @enderror" value="{{ $u->staff->uuid }}">
+                                                                    <label for="uuid" class="form-label">NIM</label>
+                                                                    <input type="text" name="uuid" id="uuid" class="form-control @error('uuid') is-invalid @enderror" value="{{ $u->mahasiswa->uuid }}">
                                                                     @error('uuid')
                                                                         <span class="invalid-feedback">{{ $message }}</span>
                                                                     @enderror
@@ -208,11 +260,48 @@
                                                             </div>
                                                         </div>
                                                         <div class="row mb-2">
-                                                            <div class="col-md-12">
+                                                            <div class="col-md-4">
                                                                 <div class="form-group">
-                                                                    <label for="fullname" class="form-label">Nama Lengkap</label>
-                                                                    <input type="text" name="fullname" id="fullname" class="form-control @error('fullname') is-invalid @enderror" value="{{ $u->staff->name }}">
-                                                                    @error('fullname')
+                                                                    <label for="prodi" class="form-label">Prodi</label>
+                                                                    <select name="prodi" id="prodi" class="form-control @error('prodi') is-invalid @enderror">
+                                                                        <option value="0">Pilih Prodi</option>
+                                                                        @foreach ($data['prodi'] as $p)
+                                                                            <option value="{{ $p->id }}" @if($p->id == $u->mahasiswa->prodi_id) selected @endif>{{ $p->display_name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    @error('prodi')
+                                                                        <span class="invalid-feedback">{{ $message }}</span>
+                                                                    @enderror
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="year" class="form-label">Tahun Ajaran</label>
+                                                                    <select name="year" id="year" class="form-control @error('year') is-invalid @enderror">
+                                                                        <option value="0">Pilih Tahun Ajaran</option>
+                                                                        @foreach ($data['year'] as $year)
+                                                                            <option value="{{ $year->id }}" @if($year->id == $u->mahasiswa->year_id) selected @endif>{{ $year->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    @error('year')
+                                                                        <span class="invalid-feedback">{{ $message }}</span>
+                                                                    @enderror
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <label for="class" class="form-label">Kelas</label>
+                                                                    <input type="text" name="class" id="class" class="form-control @error('class') is-invalid @enderror" value="{{ $u->mahasiswa->class }}">
+                                                                    @error('class')
+                                                                        <span class="invalid-feedback">{{ $message }}</span>
+                                                                    @enderror
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-group">
+                                                                    <label for="grade" class="form-label">Semester</label>
+                                                                    <input type="text" name="grade" id="grade" class="form-control @error('grade') is-invalid @enderror" value="{{ $u->mahasiswa->grade }}">
+                                                                    @error('grade')
                                                                         <span class="invalid-feedback">{{ $message }}</span>
                                                                     @enderror
                                                                 </div>
@@ -236,6 +325,36 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <div class="row mb-2">
+                                                            <div class="col-md-8">
+                                                                <div class="form-group">
+                                                                    <label for="contact" class="form-label">No Telepon</label>
+                                                                    <input type="number" name="contact" min="0" id="contact" class="form-control @error('contact') is-invalid @enderror" value="{{ $u->mahasiswa->phone }}">
+                                                                    @error('contact')
+                                                                        <span class="invalid-feedback">{{ $message }}</span>
+                                                                    @enderror
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="status" class="form-label"></label>
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-check">
+                                                                                <input type="radio" name="status" class="form-check-input" id="aktif" value="1" @if($u->mahasiswa->status) checked @endif>
+                                                                                <label class="form-check-label" for="aktif">Aktif</label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-check">
+                                                                                <input type="radio" name="status" class="form-check-input" id="nonaktif" value="0" @if(!$u->mahasiswa->status) checked @endif>
+                                                                                <label class="form-check-label" for="nonaktif">Tidak Aktif</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </form>
                                                 </div>
                                                 <div class="modal-footer">
@@ -246,7 +365,7 @@
                                                     >
                                                         Close
                                                     </button>
-                                                    <button type="button" class="btn btn-warning" onclick="document.getElementById('updateStaff-{{ $u->id }}').submit();">Update</button>
+                                                    <button type="button" class="btn btn-warning" onclick="document.getElementById('updateMahasiswa-{{ $u->id }}').submit();">Update</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -294,7 +413,7 @@
                                                     ></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Hapus {{ $u->staff->name }} Dari Staff Prodi {{ $u->staff->prodi->display_name }} ?
+                                                    Hapus {{ $u->mahasiswa->name }} Dari Daftar Mahasiswa ?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button
@@ -304,11 +423,11 @@
                                                     >
                                                         Close
                                                     </button>
-                                                    <form action="{{ route('superadmin.user.staff.delete', $u->id) }}" method="post" id="deleteAdmin-{{ $u->id }}">
+                                                    <form action="{{ route('superadmin.user.mahasiswa.delete', $u->id) }}" method="post" id="deleteMahasiswa-{{ $u->id }}">
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>
-                                                    <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteAdmin-{{ $u->id }}').submit();">Hapus</button>
+                                                    <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteMahasiswa-{{ $u->id }}').submit();">Hapus</button>
                                                 </div>
                                             </div>
                                         </div>

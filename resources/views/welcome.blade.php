@@ -23,15 +23,15 @@
 
                 <div class="row justify-content-center">
                     <div class="col-md-8 col-lg-6 col-xl-4">
-                        <div class="text-center">   
+                        <div class="text-center">
                             <a href="index.html">
                                 <img src="{{ asset('/') }}/assets/images/logo-login.png" alt="" height="22" class="mx-auto">
                             </a>
-                            <p class="text-muted mt-2 mb-4">Sistem Informasi Magang MBKM Teknik Elektro Politeknik Negeri Pontianak</p>
+                            <p class="text-muted mt-2 mb-4">Sistem Informasi Magang MBKM Teknik Elektro<br>Politeknik Negeri Pontianak</p>
                         </div>
                         <div class="card">
                             <div class="card-body p-4">
-                                
+
                                 <div class="text-center mb-4">
                                     <h4 class="text-uppercase mt-0">Sign In</h4>
                                 </div>
@@ -78,6 +78,6 @@
 
         <!-- App js -->
         <script src="{{ asset('/') }}/assets/js/app.min.js"></script>
-        
+
     </body>
 </html>
