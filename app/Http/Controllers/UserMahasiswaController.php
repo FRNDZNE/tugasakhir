@@ -3,25 +3,48 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Role;
+use App\Models\Mahasiswa;
+use App\Models\Prodi;
+use App\Models\Year;
+use Auth;
 
 class UserMahasiswaController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:superadmin,admin,staff,agency,mentor,dosen');
+        $this->middleware('role:superadmin,admin,staff');
+        // $this->middleware('role:staff')->except('menu');
     }
 
     // CRUD Untuk Role Mahasiswa
-    public function index_mahasiswa()
+    public function menu()
     {
-        $data['prodi'] = Prodi::all();
+        if (Auth::user()->role->name == 'superadmin') {
+            # code...
+            $prodi = Prodi::all();
+        }elseif (Auth::user()->role->name == 'admin') {
+            # code...
+            $prodi = Prodi::where('jurusan_id', Auth::user()->admin->jurusan->id)->get();
+        }else{
+            return abort(403,'Forbidden');
+        }
+
+        return view('users.menu.prodi',compact('prodi'));
+    }
+    public function index($prodi)
+    {
+        $data['prodi'] = Prodi::where('id',$prodi)->first();
         $data['year'] = Year::all();
-        $data['user'] = User::whereHas('mahasiswa')->get();
-        return view('superadmin.user.mahasiswa',compact('data'));
+        $data['user'] = User::whereHas('mahasiswa', function($query) use ($prodi) {
+            $query->where('prodi_id', $prodi);
+        })->get();
+        return view('users.mahasiswa',compact('data'));
     }
 
-    public function store_mahasiswa(Request $request)
+    public function store(Request $request)
     {
         // Membuat Validasi
         $messages = [
@@ -76,7 +99,7 @@ class UserMahasiswaController extends Controller
         return redirect()->back()->with('success','Berhasil Menambah Data');
     }
 
-    public function update_mahasiswa(Request $request)
+    public function update( Request $request)
     {
         // Membuat Validasi
         $messages = [
@@ -90,7 +113,6 @@ class UserMahasiswaController extends Controller
             'email' => ucfirst('email'),
             'fullname' => ucwords('nama lengkap'),
             'uuid' => strtoupper('nim'),
-            'prodi' => ucfirst('prodi'),
             'contact' => ucwords('no telepon'),
             'grade' => ucfirst('semester'),
             'class' => ucfirst('kelas'),
@@ -104,7 +126,6 @@ class UserMahasiswaController extends Controller
             'grade' => 'required|max:1',
             'uuid' => 'required|unique:mahasiswas,uuid,' . $request->uuid . ',uuid',
             'contact' => 'required',
-            'prodi' => 'gt:0',
             'year' => 'gt:0',
         ], $messages, $attributes);
 
@@ -124,13 +145,43 @@ class UserMahasiswaController extends Controller
         if ($mahasiswa->uuid != $request->uuid) {
             $mahasiswa->uuid = $request->uuid;
         }
-        $mahasiswa->prodi_id = $request->prodi;
         $mahasiswa->year_id = $request->year;
         $mahasiswa->class = $request->class;
         $mahasiswa->grade = $request->grade;
-        $mahasiswa->status = $request->status;
         $mahasiswa->save();
 
         return redirect()->back()->with('success','Berhasil Mengubah Data');
     }
+
+    public function enabled( $id)
+    {
+        // Menggunakan find atau findOrFail untuk mengambil data mahasiswa
+        $mahasiswa = Mahasiswa::where('user_id', $id)->first();
+        // return $mahasiswa->status;
+        // Mengupdate status menjadi true
+        $mahasiswa->update([
+            'status' => true,
+        ]);
+
+        // return $mahasiswa;
+        // Redirect kembali dengan pesan sukses
+        return redirect()->back()->with('success', 'Berhasil Mengaktifkan Akun');
+    }
+
+    public function disabled( $id)
+    {
+        // Menggunakan find atau findOrFail untuk mengambil data mahasiswa
+        $mahasiswa = Mahasiswa::where('user_id', $id)->first();
+        // return $mahasiswa->status;
+
+        // Mengupdate status menjadi true
+        $mahasiswa->update([
+            'status' => false,
+        ]);
+        // return $mahasiswa;
+
+        // Redirect kembali dengan pesan sukses
+        return redirect()->back()->with('success', 'Berhasil Menonaktifkan Akun');
+    }
+
 }

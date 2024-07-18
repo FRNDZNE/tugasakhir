@@ -21,9 +21,14 @@ class UserDosenController extends Controller
     // CRUD untuk role Dosen
     public function index()
     {
-        $data['prodi'] = Prodi::all();
-        $data['user'] = User::whereHas('dosen')->get();
-        return view('superadmin.user.dosen',compact('data'));
+        if (Auth::user()->role->name == 'superadmin') {
+            $data['prodi'] = Prodi::all();
+            $data['user'] = User::whereHas('dosen')->get();
+        } elseif (Auth::user()->role->name == 'admin') {
+            $data['prodi'] = Prodi::where('jurusan_id', Auth::user()->admin->jurusan->id)->get();
+            $data['user'] = User::whereHas('dosen')->get();
+        }
+        return view('users.dosen',compact('data'));
     }
 
     public function store(Request $request)
@@ -118,6 +123,7 @@ class UserDosenController extends Controller
         }
         $dosen->phone = $request->contact;
         $dosen->save();
+
 
         foreach ($dosen->prodi as $prodiLama) {
             $dosen->prodi()->detach($prodiLama);

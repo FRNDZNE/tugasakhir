@@ -8,13 +8,7 @@
                 <div class="card-header">{{ __('Dashboard') }}</div>
 
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    {{ __('You are logged in!') }}
+                    <h5>Login Saat Ini Sebagai {{ Auth::user()->role->display_name }}</h5>
                 </div>
             </div>
         </div>

@@ -2,10 +2,13 @@
 @section('title','Penilaian')
 @section('css')
 @endsection
-@section('page-title','Penilaian')
+@section('page-title','Penilaian Prodi ' . $getProdi->display_name)
 @section('content')
     <div class="card">
         <div class="card-body">
+            @if (Auth::user()->role->name == 'superadmin')
+                <a href="{{ route('score.menu') }}" class="btn btn-secondary btn-md">Kembali</a>
+            @endif
             {{-- Start Modal Tambah --}}
             <!-- Modal trigger button -->
             <button
@@ -49,22 +52,7 @@
                         <div class="modal-body">
                             <form action="{{ route('score.store') }}" method="post" id="storeScore">
                                 @csrf
-                                <div class="row mb-2">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="prodi" class="form-label">Program Studi</label>
-                                            <select name="prodi" id="prodi" class="form-control @error('prodi') is-invalid @enderror">
-                                                <option value="0">Pilih Program Studi</option>
-                                                @foreach ($data['prodi'] as $p)
-                                                    <option value="{{ $p->id }}">{{ $p->display_name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('prodi')
-                                                <span class="invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
+                                <input type="hidden" name="prodi" value="{{ $getProdi->id }}">
                                 <div class="row">
                                     <div class="col-md-9">
                                         <div class="form-group">
@@ -107,17 +95,15 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Prodi</th>
                         <th>Penilaian</th>
                         <th>Bobot SKS</th>
                         <th>Opsi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($data['score'] as $s)
+                    @foreach ($data as $s)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $s->prodi->display_name }}</td>
                             <td>{{ $s->name }}</td>
                             <td>{{ $s->weight }} SKS</td>
                             <td>
@@ -162,25 +148,10 @@
                                                     ></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form action="{{ route('score.update') }}" method="post" id="updateScore-{{ $s->id }}">
+                                                    <form action="{{ route('score.store') }}" method="post" id="updateScore-{{ $s->id }}">
                                                         @csrf
                                                         <input type="hidden" name="id" value="{{ $s->id }}">
-                                                        <div class="row mb-2">
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <label for="prodi" class="form-label">Program Studi</label>
-                                                                    <select name="prodi" id="prodi" class="form-control @error('prodi') is-invalid @enderror">
-                                                                        <option value="0">Pilih Program Studi</option>
-                                                                        @foreach ($data['prodi'] as $p)
-                                                                            <option value="{{ $p->id }}" @if($p->id == $s->prodi_id) selected @endif>{{ $p->display_name }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                    @error('prodi')
-                                                                        <span class="invalid-feedback">{{ $message }}</span>
-                                                                    @enderror
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        <input type="hidden" name="prodi" value="{{ $getProdi->id }}">
                                                         <div class="row">
                                                             <div class="col-md-9">
                                                                 <div class="form-group">
@@ -249,7 +220,7 @@
                                             <div class="modal-content">
                                                 <div class="modal-header bg-danger">
                                                     <h5 class="modal-title" id="modalTitleId">
-                                                        Hapus Tahun Ajaran
+                                                        Hapus Penilaian
                                                     </h5>
                                                     <button
                                                         type="button"
@@ -259,7 +230,7 @@
                                                     ></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Hapus Tahun Ajaran {{ $s->name }} ?
+                                                    Hapus Penilaian {{ $s->name }} ?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button

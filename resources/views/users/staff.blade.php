@@ -304,7 +304,7 @@
                                                     >
                                                         Close
                                                     </button>
-                                                    <form action="{{ route('user.staff.delete', $u->id) }}" method="post" id="deleteStaff-{{ $u->id }}">
+                                                    <form action="{{ route('user.delete', $u->id) }}" method="post" id="deleteStaff-{{ $u->id }}">
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>

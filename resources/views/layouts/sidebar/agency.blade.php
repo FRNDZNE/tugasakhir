@@ -1,12 +1,12 @@
 @if (Auth::user()->role->name == 'agency')
     <li>
-        <a href="index.html">
+        <a href="{{ route('agency.dashboard') }}">
             <i class="mdi mdi-view-dashboard-outline"></i>
             <span> Dashboard Mitra </span>
         </a>
     </li>
     <li>
-        <a href="index.html">
+        <a href="{{ route('user.mentor.index', Auth::user()->agency->id) }}">
             <i class="mdi mdi-view-dashboard-outline"></i>
             <span> Mentor </span>
         </a>
@@ -18,9 +18,9 @@
         </a>
     </li>
     <li>
-        <a href="index.html">
+        <a href="{{ route('quota.index', Auth::user()->agency->id) }}">
             <i class="mdi mdi-view-dashboard-outline"></i>
-            <span> Magang </span>
+            <span> Kuota Magang </span>
         </a>
     </li>
 @endif

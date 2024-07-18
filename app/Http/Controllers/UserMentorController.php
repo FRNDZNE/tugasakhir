@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Mentor;
+use App\Models\Agency;
 use Auth;
 
 
@@ -20,12 +21,18 @@ class UserMentorController extends Controller
     // CRUD Untuk Role Mentor
     public function index($agency)
     {
-        $data['mitra'] = Agency::all();
-        $data['user'] = User::whereHas('mentor')->get();
-        return view ('user.mentor',compact('data'));
+        if (Auth::user()->role->name == 'superadmin' || Auth::user()->role->name == 'admin') {
+            $data['agent'] = Agency::where('id', $agency)->first();
+        }elseif (Auth::user()->role->name == 'agency') {
+            $data['agent'] = Auth::user()->agency;
+        }
+        $data['user'] = User::whereHas('mentor', function($query) use ($agency){
+            $query->where('agency_id', $agency);
+        } )->get();
+        return view ('users.mentor',compact('data'));
     }
 
-    public function store(Request $request)
+    public function store($agency, Request $request)
     {
         // Membuat Validasi
         $messages = [
@@ -40,7 +47,6 @@ class UserMentorController extends Controller
             'name' => ucwords('nama'),
             'contact' => ucfirst('kontak'),
             'uuid' => ucwords('nomor mentor'),
-            'agent' => ucwords('mitra')
         ];
 
         $request->validate([
@@ -49,7 +55,6 @@ class UserMentorController extends Controller
             'name' => 'required',
             'contact' => 'required',
             'uuid' => 'required|unique:mentors',
-            'agent' => 'gt:0'
         ], $messages, $attributes);
 
         $role = Role::where('name','mentor')->first();
@@ -69,7 +74,7 @@ class UserMentorController extends Controller
         return redirect()->back()->with('success','Berhasil Menambah Data');
     }
 
-    public function update(Request $request)
+    public function update($agency, Request $request)
     {
         // Membuat Validasi
         $messages = [
@@ -83,7 +88,6 @@ class UserMentorController extends Controller
             'name' => ucwords('nama'),
             'contact' => ucfirst('kontak'),
             'uuid' => ucwords('nomor mentor'),
-            'agent' => ucwords('mitra'),
         ];
 
         $request->validate([
@@ -91,7 +95,6 @@ class UserMentorController extends Controller
             'name' => 'required',
             'contact' => 'required',
             'uuid' => 'required|unique:mentors,uuid,' . $request->uuid .',uuid',
-            'agent' => 'gt:0'
         ], $messages, $attributes);
 
         $user = User::where('id', $request->id)->first();
@@ -107,7 +110,6 @@ class UserMentorController extends Controller
 
         $mentor = Mentor::where('user_id', $request->id)->first();
         $mentor->name = $request->name;
-        $mentor->agency_id = $request->agent;
         if ($mentor->uuid != $request->uuid) {
             $mentor->uuid = $request->uuid;
         }

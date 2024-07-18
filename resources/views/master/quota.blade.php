@@ -6,7 +6,9 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <a href="{{ route('admin.user.agency.index') }}" class="btn btn-secondary btn-md">Kembali</a>
+            @if (Auth::user()->role->name == 'superadmin' || Auth::user()->role->name == 'admin')
+                <a href="{{ route('user.agency.index') }}" class="btn btn-secondary btn-md">Kembali</a>
+            @endif
             <hr>
             <table id="datatable" class="table table-bordered dt-responsive table-responsive nowrap">
                 <thead>
@@ -72,7 +74,7 @@
                                                         ></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form action="{{ route('superadmin.quota.store',$data['agent']->id) }}" method="post" id="updateQuota-{{ $quota->id }}">
+                                                        <form action="{{ route('quota.store',$data['agent']->id) }}" method="post" id="updateQuota-{{ $quota->id }}">
                                                             @csrf
                                                             <input type="hidden" name="id" value="{{ $quota->id }}">
                                                             <input type="hidden" name="period" value="{{ $q->id }}">
@@ -144,7 +146,7 @@
                                                         ></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form action="{{ route('superadmin.quota.store', $data['agent']->id) }}" method="post" id="storeQuota">
+                                                        <form action="{{ route('quota.store', $data['agent']->id) }}" method="post" id="storeQuota">
                                                             @csrf
                                                             <input type="hidden" name="period" value="{{ $q->id }}">
                                                             <div class="form-group">

@@ -8,6 +8,12 @@ use App\Models\Period;
 use App\Models\Quota;
 class QuotaController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:superadmin,admin,agency');
+    }
     public function index($agent)
     {
         try {
@@ -16,7 +22,7 @@ class QuotaController extends Controller
                 $query->where('agency_id', $agent)->with('agency');
             }])->get();
             // return $data['agent'];
-            return view('superadmin.master.quota',compact('data'));
+            return view('master.quota',compact('data'));
         } catch (Throwable $e) {
 
             return $e;

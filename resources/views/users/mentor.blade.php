@@ -1,11 +1,14 @@
 @extends('layouts.app')
-@section('title','Mentor')
+@section('title','Mentor Mitra')
 @section('css')
 @endsection
-@section('page-title','Mentor')
+@section('page-title','Mentor ' . $data['agent']->name)
 @section('content')
     <div class="card">
         <div class="card-body">
+            @if (Auth::user()->role->name == 'superadmin' || Auth::user()->role->name == 'admin')
+                <a href="{{ route('user.agency.index') }}" class="btn btn-md btn-secondary"> Kembali </a>
+            @endif
             {{-- Start Modal Tambah --}}
             <!-- Modal trigger button -->
             <button
@@ -47,29 +50,16 @@
                             ></button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('superadmin.user.mentor.store') }}" method="post" id="storeMentor">
+                            <form action="{{ route('user.mentor.store', $data['agent']->id) }}" method="post" id="storeMentor">
                                 @csrf
+                                <input type="hidden" name="agent" value="{{ $data['agent']->id }}">
                                 <div class="row mb-2">
-                                    <div class="col-md-8">
+                                    <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="agent" class="form-label">Pilih Mitra</label>
-                                            <select name="agent" id="agent" class="form-control @error('agent') is-invalid @enderror">
-                                                <option value="0">Pilih Mitra</option>
-                                                @foreach ($data['mitra'] as $m)
-                                                    <option value="{{ $m->id }}">{{ $m->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('agent')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="uuid" class="form-label">Nomor Induk Pegawai</label>
+                                            <label for="uuid" class="form-label">Nomor Pegawai</label>
                                             <input type="text" name="uuid" id="uuid" class="form-control @error('uuid') is-invalid @enderror">
                                             @error('uuid')
-                                                <span class="text-danger">{{ $message }}</span>
+                                                <span class="invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
@@ -135,8 +125,8 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Mitra</th>
-                        <th>Nama Mentor</th>
+                        <th>Mentor</th>
+                        <th>Kontak</th>
                         <th>Opsi</th>
                     </tr>
                 </thead>
@@ -144,8 +134,8 @@
                     @foreach ($data['user'] as $u)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $u->mentor->agency->name }}</td>
                             <td>{{ $u->mentor->name }}</td>
+                            <td>{{ $u->mentor->contact }}</td>
                             <td>
                                 {{-- Modal Update --}}
                                     <!-- Modal trigger button -->
@@ -188,25 +178,11 @@
                                                     ></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form action="{{ route('superadmin.user.mentor.update') }}" method="post" id="updateMentor-{{ $u->id }}">
+                                                    <form action="{{ route('user.mentor.update', $data['agent']->id) }}" method="post" id="updateMentor-{{ $u->id }}">
                                                         @csrf
                                                         <input type="hidden" name="id" value="{{ $u->id }}">
                                                         <div class="row mb-2">
-                                                            <div class="col-md-8">
-                                                                <div class="form-group">
-                                                                    <label for="agent" class="form-label">Pilih Mitra</label>
-                                                                    <select name="agent" id="agent" class="form-control @error('agent') is-invalid @enderror">
-                                                                        <option value="0">Pilih Mitra</option>
-                                                                        @foreach ($data['mitra'] as $m)
-                                                                            <option value="{{ $m->id }}" @if($u->mentor->agency_id == $m->id) selected @endif>{{ $m->name }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                    @error('agent')
-                                                                        <span class="text-danger">{{ $message }}</span>
-                                                                    @enderror
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
+                                                            <div class="col-md-12">
                                                                 <div class="form-group">
                                                                     <label for="uuid" class="form-label">Nomor Induk Pegawai</label>
                                                                     <input type="text" name="uuid" id="uuid" class="form-control @error('uuid') is-invalid @enderror" value="{{ $u->mentor->uuid }}">
@@ -323,7 +299,7 @@
                                                     >
                                                         Close
                                                     </button>
-                                                    <form action="{{ route('superadmin.user.mentor.delete', $u->id) }}" method="post" id="deleteAdmin-{{ $u->id }}">
+                                                    <form action="{{ route('user.delete', $u->id) }}" method="post" id="deleteAdmin-{{ $u->id }}">
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>

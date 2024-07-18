@@ -16,6 +16,7 @@ use App\Http\Controllers\UserAgencyController;
 use App\Http\Controllers\UserMentorController;
 use App\Http\Controllers\UserDosenController;
 use App\Http\Controllers\UserMahasiswaController;
+use App\Http\Controllers\MagangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,7 +99,8 @@ Route::prefix('year')->group(function(){
 });
 
 Route::prefix('scores')->group(function(){
-    Route::get('/',[ScoreController::class,'index'])->name('score.index');
+    Route::get('/menu',[ScoreController::class,'menu'])->name('score.menu');
+    Route::get('/{prodi}',[ScoreController::class,'index'])->name('score.index');
     Route::post('/store',[ScoreController::class,'store'])->name('score.store');
     Route::delete('/delete/{score}',[ScoreController::class,'delete'])->name('score.delete');
 });
@@ -110,43 +112,51 @@ Route::prefix('account')->group(function(){
         Route::get('/',[UserAdminController::class,'index'])->name('user.admin.index');
         Route::post('/store',[UserAdminController::class,'store'])->name('user.admin.store');
         Route::post('/update',[UserAdminController::class,'update'])->name('user.admin.update');
-        Route::delete('/delete/{id}',[UserController::class,'delete'])->name('user.admin.delete');
     });
     Route::prefix('staff')->group(function(){
         Route::get('/',[UserStaffController::class,'index'])->name('user.staff.index');
         Route::post('/store',[UserStaffController::class,'store'])->name('user.staff.store');
         Route::post('/update',[UserStaffController::class,'update'])->name('user.staff.update');
-        Route::delete('/delete/{id}',[UserController::class,'delete'])->name('user.staff.delete');
     });
     Route::prefix('agency')->group(function(){
         Route::get('/',[UserAgencyController::class,'index'])->name('user.agency.index');
         Route::post('/store',[UserAgencyController::class,'store'])->name('user.agency.store');
         Route::post('/update',[UserAgencyController::class,'update'])->name('user.agency.update');
-        Route::delete('/delete/{id}',[UserController::class,'delete'])->name('user.agency.delete');
     });
-    Route::prefix('{agency}/mentor')->group(function(){
+    Route::prefix('mentor/{agency}')->group(function(){
         Route::get('/',[UserMentorController::class,'index'])->name('user.mentor.index');
         Route::post('/store',[UserMentorController::class,'store'])->name('user.mentor.store');
         Route::post('/update',[UserMentorController::class,'update'])->name('user.mentor.update');
-        Route::delete('/delete/{id}',[UserController::class,'delete'])->name('user.mentor.delete');
     });
     Route::prefix('dosen')->group(function(){
         Route::get('/',[UserDosenController::class,'index'])->name('user.dosen.index');
         Route::post('/store',[UserDosenController::class,'store'])->name('user.dosen.store');
         Route::post('/update',[UserDosenController::class,'update'])->name('user.dosen.update');
-        Route::delete('/delete/{id}',[UserController::class,'delete'])->name('user.dosen.delete');
     });
-    Route::prefix('mahasiswa')->group(function(){
-        Route::get('/',[UserMahasiswaController::class,'index'])->name('user.mahasiswa.index');
+    Route::prefix('/mahasiswa')->group(function(){
+        Route::get('/menu',[UserMahasiswaController::class,'menu'])->name('user.mahasiswa.menu');
+        Route::get('/{prodi}',[UserMahasiswaController::class,'index'])->name('user.mahasiswa.index');
         Route::post('/store',[UserMahasiswaController::class,'store'])->name('user.mahasiswa.store');
         Route::post('/update',[UserMahasiswaController::class,'update'])->name('user.mahasiswa.update');
-        Route::delete('/delete/{id}',[UserController::class,'delete'])->name('user.mahasiswa.delete');
+        Route::post('/enabled/{id}',[UserMahasiswaController::class,'enabled'])->name('user.mahasiswa.enabled');
+        Route::post('/disabled/{id}',[UserMahasiswaController::class,'disabled'])->name('user.mahasiswa.disabled');
     });
+
+    Route::get('/profiles', [ProfileController::class,'index'])->name('user.profile');
 });
 
 Route::prefix('quota/{agency}')->group(function(){
     Route::get('/',[QuotaController::class,'index'])->name('quota.index');
     Route::post('/store-update',[QuotaController::class,'store'])->name('quota.store');
+});
+
+// Hapus Akun Untuk Semua Role
+
+Route::delete('/users/delete/{id}',[UserController::class,'delete'])->name('user.delete');
+
+// Daftar Magang
+Route::middleware(['auth','role:mahasiswa'])->prefix('magang')->group(function(){
+    Route::get('list-mitra',[MagangController::class,'index'])->name('mahasiswa.magang.index');
 });
 
 

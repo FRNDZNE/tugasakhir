@@ -47,7 +47,7 @@
                             ></button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('superadmin.user.dosen.store') }}" method="POST" id="storeDosen">
+                            <form action="{{ route('user.dosen.store') }}" method="POST" id="storeDosen">
                                 @csrf
                                 <div class="row mb-2">
                                     <div class="col-md-12">
@@ -202,7 +202,7 @@
                                                     ></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form action="{{ route('superadmin.user.dosen.update') }}" method="POST" id="updateDosen-{{ $u->id }}">
+                                                    <form action="{{ route('user.dosen.update') }}" method="POST" id="updateDosen-{{ $u->id }}">
                                                         @csrf
                                                         <input type="hidden" name="id" value="{{ $u->id }}">
                                                         <div class="row mb-2">
@@ -342,7 +342,7 @@
                                                     >
                                                         Close
                                                     </button>
-                                                    <form action="{{ route('superadmin.user.dosen.delete', $u->id) }}" method="post" id="deleteDosen-{{ $u->id }}">
+                                                    <form action="{{ route('user.delete', $u->id) }}" method="post" id="deleteDosen-{{ $u->id }}">
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>

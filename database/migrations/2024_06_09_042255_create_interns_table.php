@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('agency_id')->constrained()->onDelete('cascade');
             $table->foreignId('mentor_id')->constrained()->onDelete('cascade')->nullable();
             $table->foreignId('period_id')->constrained()->onDelete('cascade');
-            $table->boolean('status')->nullable();
+            $table->enum('status',['c','p','a','d'])->default('c');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -25,7 +25,7 @@
         </a>
     </li>
     <li>
-        <a href="{{ route('user.dosen.index') }}">
+        <a href="{{ route('user.mahasiswa.menu') }}">
             <i class="mdi mdi-view-dashboard-outline"></i>
             <span> Mahasiswa </span>
         </a>
@@ -58,7 +58,7 @@
             <ul class="nav-second-level">
                 @foreach ($prodis as $prodi)
                 <li>
-                    <a href="#">{{ $prodi->display_name }}</a>
+                    <a href="{{ route('score.index', $prodi->id) }}">{{ $prodi->display_name }}</a>
                 </li>
                 @endforeach
             </ul>

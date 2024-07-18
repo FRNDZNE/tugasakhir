@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Prodi;
 use App\Models\Staff;
 use App\Models\Role;
+use App\Models\Agency;
 use Auth;
 
 class UserStaffController extends Controller
@@ -23,7 +24,7 @@ class UserStaffController extends Controller
         if (Auth::user()->role->name == 'superadmin') {
             $data['prodi'] = Prodi::all();
             $data['user'] = User::whereHas('staff')->get();
-        } else if (Auth::user()->role->name == 'admin') {
+        } elseif (Auth::user()->role->name == 'admin') {
             # code...
             $jurusan = Auth::user()->admin->jurusan->id;
             $data['prodi'] = Prodi::where('jurusan_id', Auth::user()->admin->jurusan->id)->get();

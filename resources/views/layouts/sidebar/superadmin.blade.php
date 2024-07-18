@@ -32,7 +32,7 @@
         </a>
     </li>
     <li>
-        <a href="{{ route('user.mahasiswa.index') }}">
+        <a href="{{ route('user.mahasiswa.menu') }}">
             <i class="mdi mdi-view-dashboard-outline"></i>
             <span> Mahasiswa </span>
         </a>
@@ -51,7 +51,7 @@
         </a>
     </li>
     <li>
-        <a href="{{ route('score.index') }}">
+        <a href="{{ route('score.menu') }}">
             <i class="mdi mdi-view-dashboard-outline"></i>
             <span> Penilaian </span>
         </a>

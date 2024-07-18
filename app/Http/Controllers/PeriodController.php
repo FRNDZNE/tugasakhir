@@ -18,11 +18,10 @@ class PeriodController extends Controller
     public function index($year)
     {
         $data['year'] = Year::where('id', $year)->first();
+        $data['period'] = Period::where('year_id',$year)->get();
         if (Auth::user()->role->name == 'superadmin') {
-            $data['period'] = Period::where('year_id',$year)->get();
             $data['prodi'] = Prodi::all();
         } else if (Auth::user()->role->name == 'admin') {
-            $data['period'] = Period::where('year_id',$year)->get();
             $data['prodi'] = Prodi::where('jurusan_id', Auth::user()->admin->jurusan->id)->get();
         } else if (Auth::user()->role->name == 'staff') {
             $data['period'] = Period::where('year_id', $year)

@@ -13,19 +13,16 @@ class ScoreController extends Controller
         $this->middleware('auth');
         $this->middleware('role:superadmin,admin,staff');
     }
-    public function index()
+    public function menu()
     {
-        if (Auth::user()->role->name == 'superadmin') {
-            $data['score'] = Score::all();
-            $data['prodi'] = Prodi::all();
-        } else if (Auth::user()->role->name == 'admin') {
-            $data['score'] = Score::all();
-            $data['prodi'] = Prodi::all();
-        } else if (Auth::user()->role->staff == 'staff') {
-            $data['score'] = Score::whereHas();
-        }
-
-        return view('master.score',compact('data'));
+        $prodi = Prodi::all();
+        return view('score.prodi',compact('prodi'));
+    }
+    public function index($prodi)
+    {
+        $getProdi = Prodi::where('id',$prodi)->first();
+        $data = Score::where('prodi_id',$prodi)->get();
+        return view('score.score',compact('data','getProdi'));
     }
 
     public function store(Request $request)
@@ -38,42 +35,11 @@ class ScoreController extends Controller
 
         $attributes = [
             'name' => ucfirst('tahun'),
-            'prodi' => ucfirst('prodi'),
             'weight' => ucfirst('penilaian')
         ];
 
         $request->validate([
             'name' => 'required',
-            'prodi' => 'gt:0',
-            'weight' => 'gt:0|required',
-        ], $messages, $attributes);
-
-        // Proses Simpan Data
-        $score = new Score;
-        $score->name = $request->name;
-        $score->prodi_id = $request->prodi;
-        $score->weight = $request->weight;
-        $score->save();
-        return redirect()->back()->with('success','Berhasil Menambah Data');
-    }
-
-    public function update(Request $request)
-    {
-        // Membuat Validasi
-        $messages = [
-            'required' => ucwords(':attribute tidak boleh kosong !'),
-            'gt' => ucwords(':attribute tidak boleh kosong !'),
-        ];
-
-        $attributes = [
-            'name' => ucfirst('tahun'),
-            'prodi' => ucfirst('prodi'),
-            'weight' => ucfirst('penilaian')
-        ];
-
-        $request->validate([
-            'name' => 'required',
-            'prodi' => 'gt:0',
             'weight' => 'gt:0|required',
         ], $messages, $attributes);
 
