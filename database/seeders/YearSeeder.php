@@ -14,7 +14,7 @@ class YearSeeder extends Seeder
     public function run(): void
     {
         Year::create([
-            'name' => '2021',
+            'name' => '2024',
         ]);
     }
 }

@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Agency;
+use App\Models\Quota;
+use App\Models\Intern;
 use Auth;
 use DB;
 class MagangController extends Controller
@@ -20,4 +21,23 @@ class MagangController extends Controller
         })->get();
         return view('mahasiswa.magang',compact('data'));
     }
+
+    public function apply(Request $request)
+    {
+        Intern::create([
+            'agency_id' => $request->mitra,
+            'period_id' => $request->period,
+            'mahasiswa_id' => $request->mahasiswa,
+        ]);
+        return redirect()->back()->with('success','Berhasil Mengajukan Tempat PKL');
+    }
+
+    public function myIntern()
+    {
+        $data = Intern::where('mahasiswa_id', Auth::user()->mahasiswa->id)->first();
+        // return $data;
+        return view('mahasiswa.detail',compact('data'));
+    }
+
+
 }

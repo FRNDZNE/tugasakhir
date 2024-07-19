@@ -12,13 +12,13 @@
         </a>
     </li>
     <li>
-        <a href="index.html">
+        <a href="{{ route('mahasiswa.magang.detail') }}">
             <i class="mdi mdi-view-dashboard-outline"></i>
             <span> Magang Saya </span>
         </a>
     </li>
     <li>
-        <a href="index.html">
+        <a href="{{ route('mahasiswa.logbook.index') }}">
             <i class="mdi mdi-view-dashboard-outline"></i>
             <span> Logbook </span>
         </a>
@@ -30,7 +30,7 @@
         </a>
     </li>
     <li>
-        <a href="index.html">
+        <a href="{{ route('mahasiswa.report.index') }}">
             <i class="mdi mdi-view-dashboard-outline"></i>
             <span> Laporan Akhir </span>
         </a>

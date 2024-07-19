@@ -11,6 +11,8 @@
                     <tr>
                         <th>No</th>
                         <th>Nama Mitra</th>
+                        <th>Mulai</th>
+                        <th>Selesai</th>
                         <th>Total Kuota</th>
                         <th>Tersedia</th>
                         <th>Opsi</th>
@@ -20,16 +22,18 @@
                     @foreach ($data as $d)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $d->name }}</td>
-                        <td>{{ $d->quota}}</td>
-                        <td></td>
+                        <td>{{ $d->agency->name }}</td>
+                        <td>{{ $d->period->start }}</td>
+                        <td>{{ $d->period->end }}</td>
+                        <td>{{ $d->total}}</td>
+                        <td>Belum Dapat Dihitung</td>
                         <td>
                             <!-- Modal trigger button -->
                             <button
                                 type="button"
                                 class="btn btn-success btn-md"
                                 data-bs-toggle="modal"
-                                data-bs-target="#modalId"
+                                data-bs-target="#modalIntern-{{ $d->id }}"
                             >
                                 <i class="fas fa-envelope"></i>
                             </button>
@@ -38,7 +42,7 @@
                             <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
                             <div
                                 class="modal fade"
-                                id="modalId"
+                                id="modalIntern-{{ $d->id }}"
                                 tabindex="-1"
                                 data-bs-backdrop="static"
                                 data-bs-keyboard="false"
@@ -48,13 +52,13 @@
                                 aria-hidden="true"
                             >
                                 <div
-                                    class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl"
+                                    class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg"
                                     role="document"
                                 >
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="modalTitleId">
-                                                Modal title
+                                                Daftar Magang
                                             </h5>
                                             <button
                                                 type="button"
@@ -63,7 +67,9 @@
                                                 aria-label="Close"
                                             ></button>
                                         </div>
-                                        <div class="modal-body">Body</div>
+                                        <div class="modal-body">
+                                            <p>Ingin Mengajukan {{ $d->agency->name }} Sebagai Tempat Magang ?</p>
+                                        </div>
                                         <div class="modal-footer">
                                             <button
                                                 type="button"
@@ -72,7 +78,13 @@
                                             >
                                                 Close
                                             </button>
-                                            <button type="button" class="btn btn-primary">Save</button>
+                                            <form action="{{ route('mahasiswa.magang.apply') }}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="mitra" value="{{ $d->agency->id }}">
+                                                <input type="hidden" name="mahasiswa" value="{{ Auth::user()->mahasiswa->id }}">
+                                                <input type="hidden" name="period" value="{{ $d->period->id }}">
+                                                <button type="submit" class="btn btn-success">Ajukan</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>

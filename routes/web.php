@@ -17,6 +17,9 @@ use App\Http\Controllers\UserMentorController;
 use App\Http\Controllers\UserDosenController;
 use App\Http\Controllers\UserMahasiswaController;
 use App\Http\Controllers\MagangController;
+use App\Http\Controllers\LogbookController;
+use App\Http\Controllers\ReportController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -155,8 +158,24 @@ Route::prefix('quota/{agency}')->group(function(){
 Route::delete('/users/delete/{id}',[UserController::class,'delete'])->name('user.delete');
 
 // Daftar Magang
-Route::middleware(['auth','role:mahasiswa'])->prefix('magang')->group(function(){
+Route::middleware(['auth','role:mahasiswa'])->prefix('mahasiswa/magang')->group(function(){
     Route::get('list-mitra',[MagangController::class,'index'])->name('mahasiswa.magang.index');
+    Route::post('apply',[MagangController::class,'apply'])->name('mahasiswa.magang.apply');
+    Route::get('my-intern',[MagangController::class,'myIntern'])->name('mahasiswa.magang.detail');
+
+    // Creating Logbook
+    Route::prefix('logbook')->group(function(){
+        Route::get('my-logbook',[LogbookController::class,'index'])->name('mahasiswa.logbook.index');
+        Route::post('store',[LogbookController::class,'store'])->name('mahasiswa.logbook.store');
+        Route::delete('delete/{id}',[LogbookController::class,'delete'])->name('mahasiswa.logbook.delete');
+    });
+
+    Route::prefix('laporan-akhir')->group(function(){
+        Route::get('/',[ReportController::class,'index'])->name('mahasiswa.report.index');
+        Route::post('/post',[ReportController::class,'store'])->name('mahasiswa.report.store');
+        Route::delete('/delete/{id}',[ReportController::class,'delete'])->name('mahasiswa.report.delete');
+    });
+
 });
 
 

@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('interns', function (Blueprint $table) {
             $table->id();
             $table->foreignId('mahasiswa_id')->constrained()->onDelete('cascade');
-            $table->foreignId('dosen_id')->constrained()->onDelete('cascade')->nullable();
             $table->foreignId('agency_id')->constrained()->onDelete('cascade');
-            $table->foreignId('mentor_id')->constrained()->onDelete('cascade')->nullable();
             $table->foreignId('period_id')->constrained()->onDelete('cascade');
+            $table->foreignId('dosen_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('mentor_id')->nullable()->constrained()->onDelete('cascade');
             $table->enum('status',['c','p','a','d'])->default('c');
             $table->timestamps();
             $table->softDeletes();
