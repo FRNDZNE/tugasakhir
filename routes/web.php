@@ -172,9 +172,11 @@ Route::middleware(['auth','role:mahasiswa'])->prefix('mahasiswa/magang')->group(
 
     Route::prefix('laporan-akhir')->group(function(){
         Route::get('/',[ReportController::class,'index'])->name('mahasiswa.report.index');
-        Route::post('/post',[ReportController::class,'store'])->name('mahasiswa.report.store');
+        Route::post('/store',[ReportController::class,'store'])->name('mahasiswa.report.store');
+        Route::post('/update',[ReportController::class,'update'])->name('mahasiswa.report.update');
         Route::delete('/delete/{id}',[ReportController::class,'delete'])->name('mahasiswa.report.delete');
     });
+
 
 });
 

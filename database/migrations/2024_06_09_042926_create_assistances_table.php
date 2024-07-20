@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('intern_id')->constrained()->onDelete('cascade');
             $table->string('topic');
             $table->date('date');
+            $table->boolean('status')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -45,7 +45,35 @@
                                 aria-label="Close"
                             ></button>
                         </div>
-                        <div class="modal-body">Body</div>
+                        <div class="modal-body">
+                            <form action="{{ route('mahasiswa.logbook.store') }}" method="post" id="createLog" enctype="multipart/form-data">
+                                @csrf
+                                <div class="mb-2">
+                                    <div class="form-group">
+                                        <label for="date" class="form-label">Tanggal</label>
+                                        <input type="date" name="date" id="date" class="form-control @error('date') is-invalid @enderror">
+                                        @error('date')
+                                            <span class="invalid-feedback">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="form-group">
+                                        <label for="title" class="form-label">Kegiatan</label>
+                                        <input type="text" name="title" id="title" class="form-control @error('title') is-invalid @enderror">
+                                        @error('title')
+                                            <span class="invalid-feedback">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="form-group">
+                                        <label for="desc" class="form-label">Deskripsi Kegiatan</label>
+                                        <textarea name="desc" id="desc" cols="30" rows="10" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                         <div class="modal-footer">
                             <button
                                 type="button"
@@ -54,7 +82,7 @@
                             >
                                 Close
                             </button>
-                            <button type="button" class="btn btn-primary">Save</button>
+                            <button type="button" onclick="document.getElementById('createLog').submit();" class="btn btn-primary">Save</button>
                         </div>
                     </div>
                 </div>

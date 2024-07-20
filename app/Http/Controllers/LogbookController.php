@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Logbook;
 use App\Models\LogbookImage;
+use Image;
 use Auth;
 
 class LogbookController extends Controller
@@ -19,9 +20,22 @@ class LogbookController extends Controller
         return view('mahasiswa.logbook',compact('data'));
     }
 
-    public function store()
+    public function store(Request $request)
     {
+        $intern = Auth::user()->mahasiswa->intern->id;
+        $logbook = Logbook::updateOrCreate(
+            [
+                'id' => $request->id,
+            ],
+            [
+                'intern_id' => $intern,
+                'date' => $request->date,
+                'title' =>  $request->title,
+                'desc' => $request->desc,
+            ]
+        );
 
+        return redirect()->back()->with('success','Berhasil Menambah Data');
     }
 
     public function delete(){
