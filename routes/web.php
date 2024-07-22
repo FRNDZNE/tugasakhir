@@ -19,6 +19,8 @@ use App\Http\Controllers\UserMahasiswaController;
 use App\Http\Controllers\MagangController;
 use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\AgentSelectController;
+use App\Http\Controllers\AsistensiController;
 
 
 /*
@@ -83,7 +85,7 @@ Route::prefix('jurusan')->group(function(){
     Route::delete('/delete/{jurusan}',[JurusanController::class,'delete'])->name('jurusan.delete');
 });
 
-Route::prefix('jurusan/{jurusan}')->middleware(['auth','role:superadmin,admin'])->group(function(){
+Route::prefix('jurusan/{jurusan}')->group(function(){
     Route::get('/',[ProdiController::class,'index'])->name('prodi.index');
     Route::post('/store',[ProdiController::class,'store'])->name('prodi.store');
     Route::delete('/delete/{prodi}',[ProdiController::class,'delete'])->name('prodi.delete');
@@ -157,7 +159,7 @@ Route::prefix('quota/{agency}')->group(function(){
 
 Route::delete('/users/delete/{id}',[UserController::class,'delete'])->name('user.delete');
 
-// Daftar Magang
+// Route Mahasiswa
 Route::middleware(['auth','role:mahasiswa'])->prefix('mahasiswa/magang')->group(function(){
     Route::get('list-mitra',[MagangController::class,'index'])->name('mahasiswa.magang.index');
     Route::post('apply',[MagangController::class,'apply'])->name('mahasiswa.magang.apply');
@@ -165,10 +167,19 @@ Route::middleware(['auth','role:mahasiswa'])->prefix('mahasiswa/magang')->group(
 
     // Creating Logbook
     Route::prefix('logbook')->group(function(){
-        Route::get('my-logbook',[LogbookController::class,'index'])->name('mahasiswa.logbook.index');
+        Route::get('/',[LogbookController::class,'index'])->name('mahasiswa.logbook.index');
         Route::post('store',[LogbookController::class,'store'])->name('mahasiswa.logbook.store');
         Route::delete('delete/{id}',[LogbookController::class,'delete'])->name('mahasiswa.logbook.delete');
     });
+
+    Route::prefix('assistance')->group(function(){
+        Route::get('/',[AsistensiController::class,'index'])->name('mahasiswa.asistensi.index');
+        Route::post('store',[AsistensiController::class,'store'])->name('mahasiswa.asistensi.store');
+        Route::post('/confirmed',[AsistensiController::class,'confirmed'])->name('mahasiswa.asistensi.confirmed');
+        Route::post('/unconfirmed',[AsistensiController::class,'unconfirmed'])->name('mahasiswa.asistensi.unconfirmed');
+        Route::delete('delete/{id}',[AsistensiController::class,'delete'])->name('mahasiswa.asistensi.delete');
+    });
+
 
     Route::prefix('laporan-akhir')->group(function(){
         Route::get('/',[ReportController::class,'index'])->name('mahasiswa.report.index');
@@ -176,8 +187,15 @@ Route::middleware(['auth','role:mahasiswa'])->prefix('mahasiswa/magang')->group(
         Route::post('/update',[ReportController::class,'update'])->name('mahasiswa.report.update');
         Route::delete('/delete/{id}',[ReportController::class,'delete'])->name('mahasiswa.report.delete');
     });
+});
 
+// Route Agency
+Route::prefix('agency')->middleware(['auth','role:agency'])->group(function(){
+    Route::get('/seleksi',[AgentSelectController::class, 'index'])->name('agency.select');
+});
 
+Route::prefix('staff')->middleware(['auth','role:staff'])->group(function(){
+    Route::get('/');
 });
 
 

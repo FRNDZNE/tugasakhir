@@ -33,4 +33,14 @@ class Mahasiswa extends Model
         return $this->hasOne(Intern::class);
     }
 
+    public function accepted()
+    {
+        return $this->intern()->where('status', 'a');
+    }
+
+    public function process()
+    {
+        return $this->intern()->where('status', 'p');
+    }
+
 }

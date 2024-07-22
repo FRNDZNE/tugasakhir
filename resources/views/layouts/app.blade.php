@@ -13,6 +13,8 @@
 		<!-- App css -->
         @yield('css')
         <!-- third party css -->
+        <!-- Sweet Alert-->
+        <link href="{{ asset('/') }}/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
         <link href="{{ asset('/') }}/assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
         <link href="{{ asset('/') }}/assets/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css" rel="stylesheet" type="text/css" />
         <link href="{{ asset('/') }}/assets/libs/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css" rel="stylesheet" type="text/css" />
@@ -357,5 +359,27 @@
         <!-- App js -->
         <script src="{{ asset('/') }}/assets/js/app.min.js"></script>
 
+        <!-- Sweet Alerts js -->
+        <script src="{{ asset('/') }}/assets/libs/sweetalert2/sweetalert2.all.min.js"></script>
+
+        <!-- Sweet alert init js-->
+        <script src="{{ asset('/') }}/assets/js/pages/sweet-alerts.init.js"></script>
+        @if (Session::has('success'))
+            <script>
+                Swal.fire({
+                    title: "Berhasil",
+                    text: "{{ Session::get('success') }}",
+                    icon: "success",
+                });
+            </script>
+        @elseif (Session::has('error'))
+            <script>
+                Swal.fire({
+                    title: "Gagal",
+                    text: "{{ Session::get('error') }}",
+                    icon: "error",
+                });
+            </script>
+        @endif
     </body>
 </html>

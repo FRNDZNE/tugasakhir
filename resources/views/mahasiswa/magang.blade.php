@@ -26,14 +26,18 @@
                         <td>{{ $d->period->start }}</td>
                         <td>{{ $d->period->end }}</td>
                         <td>{{ $d->total}}</td>
-                        <td>Belum Dapat Dihitung</td>
                         <td>
+                            {{ $d->total - $d->intern_count }}
+                        </td>
+                        <td>
+
                             <!-- Modal trigger button -->
                             <button
                                 type="button"
                                 class="btn btn-success btn-md"
                                 data-bs-toggle="modal"
                                 data-bs-target="#modalIntern-{{ $d->id }}"
+                                @if(Auth::user()->mahasiswa->process) disabled @endif
                             >
                                 <i class="fas fa-envelope"></i>
                             </button>

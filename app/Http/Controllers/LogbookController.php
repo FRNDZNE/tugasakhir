@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Logbook;
 use App\Models\LogbookImage;
-use Image;
+use App\Models\Intern;
+// use Image;
 use Auth;
 
 class LogbookController extends Controller
@@ -23,6 +24,17 @@ class LogbookController extends Controller
     public function store(Request $request)
     {
         $intern = Auth::user()->mahasiswa->intern->id;
+        $datePicker = Intern::where('id', $intern)
+        ->with('period')
+        ->first();
+
+        $dateStart = $datePicker->period->start;
+        $dateEnd = $datePicker->period->end;
+
+        if ($request->date <= $dateStart || $request->date > $dateEnd) {
+            # code...
+            return redirect()->back()->with('error', 'Melewati Tanggal Periode Magang');
+        }
         $logbook = Logbook::updateOrCreate(
             [
                 'id' => $request->id,

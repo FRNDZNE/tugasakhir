@@ -163,14 +163,13 @@
                         <th>Nama</th>
                         <th>Kelas</th>
                         <th>Semester</th>
-                        <th>Prodi</th>
+                        <th>Tahun</th>
                         @if (Auth::user()->role->name == 'superadmin' || Auth::user()->role->name == 'staff')
                         <th>Status</th>
                         <th>Opsi</th>
                         @else
                         <th>Opsi</th>
                         @endif
-
                     </tr>
                 </thead>
                 <tbody>
@@ -181,7 +180,7 @@
                             <td>{{ $u->mahasiswa->name }}</td>
                             <td>{{ $u->mahasiswa->class }}</td>
                             <td>{{ $u->mahasiswa->grade }}</td>
-                            <td>{{ $u->mahasiswa->prodi->display_name }}</td>
+                            <td>{{ $u->mahasiswa->year->name }}</td>
                             @if (Auth::user()->role->name == 'superadmin' || Auth::user()->role->name == 'staff')
                             <td>
                                 @if ($u->mahasiswa->status)

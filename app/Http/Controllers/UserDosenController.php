@@ -124,13 +124,20 @@ class UserDosenController extends Controller
         $dosen->phone = $request->contact;
         $dosen->save();
 
+        if (Auth::user()->role->name == 'superadmin') {
+            $prodi = $dosen->prodi;
+        } elseif (Auth::user()->role->name == 'admin') {
+            $prodi = $dosen->prodi()->where('jurusan_id', Auth::user()->admin->jurusan_id)->get();
+        }
 
-        foreach ($dosen->prodi as $prodiLama) {
+        foreach ($prodi as $prodiLama) {
             $dosen->prodi()->detach($prodiLama);
         }
         foreach ($request->prodi as $prodi) {
             $dosen->prodi()->attach($prodi);
         }
+
+
 
         return redirect()->back()->with('success','Berhasil Mengubah Data');
     }

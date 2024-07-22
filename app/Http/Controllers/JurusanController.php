@@ -45,7 +45,7 @@ class JurusanController extends Controller
             ]
         );
 
-        return redirect()->back()->with('success','Berhasil Mengubah Data');
+        return redirect()->back()->with('success','Berhasil Menambah / Mengubah Data');
     }
 
     public function delete($id)
