@@ -9,6 +9,7 @@ use App\Models\Intern;
 use Illuminate\Http\Request;
 class MagangController extends Controller
 {
+    // POV Mahasiswa Daftar
     public function index()
     {
         $prodi = Auth::user()->mahasiswa->prodi_id;
@@ -52,6 +53,8 @@ class MagangController extends Controller
             return redirect()->back()->with('error', 'Kuota sudah penuh');
         }
 
+        $user = Auth::user()->mahasiswa->intern();
+
         Intern::create([
             'agency_id' => $request->mitra,
             'period_id' => $request->period,
@@ -66,6 +69,5 @@ class MagangController extends Controller
         // return $data;
         return view('mahasiswa.detail',compact('data'));
     }
-
 
 }

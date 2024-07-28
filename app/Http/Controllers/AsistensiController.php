@@ -8,6 +8,7 @@ use Auth;
 
 class AsistensiController extends Controller
 {
+    // path mahasiswa
     public function index()
     {
         $user = Auth::user()->mahasiswa->intern->id;
@@ -85,4 +86,7 @@ class AsistensiController extends Controller
 
         return redirect()->back()->with('success','Berhasil Mengubah Status');
     }
+
+    // Path Dosen
+
 }

@@ -100,26 +100,36 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="prodi" class="form-label">Prodi</label>
-                                            <div class="row">
-                                                @foreach ($data['prodi'] as $prodi)
-                                                <div class="col-md-4">
-                                                    <div class="form-check">
-                                                        <input type="checkbox" name="prodi[]" class="form-check-input" id="{{ $prodi->id }}" value="{{ $prodi->id }}">
-                                                        <label class="form-check-label" for="{{ $prodi->id }}">{{ $prodi->display_name }}</label>
+                                @if (Auth::user()->role->name == 'superadmin' || Auth::user()->role->name == 'admin')
+                                    <div class="row mb-2">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="prodi" class="form-label">Prodi</label>
+                                                <div class="row">
+                                                    @foreach ($data['prodi'] as $prodi)
+                                                    <div class="col-md-4">
+                                                        <div class="form-check">
+                                                            <input type="checkbox" name="prodi[]" class="form-check-input" id="{{ $prodi->id }}" value="{{ $prodi->id }}">
+                                                            <label class="form-check-label" for="{{ $prodi->id }}">{{ $prodi->display_name }}</label>
+                                                        </div>
                                                     </div>
+                                                    @endforeach
                                                 </div>
-                                                @endforeach
+                                                @error('prodi')
+                                                    <span class="invalid-feedback">{{ $message }}</span>
+                                                @enderror
                                             </div>
-                                            @error('prodi')
-                                                <span class="invalid-feedback">{{ $message }}</span>
-                                            @enderror
                                         </div>
                                     </div>
-                                </div>
+                                @elseif (Auth::user()->role->name == 'staff')
+                                    @php
+                                        $prodi = Auth::user()->staff->prodi;
+                                    @endphp
+                                    <div class="form-check">
+                                        <input type="checkbox" name="prodi[]" class="form-check-input" id="{{ $prodi->id }}" value="{{ $prodi->id }}" checked onclick="return false;">
+                                        <label class="form-check-label" for="{{ $prodi->id }}">{{ $prodi->display_name }}</label>
+                                    </div>
+                                @endif
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -258,6 +268,7 @@
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
                                                                     <label for="prodi" class="form-label">Prodi</label>
+                                                                    @if (Auth::user()->role->name == 'superadmin' || Auth::user()->role->name == 'admin')
                                                                     <div class="row">
                                                                         @foreach ($data['prodi'] as $prodi)
                                                                         <div class="col-md-4">
@@ -271,6 +282,7 @@
                                                                     @error('prodi')
                                                                         <span class="invalid-feedback">{{ $message }}</span>
                                                                     @enderror
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                         </div>

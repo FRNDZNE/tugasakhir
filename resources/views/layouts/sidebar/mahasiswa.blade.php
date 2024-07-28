@@ -5,7 +5,7 @@
             <span> Dashboard Mahasiswa</span>
         </a>
     </li>
-    @if (!Auth::user()->mahasiswa->accepted)
+    @if (!Auth::user()->mahasiswa->accepted || !Auth::user()->mahasiswa->accepted)
     <li>
         <a href="{{ route('mahasiswa.magang.index') }}">
             <i class="mdi mdi-view-dashboard-outline"></i>
@@ -27,6 +27,12 @@
             </a>
         </li>
         <li>
+            <a href="#">
+                <i class="mdi mdi-view-dashboard-outline"></i>
+                <span> Absensi </span>
+            </a>
+        </li>
+        <li>
             <a href="{{ route('mahasiswa.asistensi.index') }}">
                 <i class="mdi mdi-view-dashboard-outline"></i>
                 <span> Asistensi </span>
@@ -45,4 +51,10 @@
             </a>
         </li>
     @endif
+    <li>
+        <a href="#">
+            <i class="mdi mdi-view-dashboard-outline"></i>
+            <span> History Daftar Magang </span>
+        </a>
+    </li>
 @endif

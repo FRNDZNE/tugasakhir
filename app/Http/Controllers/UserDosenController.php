@@ -15,7 +15,7 @@ class UserDosenController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:superadmin,admin');
+        $this->middleware('role:superadmin,admin,staff');
     }
 
     // CRUD untuk role Dosen
@@ -27,6 +27,16 @@ class UserDosenController extends Controller
         } elseif (Auth::user()->role->name == 'admin') {
             $data['prodi'] = Prodi::where('jurusan_id', Auth::user()->admin->jurusan->id)->get();
             $data['user'] = User::whereHas('dosen')->get();
+        } elseif (Auth::user()->role->name == 'staff') {
+            $prodi = Auth::user()->staff->prodi->id;
+            $data['user'] = User::whereHas('dosen', function($q) use ($prodi) {
+            $q->whereHas('prodi', function($e) use ($prodi) {
+                $e->where('prodi_id', $prodi);
+            });
+            })->with(['dosen.prodi' => function($e) use ($prodi) {
+                $e->where('prodi_id', $prodi);
+            }])->get();
+
         }
         return view('users.dosen',compact('data'));
     }
@@ -73,6 +83,7 @@ class UserDosenController extends Controller
         $dosen->uuid = $request->uuid;
         $dosen->phone = $request->contact;
         $dosen->save();
+
         foreach ($request->prodi as $prodi) {
             $dosen->prodi()->attach($prodi);
         }

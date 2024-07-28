@@ -12,7 +12,19 @@
             <span> Mahasiswa </span>
         </a>
     </li>
+    <li>
+        <a href="{{ route('user.dosen.index') }}">
+            <i class="mdi mdi-view-dashboard-outline"></i>
+            <span> Dosen </span>
+        </a>
+    </li>
     <li class="menu-title">Utilitas</li>
+    <li>
+        <a href="{{ route('staff.select.year') }}">
+            <i class="mdi mdi-view-dashboard-outline"></i>
+            <span> Magang </span>
+        </a>
+    </li>
     <li>
         <a href="{{ route('year.index') }}">
             <i class="mdi mdi-view-dashboard-outline"></i>
