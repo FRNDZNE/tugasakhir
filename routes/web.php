@@ -171,7 +171,14 @@ Route::middleware(['auth','role:mahasiswa'])->prefix('mahasiswa/magang')->group(
     Route::prefix('logbook')->group(function(){
         Route::get('/',[LogbookController::class,'index'])->name('mahasiswa.logbook.index');
         Route::post('store',[LogbookController::class,'store'])->name('mahasiswa.logbook.store');
-        Route::delete('delete/{id}',[LogbookController::class,'delete'])->name('mahasiswa.logbook.delete');
+        Route::delete('delete/{logbook}',[LogbookController::class,'delete'])->name('mahasiswa.logbook.delete');
+
+        Route::prefix('image/{logbook}')->group(function(){
+            Route::get('/',[LogbookController::class,'index_image'])->name('logbook.image.index');
+            Route::post('/store',[LogbookController::class,'store_image'])->name('logbook.image.store');
+            Route::post('/update',[LogbookController::class,'update_image'])->name('logbook.image.update');
+            Route::delete('/delete/{image}',[LogbookController::class,'delete_image'])->name('logbook.image.delete');
+        });
     });
     // Asistensi
     Route::prefix('assistance')->group(function(){

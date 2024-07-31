@@ -23,7 +23,7 @@
         <li>
             <a href="{{ route('mahasiswa.logbook.index') }}">
                 <i class="mdi mdi-view-dashboard-outline"></i>
-                <span> Logbook (Nanti lok masih panik) </span>
+                <span> Logbook </span>
             </a>
         </li>
         <li>

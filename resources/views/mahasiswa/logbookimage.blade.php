@@ -1,11 +1,12 @@
 @extends('layouts.app')
-@section('title','Logbook')
+@section('title','Input Gambar Logbook')
 @section('css')
 @endsection
-@section('page-title','Logbook')
+@section('page-title','Input Gambar Logbook')
 @section('content')
     <div class="card">
         <div class="card-body">
+            <a href="{{ route('mahasiswa.logbook.index') }}" class="btn btn-secondary btn-md">Kembali</a>
             <!-- Modal trigger button -->
             <button
                 type="button"
@@ -13,7 +14,7 @@
                 data-bs-toggle="modal"
                 data-bs-target="#modalCreate"
             >
-                Tambah Logbook
+                Tambah Gambar
             </button>
 
             <!-- Modal Body -->
@@ -36,7 +37,7 @@
                     <div class="modal-content">
                         <div class="modal-header bg-primary">
                             <h5 class="modal-title" id="modalTitleId">
-                                Tambah Logbook
+                                Tambah Gambar
                             </h5>
                             <button
                                 type="button"
@@ -46,31 +47,14 @@
                             ></button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('mahasiswa.logbook.store') }}" method="post" id="createLog">
+                            <form action="{{ route('logbook.image.store', $log->id) }}" method="post" id="createImage" enctype="multipart/form-data">
                                 @csrf
-                                <div class="mb-2">
-                                    <div class="form-group">
-                                        <label for="date" class="form-label">Tanggal</label>
-                                        <input type="date" name="date" id="date" class="form-control @error('date') is-invalid @enderror">
-                                        @error('date')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="mb-2">
-                                    <div class="form-group">
-                                        <label for="title" class="form-label">Kegiatan</label>
-                                        <input type="text" name="title" id="title" class="form-control @error('title') is-invalid @enderror">
-                                        @error('title')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="mb-2">
-                                    <div class="form-group">
-                                        <label for="desc" class="form-label">Deskripsi Kegiatan</label>
-                                        <textarea name="desc" id="desc" cols="30" rows="10" class="form-control"></textarea>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="gambar" class="form-label">Masukan Foto</label>
+                                    <input type="file" name="gambar" id="gambar" class="form-control @error('gambar') is-invalid @enderror" accept="image/*">
+                                    @error('gambar')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </form>
                         </div>
@@ -82,7 +66,7 @@
                             >
                                 Close
                             </button>
-                            <button type="button" onclick="document.getElementById('createLog').submit();" class="btn btn-primary">Save</button>
+                            <button type="button" onclick="document.getElementById('createImage').submit();" class="btn btn-primary">Save</button>
                         </div>
                     </div>
                 </div>
@@ -92,19 +76,15 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Tanggal</th>
-                        <th>Kegiatan</th>
-                        <th>Deskripsi Kegiatan</th>
+                        <th>Gambar</th>
                         <th>Opsi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($data as $d)
+                    @foreach ($gambar as $g)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $d->date }}</td>
-                            <td>{{ $d->title }}</td>
-                            <td>{{ $d->desc }}</td>
+                            <td><img width="300px" height="auto" src="{{ asset($g->path) }}" alt="gambar rusak"></td>
                             <td>
                                 {{-- Modal Edit --}}
                                 <!-- Modal trigger button -->
@@ -112,7 +92,7 @@
                                     type="button"
                                     class="btn btn-warning btn-md"
                                     data-bs-toggle="modal"
-                                    data-bs-target="#modalEdit-{{ $d->id }}"
+                                    data-bs-target="#modalEdit-{{ $g->id }}"
                                 >
                                     <i class="fas fa-edit"></i>
                                 </button>
@@ -121,7 +101,7 @@
                                 <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
                                 <div
                                     class="modal fade"
-                                    id="modalEdit-{{ $d->id }}"
+                                    id="modalEdit-{{ $g->id }}"
                                     tabindex="-1"
                                     data-bs-backdrop="static"
                                     data-bs-keyboard="false"
@@ -147,32 +127,15 @@
                                                 ></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="{{ route('mahasiswa.logbook.store') }}" method="post" id="updateLog-{{ $d->id }}">
+                                                <form action="{{ route('logbook.image.update', $log->id) }}" method="post" id="updateImage-{{ $g->id }}" enctype="multipart/form-data">
                                                     @csrf
-                                                    <input type="hidden" name="id" value="{{ $d->id }}">
-                                                    <div class="mb-2">
-                                                        <div class="form-group">
-                                                            <label for="date" class="form-label">Tanggal</label>
-                                                            <input type="date" name="date" id="date" class="form-control @error('date') is-invalid @enderror" value="{{ $d->date }}">
-                                                            @error('date')
-                                                                <span class="invalid-feedback">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                    <div class="mb-2">
-                                                        <div class="form-group">
-                                                            <label for="title" class="form-label">Kegiatan</label>
-                                                            <input type="text" name="title" id="title" class="form-control @error('title') is-invalid @enderror" value="{{ $d->title }}">
-                                                            @error('title')
-                                                                <span class="invalid-feedback">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                    <div class="mb-2">
-                                                        <div class="form-group">
-                                                            <label for="desc" class="form-label">Deskripsi Kegiatan</label>
-                                                            <textarea name="desc" id="desc" cols="30" rows="10" class="form-control">{{ $d->desc }}</textarea>
-                                                        </div>
+                                                    <input type="hidden" name="id" value="{{ $g->id }}">
+                                                    <div class="form-group">
+                                                        <label for="gambar" class="form-label">Masukan Foto</label>
+                                                        <input type="file" name="gambar" id="gambar" class="form-control @error('gambar') is-invalid @enderror" accept="image/*">
+                                                        @error('gambar')
+                                                            <span class="invalid-feedback">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                 </form>
                                             </div>
@@ -184,7 +147,7 @@
                                                 >
                                                     Close
                                                 </button>
-                                                <button type="button" class="btn btn-warning" onclick="document.getElementById('updateLog-{{ $d->id }}').submit();">Update</button>
+                                                <button type="button" class="btn btn-warning" onclick="document.getElementById('updateImage-{{ $g->id }}').submit();">Update</button>
                                             </div>
                                         </div>
                                     </div>
@@ -196,7 +159,7 @@
                                         type="button"
                                         class="btn btn-danger btn-md"
                                         data-bs-toggle="modal"
-                                        data-bs-target="#modaldelete-{{ $d->id }}"
+                                        data-bs-target="#modalId"
                                     >
                                         <i class="fas fa-trash"></i>
                                     </button>
@@ -205,7 +168,7 @@
                                     <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
                                     <div
                                         class="modal fade"
-                                        id="modaldelete-{{ $d->id }}"
+                                        id="modalId"
                                         tabindex="-1"
                                         data-bs-backdrop="static"
                                         data-bs-keyboard="false"
@@ -221,7 +184,7 @@
                                             <div class="modal-content">
                                                 <div class="modal-header bg-danger">
                                                     <h5 class="modal-title" id="modalTitleId">
-                                                        Hapus Logbook
+                                                        Hapus Gambar
                                                     </h5>
                                                     <button
                                                         type="button"
@@ -231,8 +194,8 @@
                                                     ></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <p>Hapus Logbook Pada Tanggal {{ $d->date }} ?</p>
-                                                    <form action="{{ route('mahasiswa.logbook.delete', $d->id) }}" method="post" id="deleteLog-{{ $d->id }}">
+                                                    Hapus Gambar ?
+                                                    <form action="{{ route('logbook.image.delete', [$log->id, $g->id]) }}" method="post" id="deleteLog-{{ $g->id }}">
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>
@@ -245,13 +208,12 @@
                                                     >
                                                         Close
                                                     </button>
-                                                    <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteLog-{{ $d->id }}').submit();">Hapus</button>
+                                                    <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteLog-{{ $g->id }}').submit();">Hapus</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 {{-- End Modal Delete --}}
-                                <a href="{{ route('logbook.image.index', $d->id) }}" class="btn btn-md btn-info"><i class="fas fa-file-image"></i></a>
                             </td>
                         </tr>
                     @endforeach
