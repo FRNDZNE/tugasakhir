@@ -23,6 +23,8 @@ use App\Http\Controllers\AsistensiController;
 use App\Http\Controllers\SeleksiController;
 use App\Http\Controllers\DospemController;
 use App\Http\Controllers\BimbinganController;
+use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\ScoreValueController;
 
 
 /*
@@ -51,7 +53,7 @@ Auth::routes([
 Route::get('/home', function(){
     if (Auth::user()->role->name == 'superadmin') {
         return redirect()->route('superadmin.dashboard');
-    } elseif (Auth::user()->role->name == 'admin') {
+    } else if (Auth::user()->role->name == 'admin') {
         return redirect()->route('admin.dashboard');
     } else if (Auth::user()->role->name == 'staff') {
         return redirect()->route('staff.dashboard');
@@ -150,6 +152,8 @@ Route::prefix('account')->group(function(){
     });
 
     Route::get('/profiles', [ProfileController::class,'index'])->name('user.profile');
+
+    // Hapus Akun Untuk Semua Role
     Route::delete('/users/delete/{id}',[UserController::class,'delete'])->name('user.delete');
 
 });
@@ -159,13 +163,13 @@ Route::prefix('quota/{agency}')->group(function(){
     Route::post('/store-update',[QuotaController::class,'store'])->name('quota.store');
 });
 
-// Hapus Akun Untuk Semua Role
 
 // Route Mahasiswa
 Route::middleware(['auth','role:mahasiswa'])->prefix('mahasiswa/magang')->group(function(){
     Route::get('list-mitra',[MagangController::class,'index'])->name('mahasiswa.magang.index');
     Route::post('apply',[MagangController::class,'apply'])->name('mahasiswa.magang.apply');
     Route::get('my-intern',[MagangController::class,'myIntern'])->name('mahasiswa.magang.detail');
+    Route::get('nilai-akhir',[MagangController::class,'score_value'])->name('mahasiswa.magang.nilai');
 
     // Creating Logbook
     Route::prefix('logbook')->group(function(){
@@ -188,6 +192,12 @@ Route::middleware(['auth','role:mahasiswa'])->prefix('mahasiswa/magang')->group(
         Route::post('/unconfirmed',[AsistensiController::class,'unconfirmed'])->name('mahasiswa.asistensi.unconfirmed');
         Route::delete('delete/{id}',[AsistensiController::class,'delete'])->name('mahasiswa.asistensi.delete');
     });
+
+    // Absensi
+    Route::prefix('absensi')->group(function(){
+        Route::get('/',[AbsensiController::class,'index'])->name('mahasiswa.absensi.index');
+        Route::post('/store',[AbsensiController::class,'store'])->name('mahasiswa.absensi.store');
+    });
     // Final Submission
     Route::prefix('laporan-akhir')->group(function(){
         Route::get('/',[ReportController::class,'index'])->name('mahasiswa.report.index');
@@ -196,23 +206,38 @@ Route::middleware(['auth','role:mahasiswa'])->prefix('mahasiswa/magang')->group(
         Route::delete('/delete/{id}',[ReportController::class,'delete'])->name('mahasiswa.report.delete');
     });
 });
-
-// Route Agency
-Route::prefix('agency')->middleware(['auth','role:agency'])->group(function(){
-    Route::prefix('seleksi')->group(function(){
+// Route Agency dan mentor
+Route::prefix('mitra')->middleware(['auth','role:agency,mentor'])->group(function(){
+    Route::prefix('magang')->group(function(){
+        // Profile Mahasiswa
+        Route::prefix('profile-mahasiswa/{intern}')->group(function(){
+            Route::get('/',[SeleksiController::class,'profile'])->name('agency.profile.mahasiswa');
+            Route::get('/absensi',[AbsensiController::class,'absen_mahasiswa'])->name('agency.absensi.mahasiswa');
+            Route::post('/absensi/store',[AbsensiController::class,'absen_store'])->name('agency.absensi.store');
+            Route::get('/logbook',[LogbookController::class,'logbook'])->name('agency.logbook.mahasiswa');
+            Route::get('/logbook/{log}',[LogbookController::class,'log_image'])->name('agency.logimage.mahasiswa');
+            Route::get('/report',[SeleksiController::class,'report'])->name('agency.report.mahasiswa');
+            Route::get('/score',[ScoreValueController::class,'index'])->name('agency.score.mahasiswa');
+            Route::post('/score/store',[ScoreValueController::class,'store'])->name('agency.score.store');
+        });
         Route::get('/',[SeleksiController::class,'index_year'])->name('agency.select.year');
         Route::get('/{year}',[SeleksiController::class,'index_period'])->name('agency.select.period');
         Route::prefix('{year}/{period}')->group(function(){
             Route::get('/',[SeleksiController::class,'index'])->name('agency.select.intern');
-            Route::post('/proses',[SeleksiController::class,'proses'])->name('agency.proses');
-            Route::post('/terima',[SeleksiController::class,'terima'])->name('agency.terima');
-            Route::post('/tolak',[SeleksiController::class,'tolak'])->name('agency.tolak');
-            Route::post('/restore',[SeleksiController::class,'restore'])->name('agency.restore');
-            Route::post('/mentor',[SeleksiController::class,'mentor'])->name('agency.mentor');
+            Route::middleware('role:agency')->group(function(){
+                Route::post('/proses',[SeleksiController::class,'proses'])->name('agency.proses');
+                Route::post('/terima',[SeleksiController::class,'terima'])->name('agency.terima');
+                Route::post('/tolak',[SeleksiController::class,'tolak'])->name('agency.tolak');
+                Route::post('/restore',[SeleksiController::class,'restore'])->name('agency.restore');
+                Route::post('/mentor',[SeleksiController::class,'mentor'])->name('agency.mentor');
+            });
         });
+
     });
+
 });
 
+// Route Staff Prodi
 Route::prefix('staff')->middleware(['auth','role:staff'])->group(function(){
     Route::prefix('magang')->group(function(){
         Route::get('/',[DospemController::class,'index_year'])->name('staff.select.year');
@@ -224,6 +249,7 @@ Route::prefix('staff')->middleware(['auth','role:staff'])->group(function(){
     });
 });
 
+// Route Dosen
 Route::prefix('dosen')->middleware(['auth','role:dosen'])->group(function(){
     Route::prefix('bimbingan')->group(function(){
         Route::get('/',[BimbinganController::class,'index_year'])->name('dosen.bimbingan.year');
@@ -244,6 +270,7 @@ Route::prefix('dosen')->middleware(['auth','role:dosen'])->group(function(){
         });
     });
 });
+
 
 
 

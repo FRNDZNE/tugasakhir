@@ -43,11 +43,10 @@ class BimbinganController extends Controller
         return view('dosen.bimbingan.index',compact('tahun','periode','intern'));
     }
 
-    public function detail($intern)
+    public function profile($intern)
     {
-        $magang = Intern::where('id',$id)->first();
+        $magang = Intern::where('id',$intern)->first();
         return view('dosen.intern.detail',compact('magang'));
-
     }
 
 

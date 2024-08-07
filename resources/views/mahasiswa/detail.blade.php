@@ -10,7 +10,7 @@
                 <p>Kamu belum mendaftar magang. Silahkan pilih mitra pada menu mitra magang</p>
             @else
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <h3>Daftar Magang Saya Saat Ini</h3>
                         <p><b>Nama Instansi : </b> {{ $data->agency->name }}</p>
                         <p><b>Alamat : </b> {{ $data->agency->address }}</p>
@@ -28,7 +28,20 @@
                             @endif
                         </p>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <h3>Informasi Mentor dan Dosen Pembimbing Magang</h3>
+                        <h5>Mentor</h5>
+                        @if ($data->mentor)
+                        <p><b>Nama : </b> {{ $data->mentor->name }}</p>
+                        <p><b>Kontak : </b> {{ $data->mentor->contact }}</p>
+                        @endif
+                        <h5>Dosen Pembimbing</h5>
+                        @if ($data->dosen)
+                        <p><b>Dosen Pembimbing : </b> {{ $data->dosen->name }}</p>
+                        <p><b>Kontak : </b> {{ $data->dosen->phone  }}</p>
+                        @endif
+                    </div>
+                    <div class="col-md-4">
                         <h3>Profile Perusahaan</h3>
                         <p>{{ $data->agency->profile == null ?  'Profil Belum Tersedia' : $data->agency->profile}}</p>
                     </div>

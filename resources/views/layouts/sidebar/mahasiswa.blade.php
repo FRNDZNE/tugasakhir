@@ -27,7 +27,7 @@
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="{{ route('mahasiswa.absensi.index') }}">
                 <i class="mdi mdi-view-dashboard-outline"></i>
                 <span> Absensi </span>
             </a>
@@ -45,16 +45,16 @@
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="{{ route('mahasiswa.magang.nilai') }}">
                 <i class="mdi mdi-view-dashboard-outline"></i>
                 <span> Nilai Akhir </span>
             </a>
         </li>
     @endif
-    <li>
+    {{-- <li>
         <a href="#">
             <i class="mdi mdi-view-dashboard-outline"></i>
             <span> History Daftar Magang </span>
         </a>
-    </li>
+    </li> --}}
 @endif

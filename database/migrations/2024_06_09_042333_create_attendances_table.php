@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('intern_id')->constrained()->onDelete('cascade');
             $table->date('date');
-            $table->enum('status',['s','i','a','h']);
+            $table->enum('status',['s','i','a','h','l']);
             $table->string('reason')->nullable();
+            $table->boolean('isvalid')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

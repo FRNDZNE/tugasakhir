@@ -6,7 +6,7 @@
         </a>
     </li>
     <li>
-        <a href="#">
+        <a href="{{ route('agency.select.year') }}">
             <i class="mdi mdi-view-dashboard-outline"></i>
             <span> Bimbingan </span>
         </a>

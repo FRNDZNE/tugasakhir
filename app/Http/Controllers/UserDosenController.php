@@ -81,7 +81,7 @@ class UserDosenController extends Controller
         $dosen->user_id = $user->id;
         $dosen->name = $request->fullname;
         $dosen->uuid = $request->uuid;
-        $dosen->phone = $request->contact;
+        $dosen->phone = preg_replace('/^0/', '62', $request->contact);
         $dosen->save();
 
         foreach ($request->prodi as $prodi) {
@@ -132,7 +132,7 @@ class UserDosenController extends Controller
         if ($dosen->uuid != $request->uuid) {
             $dosen->uuid = $request->uuid;
         }
-        $dosen->phone = $request->contact;
+        $dosen->phone = preg_replace('/^0/', '62', $request->contact);
         $dosen->save();
 
         if (Auth::user()->role->name == 'superadmin') {

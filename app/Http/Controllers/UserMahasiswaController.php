@@ -93,7 +93,7 @@ class UserMahasiswaController extends Controller
         $mahasiswa->year_id = $request->year;
         $mahasiswa->class = $request->class;
         $mahasiswa->grade = $request->grade;
-        $mahasiswa->phone = $request->contact;
+        $mahasiswa->phone = preg_replace('/^0/', '62', $request->contact);
         $mahasiswa->save();
 
         return redirect()->back()->with('success','Berhasil Menambah Data');
@@ -141,7 +141,7 @@ class UserMahasiswaController extends Controller
 
         $mahasiswa = Mahasiswa::where('user_id',$request->id)->first();
         $mahasiswa->name = $request->fullname;
-        $mahasiswa->phone = $request->contact;
+        $mahasiswa->phone = preg_replace('/^0/', '62', $request->contact);
         if ($mahasiswa->uuid != $request->uuid) {
             $mahasiswa->uuid = $request->uuid;
         }

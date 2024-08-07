@@ -113,7 +113,7 @@ class UserMentorController extends Controller
         if ($mentor->uuid != $request->uuid) {
             $mentor->uuid = $request->uuid;
         }
-        $mentor->contact = $request->contact;
+        $mentor->contact = preg_replace('/^0/', '62', $request->contact);
         $mentor->save();
         return redirect()->back()->with('success','Berhasil Mengubah Data');
     }

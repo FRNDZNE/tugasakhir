@@ -26,18 +26,34 @@ class SeleksiController extends Controller
 
     public function index($year, $period)
     {
+
         $tahun = Year::where('id',$year)->first();
         $periode = Period::where('id',$period)->first();
-        $agency = Auth::user()->agency->id;
-        $intern = Intern::where('period_id', $period)
-        ->where('agency_id', $agency)
-        ->with('mahasiswa')
-        ->withTrashed()
-        ->get();
-        $mentor = Mentor::where('agency_id', $agency)->get();
+        if (Auth::user()->role->name == 'agency') {
+            # code...
+            $agency = Auth::user()->agency->id;
+            $intern = Intern::where('period_id', $period)
+            ->where('agency_id', $agency)
+            ->with('mahasiswa')
+            ->withTrashed()
+            ->get();
+            $mentor = Mentor::where('agency_id', $agency)->get();
+        }elseif (Auth::user()->role->name == 'mentor') {
+            # code...
+            $mentor = Auth::user()->mentor;
+            $intern = Intern::where('period_id', $period)
+            ->where('agency_id', $mentor->agency_id)
+            ->where('mentor_id', $mentor->id)
+            ->with('mahasiswa')
+            ->withTrashed()
+            ->get();
+            // return $intern;
+        }
+
         return view('agency.seleksi.index',compact('intern','tahun','periode','mentor'));
     }
 
+    // Proses Seleksi Magang Yang Dilakukan Oleh Mitra Magang
     public function proses($year, $period, Request $request)
     {
         $intern = Intern::where('id', $request->id)->first();
@@ -79,4 +95,9 @@ class SeleksiController extends Controller
         return redirect()->back()->with('success','Berhasil Memilih Mentor');
     }
 
+    public function profile($intern)
+    {
+        $magang = Intern::where('id', $intern)->with('mahasiswa')->first();
+        return view('agency.seleksi.profile',compact('magang'));
+    }
 }

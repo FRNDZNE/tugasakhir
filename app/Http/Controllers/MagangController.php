@@ -9,7 +9,7 @@ use App\Models\Intern;
 use Illuminate\Http\Request;
 class MagangController extends Controller
 {
-    // POV Mahasiswa Daftar
+    // Controller ini berisi alur pendaftaran mahasiswa ketika mendaftar PKL
     public function index()
     {
         $prodi = Auth::user()->mahasiswa->prodi_id;
@@ -68,6 +68,17 @@ class MagangController extends Controller
         $data = Intern::where('mahasiswa_id', Auth::user()->mahasiswa->id)->first();
         // return $data;
         return view('mahasiswa.detail',compact('data'));
+    }
+
+    public function nilai_akhir()
+    {
+        $user = Auth::user()->mahasiswa;
+        // $value = ScoreValue::where('intern_id',$user->intern->id)
+        // ->whereHas('score', function($q) use ($user){
+        //     $q->where('prodi_id', $user->prodi_id);
+        // })
+        // ->get();
+
     }
 
 }

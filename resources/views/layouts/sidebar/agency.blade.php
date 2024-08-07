@@ -14,7 +14,7 @@
     <li>
         <a href="{{ route('agency.select.year') }}">
             <i class="mdi mdi-view-dashboard-outline"></i>
-            <span> Seleksi </span>
+            <span> Magang </span>
         </a>
     </li>
     <li>

@@ -15,11 +15,8 @@ class LogbookController extends Controller
 {
     public function index()
     {
-
-        $user = Auth::user()->mahasiswa->id;
-        $data = Logbook::whereHas('intern', function($q) use ($user){
-            $q->where('mahasiswa_id', $user);
-        } )->get();
+        $user = Auth::user()->mahasiswa->intern->id;
+        $data = Logbook::where('intern_id', $user)->get();
         return view('mahasiswa.logbook',compact('data'));
     }
 
@@ -149,6 +146,21 @@ class LogbookController extends Controller
         }
         $gambar->forceDelete();
         return redirect()->back()->with('success','Berhasil Menghapus Gambar');
+
+    }
+
+    // POV Mentor dan Agency
+    public function index_mahasiswa($intern)
+    {
+        $user = Auth::user()->mahasiswa->id;
+        $data = Logbook::whereHas('intern', function($q) use ($user){
+            $q->where('mahasiswa_id', $user);
+        } )->get();
+        return view('mahasiswa.logbook',compact('data'));
+    }
+
+    public function index_image_mahasiswa($intern, $image)
+    {
 
     }
 }
