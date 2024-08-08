@@ -6,6 +6,7 @@ use DB;
 use Auth;
 use App\Models\Quota;
 use App\Models\Intern;
+use App\Models\Score;
 use Illuminate\Http\Request;
 class MagangController extends Controller
 {
@@ -70,9 +71,18 @@ class MagangController extends Controller
         return view('mahasiswa.detail',compact('data'));
     }
 
-    public function nilai_akhir()
+    public function score_value()
     {
         $user = Auth::user()->mahasiswa;
+        $prodi = $user->prodi_id;
+        $magang = $user->intern->id;
+        $score = Score::whereHas('prodi', function($q) use ($prodi){
+            $q->where('id', $prodi);
+        })->with('value')
+        ->get();
+
+        // return $score;
+        return view('mahasiswa.score',compact('score'));
         // $value = ScoreValue::where('intern_id',$user->intern->id)
         // ->whereHas('score', function($q) use ($user){
         //     $q->where('prodi_id', $user->prodi_id);

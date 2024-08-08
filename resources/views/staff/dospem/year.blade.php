@@ -1,8 +1,8 @@
 @extends('layouts.app')
-@section('title','Tahun')
+@section('title','Tahun Akademik')
 @section('css')
 @endsection
-@section('page-title','Tahun')
+@section('page-title','Tahun Akademik')
 @section('content')
     <div class="card">
         <div class="card-body">

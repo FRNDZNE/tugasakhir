@@ -6,6 +6,8 @@
 @section('content')
     <div class="card">
         <div class="card-body">
+            @if (Auth::user()->role->name == 'mahasiswa')
+
             <!-- Modal trigger button -->
             <button
                 type="button"
@@ -87,6 +89,9 @@
                     </div>
                 </div>
             </div>
+            @elseif(Auth::user()->role->name == 'agency' || Auth::user()->role->name == 'mentor')
+                <a href="{{ route('agency.profile.mahasiswa', $user->id) }}" class="btn btn-secondary md">Kembali</a>
+            @endif
             <hr>
             <table id="datatable" class="table table-bordered dt-responsive table-responsive nowrap">
                 <thead>
@@ -106,6 +111,8 @@
                             <td>{{ $d->title }}</td>
                             <td>{{ $d->desc }}</td>
                             <td>
+                                @if (Auth::user()->role->name == 'mahasiswa')
+
                                 {{-- Modal Edit --}}
                                 <!-- Modal trigger button -->
                                 <button
@@ -252,6 +259,9 @@
                                     </div>
                                 {{-- End Modal Delete --}}
                                 <a href="{{ route('logbook.image.index', $d->id) }}" class="btn btn-md btn-info"><i class="fas fa-file-image"></i></a>
+                                @elseif (Auth::user()->role->name == 'agency' || Auth::user()->role->name == 'mentor')
+                                <a href="{{ route('agency.logimage.mahasiswa',[$user->id, $d->id]) }}" class="btn btn-md btn-info"><i class="fas fa-file-image"></i></a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

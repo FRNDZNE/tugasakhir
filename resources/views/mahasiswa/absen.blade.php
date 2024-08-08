@@ -16,6 +16,7 @@
                         <th>No</th>
                         <th>Tanggal</th>
                         <th>Status Kehadiran</th>
+                        <th>Alasan</th>
                         <th>Validasi</th>
                         <th>Opsi</th>
                     </tr>
@@ -52,6 +53,11 @@
                                     @endswitch
                                 @else
                                     <span class="badge bg-secondary">Belum Absensi</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($kehadiran)
+                                    {{ $kehadiran->reason }}
                                 @endif
                             </td>
                             {{-- End kolom kehadiran --}}

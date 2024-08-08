@@ -33,7 +33,9 @@
     <div class="card">
         <div class="card-body">
             @if ($data)
-                <a href="{{ asset('/') }}reports/{{ $data->path }}" class="">{{ $data->path }}</a>
+                <a href="{{ asset('/') }}reports/{{ $data->path }}" target="_blank" class="btn btn-md btn-danger">{{ $data->path }}</a>
+            @else
+                <h5>Belum Ada Laporan</h5>
             @endif
         </div>
     </div>

@@ -58,4 +58,9 @@ class Intern extends Model
         return $this->hasMany(ScoreValue::class);
     }
 
+    public function submission()
+    {
+        return $this->hasOne(Submission::class);
+    }
+
 }

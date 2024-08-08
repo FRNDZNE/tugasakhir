@@ -152,15 +152,16 @@ class LogbookController extends Controller
     // POV Mentor dan Agency
     public function index_mahasiswa($intern)
     {
-        $user = Auth::user()->mahasiswa->id;
-        $data = Logbook::whereHas('intern', function($q) use ($user){
-            $q->where('mahasiswa_id', $user);
-        } )->get();
-        return view('mahasiswa.logbook',compact('data'));
+        $user = Intern::where('id', $intern)->first();
+        $data = Logbook::where('intern_id',$intern)->get();
+        return view('mahasiswa.logbook',compact('data','user'));
     }
 
-    public function index_image_mahasiswa($intern, $image)
+    public function index_image_mahasiswa($intern, $logbook)
     {
-
+        $user = Intern::where('id', $intern)->first();
+        $log = Logbook::where('id',$logbook)->first();
+        $gambar = LogbookImage::where('logbook_id', $logbook)->get();
+        return view('agency.mentor.galleries',compact('gambar','log','user'));
     }
 }

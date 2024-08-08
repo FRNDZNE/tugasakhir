@@ -33,12 +33,12 @@
                         <h5>Mentor</h5>
                         @if ($data->mentor)
                         <p><b>Nama : </b> {{ $data->mentor->name }}</p>
-                        <p><b>Kontak : </b> {{ $data->mentor->contact }}</p>
+                        <p><b>Kontak : </b> <a href="https://wa.me/{{ $data->mentor->contact }}" target="_blank">{{ $data->mentor->contact }}</a></p>
                         @endif
                         <h5>Dosen Pembimbing</h5>
                         @if ($data->dosen)
                         <p><b>Dosen Pembimbing : </b> {{ $data->dosen->name }}</p>
-                        <p><b>Kontak : </b> {{ $data->dosen->phone  }}</p>
+                        <p><b>Kontak : </b> <a href="https://wa.me/{{ $data->dosen->phone  }}" target="_blank">{{ $data->dosen->phone  }}</a></p>
                         @endif
                     </div>
                     <div class="col-md-4">

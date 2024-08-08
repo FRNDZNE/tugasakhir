@@ -25,6 +25,7 @@ use App\Http\Controllers\DospemController;
 use App\Http\Controllers\BimbinganController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\ScoreValueController;
+use App\Http\Controllers\ProfileController;
 
 
 /*
@@ -80,6 +81,7 @@ $roles = ['superadmin', 'admin', 'staff', 'agency', 'mentor', 'dosen', 'mahasisw
 foreach ($roles as $role) {
     Route::prefix($role)->middleware(['auth', "role:$role"])->group(function () use ($role) {
         Route::get('/dashboard', [HomeController::class, 'index'])->name("$role.dashboard");
+        Route::get('/profile',[ProfileController::class,'index_{role}'])->name("$role.profile");
     });
 }
 // CRUD Jurusan dan Prsodi
@@ -203,7 +205,7 @@ Route::middleware(['auth','role:mahasiswa'])->prefix('mahasiswa/magang')->group(
         Route::get('/',[ReportController::class,'index'])->name('mahasiswa.report.index');
         Route::post('/store',[ReportController::class,'store'])->name('mahasiswa.report.store');
         Route::post('/update',[ReportController::class,'update'])->name('mahasiswa.report.update');
-        Route::delete('/delete/{id}',[ReportController::class,'delete'])->name('mahasiswa.report.delete');
+        // Route::delete('/delete/{id}',[ReportController::class,'delete'])->name('mahasiswa.report.delete');
     });
 });
 // Route Agency dan mentor
@@ -214,9 +216,9 @@ Route::prefix('mitra')->middleware(['auth','role:agency,mentor'])->group(functio
             Route::get('/',[SeleksiController::class,'profile'])->name('agency.profile.mahasiswa');
             Route::get('/absensi',[AbsensiController::class,'absen_mahasiswa'])->name('agency.absensi.mahasiswa');
             Route::post('/absensi/store',[AbsensiController::class,'absen_store'])->name('agency.absensi.store');
-            Route::get('/logbook',[LogbookController::class,'logbook'])->name('agency.logbook.mahasiswa');
-            Route::get('/logbook/{log}',[LogbookController::class,'log_image'])->name('agency.logimage.mahasiswa');
-            Route::get('/report',[SeleksiController::class,'report'])->name('agency.report.mahasiswa');
+            Route::get('/logbook',[LogbookController::class,'index_mahasiswa'])->name('agency.logbook.mahasiswa');
+            Route::get('/logbook/{log}',[LogbookController::class,'index_image_mahasiswa'])->name('agency.logimage.mahasiswa');
+            Route::get('/report',[ReportController::class,'report'])->name('agency.report.mahasiswa');
             Route::get('/score',[ScoreValueController::class,'index'])->name('agency.score.mahasiswa');
             Route::post('/score/store',[ScoreValueController::class,'store'])->name('agency.score.store');
         });

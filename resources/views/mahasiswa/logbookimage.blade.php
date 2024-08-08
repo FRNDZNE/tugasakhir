@@ -8,6 +8,7 @@
         <div class="card-body">
             <a href="{{ route('mahasiswa.logbook.index') }}" class="btn btn-secondary btn-md">Kembali</a>
             <!-- Modal trigger button -->
+
             <button
                 type="button"
                 class="btn btn-primary btn-md"

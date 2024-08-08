@@ -26,7 +26,7 @@
                         <a href="{{ route('agency.absensi.mahasiswa', $magang->id) }}" class="btn btn-md btn-success">Absensi</a>
                         <a href="{{ route('agency.logbook.mahasiswa', $magang->id) }}" class="btn btn-md btn-warning">Logbook</a>
                         <a href="{{ route('agency.score.mahasiswa', $magang->id) }}" class="btn btn-md btn-info">Penilaian</a>
-                        <a href="{{ route('agency.report.mahasiswa', $magang->id) }}" class="btn btn-md btn-danger">Laporan Akhir</a>
+                        <a href="{{ route('agency.report.mahasiswa', $magang->id) }}" @if($magang->submission) target="_blank" @endif class="btn btn-md btn-danger">Laporan Akhir</a>
                     @endif
                 </div>
             </div>

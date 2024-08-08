@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('score_id')->constrained()->onDelete('cascade');
             $table->foreignId('intern_id')->constrained()->onDelete('cascade');
-            $table->integer('value');
+            $table->float('value',2,2);
             $table->timestamps();
             $table->softDeletes();
         });

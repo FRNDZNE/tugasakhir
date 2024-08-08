@@ -100,4 +100,6 @@ class SeleksiController extends Controller
         $magang = Intern::where('id', $intern)->with('mahasiswa')->first();
         return view('agency.seleksi.profile',compact('magang'));
     }
+
+
 }

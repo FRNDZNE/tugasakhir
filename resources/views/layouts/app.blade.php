@@ -13,6 +13,8 @@
 		<!-- App css -->
         @yield('css')
         <!-- third party css -->
+        <link href="{{ asset('/') }}/assets/libs/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css" />
+
         <!-- Sweet Alert-->
         <link href="{{ asset('/') }}/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
         <link href="{{ asset('/') }}/assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
@@ -356,6 +358,15 @@
 
         <!-- Datatables init -->
         <script src="{{ asset('/') }}/assets/js/pages/datatables.init.js"></script>
+
+        <!-- isotope filter plugin -->
+        <script src="{{ asset('/') }}/assets/libs/isotope-layout/isotope.pkgd.min.js"></script>
+
+        <!-- Magnific Popup-->
+        <script src="{{ asset('/') }}/assets/libs/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+        <!-- Gallery Init-->
+        <script src="{{ asset('/') }}/assets/js/pages/gallery.init.js"></script>
         <!-- App js -->
         <script src="{{ asset('/') }}/assets/js/app.min.js"></script>
 
