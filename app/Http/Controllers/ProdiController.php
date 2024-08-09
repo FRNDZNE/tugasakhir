@@ -9,10 +9,6 @@ use Auth;
 
 class ProdiController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(['auth', 'role:superadmin,admin'])->except('index');
-    }
     public function index($jurusan)
     {
         $data['jurusan'] = Jurusan::where('id', $jurusan)->first();

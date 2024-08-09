@@ -9,11 +9,6 @@ use App\Models\Year;
 class YearController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('role:superadmin,admin,staff')->except('index');
-    }
     public function index()
     {
         $year = Year::all();

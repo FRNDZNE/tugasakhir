@@ -238,7 +238,7 @@
                                                     ></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <p>Hapus Logbook Pada Tanggal {{ $d->date }} ?</p>
+                                                    <p>Hapus Logbook Pada Tanggal {{ $d->date }} ? Jika Menghapus Logbook Maka Akan Menghapus Dokumentasi Nya Juga Demikian !</p>
                                                     <form action="{{ route('mahasiswa.logbook.delete', $d->id) }}" method="post" id="deleteLog-{{ $d->id }}">
                                                         @csrf
                                                         @method('DELETE')

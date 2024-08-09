@@ -1,11 +1,11 @@
 @extends('layouts.app')
-@section('title', 'Tahun Ajaran')
+@section('title', 'Tahun Akademik')
 @section('css')
 @endsection
     @if (Auth::user()->role->name == 'staff')
-        @section('page-title','Daftar Periode Magang Tahun Ajaran ' . $data['year']->name ." " . Auth::user()->staff->prodi->display_name)
+        @section('page-title','Daftar Periode Magang Tahun Akademik ' . $data['year']->name ." " . Auth::user()->staff->prodi->display_name)
     @else
-        @section('page-title','Daftar Periode Magang Tahun Ajaran ' . $data['year']->name)
+        @section('page-title','Daftar Periode Magang Tahun Akademik ' . $data['year']->name)
     @endif
 @section('content')
     <div class="card">

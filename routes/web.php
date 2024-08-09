@@ -81,23 +81,24 @@ $roles = ['superadmin', 'admin', 'staff', 'agency', 'mentor', 'dosen', 'mahasisw
 foreach ($roles as $role) {
     Route::prefix($role)->middleware(['auth', "role:$role"])->group(function () use ($role) {
         Route::get('/dashboard', [HomeController::class, 'index'])->name("$role.dashboard");
-        Route::get('/profile',[ProfileController::class,'index_{role}'])->name("$role.profile");
+        Route::get('/profile',[ProfileController::class,'index'])->name("profile.$role");
+        Route::post('/profile/update',[ProfileController::class,'update'])->name("update.$role");
     });
 }
 // CRUD Jurusan dan Prsodi
-Route::prefix('jurusan')->group(function(){
+Route::prefix('jurusan')->middleware(['auth','role:superadmin'])->group(function(){
     Route::get('/',[JurusanController::class,'index'])->name('jurusan.index');
     Route::post('/store',[JurusanController::class,'store'])->name('jurusan.store');
     Route::delete('/delete/{jurusan}',[JurusanController::class,'delete'])->name('jurusan.delete');
 });
 
-Route::prefix('jurusan/{jurusan}')->group(function(){
+Route::prefix('jurusan/{jurusan}')->middleware(['auth','role:superadmin,admin'])->group(function(){
     Route::get('/',[ProdiController::class,'index'])->name('prodi.index');
     Route::post('/store',[ProdiController::class,'store'])->name('prodi.store');
     Route::delete('/delete/{prodi}',[ProdiController::class,'delete'])->name('prodi.delete');
 });
 
-Route::prefix('year')->group(function(){
+Route::prefix('year')->middleware(['auth','role:superadmin,admin'])->group(function(){
     Route::get('/',[YearController::class,'index'])->name('year.index');
     Route::post('/store',[YearController::class,'store'])->name('year.store');
     Route::delete('/delete/{year}',[YearController::class,'delete'])->name('year.delete');
@@ -109,7 +110,7 @@ Route::prefix('year')->group(function(){
     });
 });
 
-Route::prefix('scores')->group(function(){
+Route::prefix('scores')->middleware(['auth','role:superadmin,admin,staff'])->group(function(){
     Route::get('/menu',[ScoreController::class,'menu'])->name('score.menu');
     Route::get('/{prodi}',[ScoreController::class,'index'])->name('score.index');
     Route::post('/store',[ScoreController::class,'store'])->name('score.store');
@@ -153,7 +154,6 @@ Route::prefix('account')->group(function(){
         Route::post('/disabled/{id}',[UserMahasiswaController::class,'disabled'])->name('user.mahasiswa.disabled');
     });
 
-    Route::get('/profiles', [ProfileController::class,'index'])->name('user.profile');
 
     // Hapus Akun Untuk Semua Role
     Route::delete('/users/delete/{id}',[UserController::class,'delete'])->name('user.delete');

@@ -134,8 +134,7 @@ class UserMahasiswaController extends Controller
             $user->email = $request->email;
         }
         if (isset($request->password)) {
-            # code...
-            $user->password = $request->password;
+            $user->password = bcrypt($request->password);
         }
         $user->save();
 

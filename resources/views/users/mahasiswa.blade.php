@@ -76,9 +76,9 @@
                                 <div class="row mb-2">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="year" class="form-label">Tahun Ajaran</label>
+                                            <label for="year" class="form-label">Tahun Akademik</label>
                                             <select name="year" id="year" class="form-control @error('year') is-invalid @enderror">
-                                                <option value="0">Pilih Tahun Ajaran</option>
+                                                <option value="0">Pilih Tahun Akademik</option>
                                                 @foreach ($data['year'] as $year)
                                                     <option value="{{ $year->id }}">{{ $year->name }}</option>
                                                 @endforeach

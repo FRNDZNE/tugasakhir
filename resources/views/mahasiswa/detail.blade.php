@@ -43,7 +43,7 @@
                     </div>
                     <div class="col-md-4">
                         <h3>Profile Perusahaan</h3>
-                        <p>{{ $data->agency->profile == null ?  'Profil Belum Tersedia' : $data->agency->profile}}</p>
+                        <p>{{ $data->agency->desc == null ?  'Profil Belum Tersedia' : $data->agency->desc}}</p>
                     </div>
                 </div>
             @endif

@@ -8,11 +8,6 @@ use Auth;
 
 class ScoreController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('role:superadmin,admin,staff');
-    }
     public function menu()
     {
         $prodi = Prodi::all();

@@ -64,7 +64,34 @@
                                 <h6 class="text-overflow m-0">Welcome !</h6>
                             </div>
                             <!-- item-->
-                            <a href="contacts-profile.html" class="dropdown-item notify-item">
+                            <a href="
+                                @switch(Auth::user()->role->name)
+                                    @case('superadmin')
+                                            {{ route('profile.superadmin') }}
+                                        @break
+                                    @case('admin')
+                                            {{ route('profile.admin') }}
+                                        @break
+                                    @case('staff')
+                                            {{ route('profile.staff') }}
+                                        @break
+                                    @case('agency')
+                                            {{ route('profile.agency') }}
+                                        @break
+                                    @case('mentor')
+                                            {{ route('profile.mentor') }}
+                                        @break
+                                    @case('dosen')
+                                            {{ route('profile.dosen') }}
+                                        @break
+                                    @case('mahasiswa')
+                                            {{ route('profile.mahasiswa') }}
+                                        @break
+
+                                    @default
+
+                                @endswitch
+                            " class="dropdown-item notify-item">
                                 <i class="fe-user"></i>
                                 <span>My Account</span>
                             </a>
