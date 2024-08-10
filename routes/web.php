@@ -98,7 +98,7 @@ Route::prefix('jurusan/{jurusan}')->middleware(['auth','role:superadmin,admin'])
     Route::delete('/delete/{prodi}',[ProdiController::class,'delete'])->name('prodi.delete');
 });
 
-Route::prefix('year')->middleware(['auth','role:superadmin,admin'])->group(function(){
+Route::prefix('year')->middleware(['auth','role:superadmin,admin,staff'])->group(function(){
     Route::get('/',[YearController::class,'index'])->name('year.index');
     Route::post('/store',[YearController::class,'store'])->name('year.store');
     Route::delete('/delete/{year}',[YearController::class,'delete'])->name('year.delete');
@@ -190,8 +190,7 @@ Route::middleware(['auth','role:mahasiswa'])->prefix('mahasiswa/magang')->group(
     Route::prefix('assistance')->group(function(){
         Route::get('/',[AsistensiController::class,'index'])->name('mahasiswa.asistensi.index');
         Route::post('store',[AsistensiController::class,'store'])->name('mahasiswa.asistensi.store');
-        Route::post('/confirmed',[AsistensiController::class,'confirmed'])->name('mahasiswa.asistensi.confirmed');
-        Route::post('/unconfirmed',[AsistensiController::class,'unconfirmed'])->name('mahasiswa.asistensi.unconfirmed');
+
         Route::delete('delete/{id}',[AsistensiController::class,'delete'])->name('mahasiswa.asistensi.delete');
     });
 
@@ -266,8 +265,8 @@ Route::prefix('dosen')->middleware(['auth','role:dosen'])->group(function(){
                 Route::get('/logbook',[BimbinganController::class,'logbook'])->name('dosen.bimbingan.logbook');
                 Route::get('/final-report/{report}',[BimbinganController::class,'report'])->name('dosen.bimbingan.report');
                 Route::get('/asistensi',[BimbinganController::class,'asistensi'])->name('dosen.bimbingan.asistensi');
-                Route::post('/asistensi/confirm',[BimbinganController::class,'confirmed'])->name('dosen.bimbingan.confirmed');
-                Route::post('/asistensi/unconfirm',[BimbinganController::class,'unconfirmed'])->name('dosen.bimbingan.unconfirmed');
+                Route::post('/asistensi/confirmed',[AsistensiController::class,'confirmed'])->name('dosen.asistensi.confirmed');
+                Route::post('/asistensi/unconfirmed',[AsistensiController::class,'unconfirmed'])->name('dosen.asistensi.unconfirmed');
             });
         });
     });

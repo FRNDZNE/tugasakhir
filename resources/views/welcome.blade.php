@@ -40,11 +40,17 @@
                                     @csrf
                                     <div class="mb-3">
                                         <label for="uuid" class="form-label">Username</label>
-                                        <input class="form-control" type="login" name="login" id="uuid" placeholder="Username">
+                                        <input class="form-control @error('login') is-invalid @enderror" type="login" name="login" id="uuid" placeholder="Username" value="{{ old('login') }}">
+                                        @error('login')
+                                            <span class="invalid-feedback">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div class="mb-3">
                                         <label for="password" class="form-label">Password</label>
-                                        <input class="form-control" type="password" name="password" id="password" placeholder="Password">
+                                        <input class="form-control @error('password') is-invalid @enderror" type="password" name="password" id="password" placeholder="Password" >
+                                        @error('password')
+                                            <span class="invalid-feedback">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div class="mb-3">
                                         <div class="form-check">

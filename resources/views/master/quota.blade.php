@@ -4,21 +4,23 @@
 @endsection
 @section('page-title','Kuota Magang Di '. $data['agent']->name)
 @section('content')
-    <div class="card">
-        <div class="card-body">
-            @if (Auth::user()->role->name == 'superadmin' || Auth::user()->role->name == 'admin')
-                <a href="{{ route('user.agency.index') }}" class="btn btn-secondary btn-md">Kembali</a>
-            @endif
+<div class="card">
+    <div class="card-body">
+        @if (Auth::user()->role->name == 'superadmin' || Auth::user()->role->name == 'admin')
+        <a href="{{ route('user.agency.index') }}" class="btn btn-secondary btn-md">Kembali</a>
+        @endif
+            <span class="badge bg-info">Jangan di isi apabila tidak ingin membuka lowongan magang pada program studi</span>
             <hr>
             <table id="datatable" class="table table-bordered dt-responsive table-responsive nowrap">
                 <thead>
                     <tr>
                         <th>No</th>
                         <th>Prodi</th>
-                        <th>Periode</th>
+                        <th>Tahun</th>
                         <th>Mulai</th>
                         <th>Selesai</th>
                         <th>Kuota</th>
+                        <th>Tersedia</th>
                         <th>Opsi</th>
                     </tr>
                 </thead>
@@ -32,6 +34,7 @@
                             <td>{{ $q->end }}</td>
                             @forelse ($q->quota as $quota)
                                 <td>{{ $quota->total }}</td>
+                                <td>0</td>
                                 <td>
                                     {{-- Modal Update --}}
                                         <!-- Modal trigger button -->
@@ -104,6 +107,7 @@
                                 </td>
                             @empty
                                 <td>0</td>
+                                <td>N/A</td>
                                 <td>
                                     {{-- Modal Update --}}
                                         <!-- Modal trigger button -->
@@ -174,6 +178,7 @@
                                     {{-- End Modal Update --}}
                                 </td>
                             @endforelse
+
                         </tr>
                     @endforeach
                 </tbody>

@@ -19,7 +19,7 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $y->name }}</td>
-                            <td><a class="btn btn-md btn-info" href="{{ route('dosen.bimbingan.period', $y->id) }}">Pilih</a></td>
+                            <td><a class="btn btn-md btn-info" href="{{ route('staff.select.period', $y->id) }}">Pilih</a></td>
                         </tr>
                     @endforeach
                 </tbody>

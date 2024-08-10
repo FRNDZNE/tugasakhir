@@ -66,7 +66,7 @@ class UserAgencyController extends Controller
         $agent->name = $request->name;
         $agent->uuid = $request->uuid;
         $agent->address = $request->address;
-        $agent->contact = preg_replace('/^0/', '62', $request->contact);
+        $agent->contact = $request->contact;
         if (isset($request->desc)) {
             $agent->desc = $request->desc;
         }

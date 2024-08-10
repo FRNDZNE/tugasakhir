@@ -59,7 +59,12 @@ class AsistensiController extends Controller
         return redirect()->back()->with('success','Berhasil Menghapus Data');
     }
 
-    public function confirmed(Request $request)
+    // Path Dosen
+    public function index_dosen($intern)
+    {
+
+    }
+    public function confirmed($intern, Request $request)
     {
         Assistance::updateOrCreate(
             [
@@ -73,7 +78,7 @@ class AsistensiController extends Controller
         return redirect()->back()->with('success','Berhasil Mengubah Status');
     }
 
-    public function unconfirmed(Request $request)
+    public function unconfirmed($intern, Request $request)
     {
         Assistance::updateOrCreate(
             [
@@ -87,6 +92,5 @@ class AsistensiController extends Controller
         return redirect()->back()->with('success','Berhasil Mengubah Status');
     }
 
-    // Path Dosen
 
 }
