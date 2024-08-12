@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Assistance;
+use App\Models\Intern;
 use Auth;
 
 class AsistensiController extends Controller
@@ -60,9 +61,11 @@ class AsistensiController extends Controller
     }
 
     // Path Dosen
-    public function index_dosen($intern)
+    public function asistensi($intern)
     {
-
+        $user = Intern::where('id', $intern)->first();
+        $data = Assistance::where('intern_id', $user->id)->get();
+        return view('mahasiswa.assistance',compact('data','user'));
     }
     public function confirmed($intern, Request $request)
     {

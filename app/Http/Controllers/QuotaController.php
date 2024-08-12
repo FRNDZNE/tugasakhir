@@ -21,7 +21,6 @@ class QuotaController extends Controller
             $data['period'] = Period::with(['quota' => function($query) use ($agent){
                 $query->where('agency_id', $agent)->with('agency');
             }])->get();
-            // return $data['agent'];
             return view('master.quota',compact('data'));
         } catch (Throwable $e) {
 
@@ -43,7 +42,7 @@ class QuotaController extends Controller
         $request->validate([
             'total' => 'required',
         ], $messages, $attributes);
-        Quota::updateOrCreate(
+        $quota = Quota::updateOrCreate(
             [
                 'id' => $request->id,
             ],
@@ -53,6 +52,11 @@ class QuotaController extends Controller
                 'total' => $request->total,
             ]
         );
+
+        if ($request->total == 0) {
+            # code...
+            $quota->find($request->id)->forceDelete();
+        }
 
         return redirect()->back()->with('success','Berhasil Menambah Data');
     }

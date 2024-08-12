@@ -139,7 +139,7 @@ class LogbookController extends Controller
 
     public function delete_image($logbook, $image)
     {
-        $gambar = LogbookImage::where('id', $image)->first();
+        $gambar = LogbookImage::where('id', $image)->where('logbook_id', $logbook)->first();
         if (file_exists($gambar->path)) {
             # code...
             unlink($gambar->path);

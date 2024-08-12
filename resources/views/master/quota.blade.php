@@ -83,7 +83,7 @@
                                                             <input type="hidden" name="period" value="{{ $q->id }}">
                                                             <div class="form-group">
                                                                 <label for="total" class="form-label">Kuota Magang</label>
-                                                                <input type="number" name="total" id="total" class="form-control @error('total') is-invalid @enderror" value="{{ $quota->total }}">
+                                                                <input type="number" min="0" name="total" id="total" class="form-control @error('total') is-invalid @enderror" value="{{ $quota->total }}">
                                                                 @error('total')
                                                                     <span class="invalid-feedback">{{ $message }}</span>
                                                                 @enderror
@@ -150,12 +150,12 @@
                                                         ></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form action="{{ route('quota.store', $data['agent']->id) }}" method="post" id="storeQuota">
+                                                        <form action="{{ route('quota.store', $data['agent']->id) }}" method="post" id="storeQuota-{{ $q->id }}">
                                                             @csrf
                                                             <input type="hidden" name="period" value="{{ $q->id }}">
                                                             <div class="form-group">
                                                                 <label for="total" class="form-label">Kuota Magang</label>
-                                                                <input type="number" name="total" id="total" class="form-control @error('total') is-invalid @enderror">
+                                                                <input type="number" min="0" name="total" id="total" class="form-control @error('total') is-invalid @enderror">
                                                                 @error('total')
                                                                     <span class="invalid-feedback">{{ $message }}</span>
                                                                 @enderror
@@ -170,7 +170,7 @@
                                                         >
                                                             Close
                                                         </button>
-                                                        <button type="button" class="btn btn-success" onclick="document.getElementById('storeQuota').submit();">Simpan</button>
+                                                        <button type="button" class="btn btn-success" onclick="document.getElementById('storeQuota-{{ $q->id }}').submit();">Simpan</button>
                                                     </div>
                                                 </div>
                                             </div>

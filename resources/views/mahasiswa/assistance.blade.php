@@ -6,6 +6,9 @@
 @section('content')
     <div class="card">
         <div class="card-body">
+            @if (Auth::user()->role->name == 'dosen')
+                <a href="{{ route('dosen.bimbingan.detail', $user->id) }}" class="btn btn-md btn-secondary">Kembali</a>
+            @endif
             @if (Auth::user()->role->name == 'mahasiswa')
 
             <!-- Modal trigger button -->
@@ -261,13 +264,13 @@
                                 @if (Auth::user()->role->name == 'dosen')
                                     @if ($d->status)
                                     <button onclick="document.getElementById('unconfirmed-{{ $d->id }}').submit();" type="submit" class="btn btn-md btn-dark"><i class="fas fa-times"></i></button>
-                                        <form action="{{ route('mahasiswa.asistensi.unconfirmed') }}" method="post" id="unconfirmed-{{ $d->id }}">
+                                        <form action="{{ route('dosen.asistensi.unconfirmed', $d->intern->id) }}" method="post" id="unconfirmed-{{ $d->id }}">
                                             @csrf
                                             <input type="hidden" name="id" value="{{ $d->id }}">
                                         </form>
                                     @else
                                     <button onclick="document.getElementById('confirmed-{{ $d->id }}').submit();" type="submit" class="btn btn-md btn-success"><i class="fas fa-check"></i></button>
-                                        <form action="{{ route('mahasiswa.asistensi.confirmed') }}" method="post" id="confirmed-{{ $d->id }}">
+                                        <form action="{{ route('dosen.asistensi.confirmed',$d->intern->id) }}" method="post" id="confirmed-{{ $d->id }}">
                                             @csrf
                                             <input type="hidden" name="id" value="{{ $d->id }}">
                                         </form>

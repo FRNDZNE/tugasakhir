@@ -8,6 +8,8 @@
         <div class="card-body">
             @if (Auth::user()->role->name == 'agency' || Auth::user()->role->name == 'mentor')
                 <a href="{{ route('agency.profile.mahasiswa', $magang->id) }}" class="btn btn-md btn-secondary">Kembali</a>
+            @elseif (Auth::user()->role->name == 'dosen')
+                <a href="{{ route('dosen.bimbingan.detail', $magang->id) }}" class="btn btn-md btn-secondary">Kembali</a>
             @endif
             <hr>
             <table id="datatable" class="table table-borQEdered dt-responsive table-responsive nowrap">
@@ -16,7 +18,10 @@
                         <th>No</th>
                         <th>Penilaian</th>
                         <th>Nilai</th>
+                        @if (Auth::user()->role->name == 'agency' || Auth::user()->role->name == 'mentor')
                         <th>Opsi</th>
+                        @endif
+
                     </tr>
                 </thead>
                 <tbody>
@@ -28,6 +33,7 @@
                             <td>{{ $key+1 }}</td>
                             <td>{{ $s->name }}</td>
                             <td>{{ $val ? $val->value : 'N/A' }}</td>
+                            @if (Auth::user()->role->name == 'agency' || Auth::user()->role->name == 'mentor')
                             <td>
                                 <!-- Modal trigger button -->
                                 <button
@@ -114,6 +120,8 @@
                                     </div>
                                 </div>
                             </td>
+                            @endif
+
                         </tr>
                     @endforeach
                 </tbody>

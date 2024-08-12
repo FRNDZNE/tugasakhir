@@ -37,13 +37,16 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
+                        @if (!Auth::user()->role->name == 'mentor')
                         <h4>Mentor</h4>
-                        @if ($magang->mentor)
-                            <p><b>Nama Lengkap : </b> {{ $magang->mentor->name }}</p>
-                            <p><b>Kontak : </b> <a href="https://wa.me/{{ $magang->mentor->contact }}" target="_blank">{{ $magang->mentor->contact }}</a></p>
-                        @else
-                            <b>Belum Ditentukan</b>
+                            @if ($magang->mentor)
+                                <p><b>Nama Lengkap : </b> {{ $magang->mentor->name }}</p>
+                                <p><b>Kontak : </b> <a href="https://wa.me/{{ $magang->mentor->contact }}" target="_blank">{{ $magang->mentor->contact }}</a></p>
+                            @else
+                                <b>Belum Ditentukan</b>
+                            @endif
                         @endif
+
                     </div>
                     <div class="col-md-6">
                         <h4>Dosen Pembimbing</h4>

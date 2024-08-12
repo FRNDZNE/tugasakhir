@@ -1,12 +1,16 @@
 @extends('layouts.app')
-@section('title','Input Gambar Logbook')
+@section('title','Dokumentasi Logbook')
 @section('css')
 @endsection
-@section('page-title','Input Gambar Logbook')
+@section('page-title','Dokumentasi Logbook')
 @section('content')
     <div class="card">
         <div class="card-body">
-            <a href="{{ route('agency.logbook.mahasiswa', $user->id) }}" class="btn btn-md btn-secondary">Kembali</a>
+            @if (Auth::user()->role->name == 'agency' || Auth::user()->role == 'mentor')
+                <a href="{{ route('agency.logbook.mahasiswa', $user->id) }}" class="btn btn-md btn-secondary">Kembali</a>
+            @elseif (Auth::user()->role->name == 'dosen')
+                <a href="{{ route('dosen.bimbingan.logbook', $user->id) }}" class="btn btn-md btn-secondary">Kembali</a>
+            @endif
             <div class="port mb-2">
                 <div class="row portfolioContainer">
                     @foreach ($gambar as $g)

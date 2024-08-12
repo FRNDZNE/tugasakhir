@@ -5,7 +5,7 @@
             <span> Dashboard Mahasiswa</span>
         </a>
     </li>
-    @if (!Auth::user()->mahasiswa->accepted || !Auth::user()->mahasiswa->accepted)
+    @if (!Auth::user()->mahasiswa->accepted)
     <li>
         <a href="{{ route('mahasiswa.magang.index') }}">
             <i class="mdi mdi-view-dashboard-outline"></i>

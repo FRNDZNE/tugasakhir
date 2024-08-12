@@ -253,22 +253,25 @@ Route::prefix('staff')->middleware(['auth','role:staff'])->group(function(){
 // Route Dosen
 Route::prefix('dosen')->middleware(['auth','role:dosen'])->group(function(){
     Route::prefix('bimbingan')->group(function(){
+        Route::prefix('mahasiswa')->group(function(){
+            Route::prefix('{intern}')->group(function(){
+                Route::get('/',[BimbinganController::class,'detail'])->name('dosen.bimbingan.detail');
+                Route::get('/asistensi',[AsistensiController::class,'asistensi'])->name('dosen.bimbingan.asistensi');
+                Route::post('/asistensi/confirmed',[AsistensiController::class,'confirmed'])->name('dosen.asistensi.confirmed');
+                Route::post('/asistensi/unconfirmed',[AsistensiController::class,'unconfirmed'])->name('dosen.asistensi.unconfirmed');
+                Route::get('/absensi',[AbsensiController::class,'absen_mahasiswa'])->name('dosen.bimbingan.absensi');
+                Route::get('/logbook',[LogbookController::class,'index_mahasiswa'])->name('dosen.bimbingan.logbook');
+                Route::get('/logbook/{log}',[LogbookController::class,'index_image_mahasiswa'])->name('dosen.bimbingan.logimage');
+                Route::get('/report',[ReportController::class,'report'])->name('dosen.bimbingan.report');
+                Route::get('/score',[ScoreValueController::class,'index'])->name('dosen.bimbingan.score');
+            });
+        });
         Route::get('/',[BimbinganController::class,'index_year'])->name('dosen.bimbingan.year');
         Route::get('/{year}',[BimbinganController::class,'index_period'])->name('dosen.bimbingan.period');
         Route::get('{year}/{period}',[BimbinganController::class,'index'])->name('dosen.bimbingan.intern');
 
         // Route Detail Mahasiswa Bimbingan
-        Route::prefix('mahasiswa')->group(function(){
-            Route::prefix('{intern}')->group(function(){
-                Route::get('/',[BimbinganController::class,'detail'])->name('dosen.bimbingan.detail');
-                Route::get('/absensi',[BimbinganController::class,'absensi'])->name('dosen.bimbingan.absensi');
-                Route::get('/logbook',[BimbinganController::class,'logbook'])->name('dosen.bimbingan.logbook');
-                Route::get('/final-report/{report}',[BimbinganController::class,'report'])->name('dosen.bimbingan.report');
-                Route::get('/asistensi',[BimbinganController::class,'asistensi'])->name('dosen.bimbingan.asistensi');
-                Route::post('/asistensi/confirmed',[AsistensiController::class,'confirmed'])->name('dosen.asistensi.confirmed');
-                Route::post('/asistensi/unconfirmed',[AsistensiController::class,'unconfirmed'])->name('dosen.asistensi.unconfirmed');
-            });
-        });
+
     });
 });
 

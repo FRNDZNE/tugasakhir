@@ -8,7 +8,6 @@
         <div class="card-body">
             <a href="{{ route('mahasiswa.logbook.index') }}" class="btn btn-secondary btn-md">Kembali</a>
             <!-- Modal trigger button -->
-
             <button
                 type="button"
                 class="btn btn-primary btn-md"
@@ -160,7 +159,7 @@
                                         type="button"
                                         class="btn btn-danger btn-md"
                                         data-bs-toggle="modal"
-                                        data-bs-target="#modalId"
+                                        data-bs-target="#modaldelete-{{ $g->id }}"
                                     >
                                         <i class="fas fa-trash"></i>
                                     </button>
@@ -169,7 +168,7 @@
                                     <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
                                     <div
                                         class="modal fade"
-                                        id="modalId"
+                                        id="modaldelete-{{ $g->id }}"
                                         tabindex="-1"
                                         data-bs-backdrop="static"
                                         data-bs-keyboard="false"
@@ -199,6 +198,7 @@
                                                     <form action="{{ route('logbook.image.delete', [$log->id, $g->id]) }}" method="post" id="deleteLog-{{ $g->id }}">
                                                         @csrf
                                                         @method('DELETE')
+                                                        {{-- <input type="hidden" name="id" value="{{ $g->id }}"> --}}
                                                     </form>
                                                 </div>
                                                 <div class="modal-footer">

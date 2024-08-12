@@ -11,6 +11,8 @@
             @if (Auth::user()->role->name == 'superadmin' || Auth::user()->role->name == 'admin')
                 <a href="{{ route('user.mahasiswa.menu') }}" class="btn btn-secondary btn-md">Kembali</a>
             @endif
+            @if (Auth::user()->role->name == 'staff' || Auth::user()->role->name == 'superadmin')
+
             <button
                 type="button"
                 class="btn btn-primary btn-md"
@@ -19,7 +21,6 @@
             >
                 Tambah Mahasiswa
             </button>
-
             <!-- Modal Body -->
             <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
             <div
@@ -154,6 +155,8 @@
                 </div>
             </div>
             {{-- End Modal --}}
+            @endif
+
             <hr>
             <table id="datatable" class="table table-bordered dt-responsive table-responsive nowrap">
                 <thead>
@@ -408,7 +411,11 @@
                                 </form>
                             </td>
                             @else
-                            <td>Coming Soon</td>
+                                @if ($u->mahasiswa->accepted)
+                                    <td>Sudah Diterima Magang</td>
+                                @else
+                                    <td>Belum Daftar Magang</td>
+                                @endif
                             @endif
                         </tr>
                     @endforeach

@@ -91,6 +91,8 @@
             </div>
             @elseif(Auth::user()->role->name == 'agency' || Auth::user()->role->name == 'mentor')
                 <a href="{{ route('agency.profile.mahasiswa', $user->id) }}" class="btn btn-secondary md">Kembali</a>
+            @elseif (Auth::user()->role->name == 'dosen')
+                <a href="{{ route('dosen.bimbingan.detail', $user->id) }}" class="btn btn-md btn-secondary">Kembali</a>
             @endif
             <hr>
             <table id="datatable" class="table table-bordered dt-responsive table-responsive nowrap">
@@ -261,6 +263,8 @@
                                 <a href="{{ route('logbook.image.index', $d->id) }}" class="btn btn-md btn-info"><i class="fas fa-file-image"></i></a>
                                 @elseif (Auth::user()->role->name == 'agency' || Auth::user()->role->name == 'mentor')
                                 <a href="{{ route('agency.logimage.mahasiswa',[$user->id, $d->id]) }}" class="btn btn-md btn-info"><i class="fas fa-file-image"></i></a>
+                                @elseif (Auth::user()->role->name == 'dosen')
+                                <a href="{{ route('dosen.bimbingan.logimage',[$user->id, $d->id]) }}" class="btn btn-md btn-info"><i class="fas fa-file-image"></i></a>
                                 @endif
                             </td>
                         </tr>
