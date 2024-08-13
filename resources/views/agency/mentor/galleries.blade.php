@@ -13,7 +13,7 @@
             @endif
             <div class="port mb-2">
                 <div class="row portfolioContainer">
-                    @foreach ($gambar as $g)
+                    @forelse ($gambar as $g)
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="gal-detail thumb">
                             <a href="{{ asset($g->path) }}" class="image-popup" title="{{ $g->logbook->date }}">
@@ -21,7 +21,9 @@
                             </a>
                         </div>
                     </div>
-                    @endforeach
+                    @empty
+                    <h1 class="mt-2">Gambar Tidak Ada</h1>
+                    @endforelse
                 </div><!-- end portfoliocontainer-->
             </div>
         </div>

@@ -263,7 +263,7 @@
                                 {{-- End Modal Delete --}}
                                 @if (Auth::user()->role->name == 'dosen')
                                     @if ($d->status)
-                                    <button onclick="document.getElementById('unconfirmed-{{ $d->id }}').submit();" type="submit" class="btn btn-md btn-dark"><i class="fas fa-times"></i></button>
+                                    <button onclick="document.getElementById('unconfirmed-{{ $d->id }}').submit();" type="submit" class="btn btn-md btn-danger"><i class="fas fa-square"></i></button>
                                         <form action="{{ route('dosen.asistensi.unconfirmed', $d->intern->id) }}" method="post" id="unconfirmed-{{ $d->id }}">
                                             @csrf
                                             <input type="hidden" name="id" value="{{ $d->id }}">

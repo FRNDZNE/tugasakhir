@@ -50,7 +50,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <h5>Prodi Yang Diampu</h5>
+                        <h5>Lingkup Bimbingan</h5>
                     </div>
                 </div>
                 <div class="row">
