@@ -80,7 +80,12 @@ Route::get('mahasiswa/forbidden',function(){
 $roles = ['superadmin', 'admin', 'staff', 'agency', 'mentor', 'dosen', 'mahasiswa'];
 foreach ($roles as $role) {
     Route::prefix($role)->middleware(['auth', "role:$role"])->group(function () use ($role) {
-        Route::get('/dashboard', [HomeController::class, 'index'])->name("$role.dashboard");
+        // Route::get('/dashboard', [HomeController::class, '$role'])->name("$role.dashboard");
+        Route::get('dashboard', function() use ($role){
+            $controller = app(HomeController::class);
+            $method = $role;
+            return $controller->$method();
+        })->name("$role.dashboard");
         Route::get('/profile',[ProfileController::class,'index'])->name("profile.$role");
         Route::post('/profile/update',[ProfileController::class,'update'])->name("update.$role");
     });
@@ -190,7 +195,6 @@ Route::middleware(['auth','role:mahasiswa'])->prefix('mahasiswa/magang')->group(
     Route::prefix('assistance')->group(function(){
         Route::get('/',[AsistensiController::class,'index'])->name('mahasiswa.asistensi.index');
         Route::post('store',[AsistensiController::class,'store'])->name('mahasiswa.asistensi.store');
-
         Route::delete('delete/{id}',[AsistensiController::class,'delete'])->name('mahasiswa.asistensi.delete');
     });
 
@@ -206,6 +210,9 @@ Route::middleware(['auth','role:mahasiswa'])->prefix('mahasiswa/magang')->group(
         Route::post('/update',[ReportController::class,'update'])->name('mahasiswa.report.update');
         // Route::delete('/delete/{id}',[ReportController::class,'delete'])->name('mahasiswa.report.delete');
     });
+
+    Route::get('/history',[MagangController::class,'history'])->name('mahasiswa.history');
+
 });
 // Route Agency dan mentor
 Route::prefix('mitra')->middleware(['auth','role:agency,mentor'])->group(function(){

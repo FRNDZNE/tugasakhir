@@ -33,7 +33,6 @@ class MagangController extends Controller
         ->groupBy('quotas.agency_id')
         ->groupBy('quotas.period_id')
         ->get();
-
         // return $data;
 
         return view('mahasiswa.magang',compact('data'));
@@ -55,7 +54,11 @@ class MagangController extends Controller
         }
 
         $user = Auth::user()->mahasiswa->intern();
+        if ($user) {
+            # code...
+            return redirect()->back()->with('error', 'Sudah Mendaftar Magang, Silahkan Batalkan Magang Sebelumnya');
 
+        }
         Intern::create([
             'agency_id' => $request->mitra,
             'period_id' => $request->period,
@@ -89,6 +92,22 @@ class MagangController extends Controller
         // })
         // ->get();
 
+    }
+
+    public function cancel($id)
+    {
+        Intern::where('id', $id)->delete();
+        return redirect()->back()->with('success','Berhasil Membatalkan Magang');
+    }
+
+    public function history()
+    {
+        $mahasiswa = Auth::user()->mahasiswa->id;
+        $data = Intern::withTrashed()
+        ->where('mahasiswa_id', $mahasiswa)
+        ->get();
+
+        return view('mahasiswa.history',compact('data'));
     }
 
 }

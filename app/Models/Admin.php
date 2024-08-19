@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\softDeletes;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Admin extends Model
 {
-    use HasFactory, softDeletes;
+    use HasFactory, SoftDeletes;
     protected $table = 'admins';
     protected $guarded = [];
 
@@ -21,5 +21,5 @@ class Admin extends Model
     {
         return $this->belongsTo(Jurusan::class);
     }
-    
+
 }

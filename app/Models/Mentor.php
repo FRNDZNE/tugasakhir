@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\softDeletes;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Mentor extends Model
 {
-    use HasFactory, softDeletes;
+    use HasFactory, SoftDeletes;
     protected $table = 'mentors';
     protected $guarded = [];
 
@@ -27,5 +27,5 @@ class Mentor extends Model
         return $this->hasMany(Intern::class);
     }
 
-    
+
 }

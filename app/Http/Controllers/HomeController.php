@@ -22,9 +22,44 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    // public function index()
+    // {
+    //     // $role = Auth::user()->role->name;
+    //     return view('home');
+    // }
+
+    public function superadmin()
     {
-        // $role = Auth::user()->role->name;
-        return view('home');
+        return view('dashboard.superadmin');
+    }
+
+    public function admin()
+    {
+        return view('dashboard.admin');
+    }
+
+    public function staff()
+    {
+        return view('dashboard.staff');
+    }
+
+    public function agency()
+    {
+        return view('dashboard.agency');
+    }
+
+    public function mentor()
+    {
+        return view('dashboard.mentor');
+    }
+
+    public function dosen()
+    {
+        return view('dashboard.dosen');
+    }
+
+    public function mahasiswa()
+    {
+        return view('dashboard.mahasiswa');
     }
 }

@@ -11,7 +11,6 @@
             @if (Auth::user()->role->name == 'superadmin' || Auth::user()->role->name == 'admin')
                 <a href="{{ route('user.mahasiswa.menu') }}" class="btn btn-secondary btn-md">Kembali</a>
             @endif
-            @if (Auth::user()->role->name == 'staff' || Auth::user()->role->name == 'superadmin')
 
             <button
                 type="button"
@@ -155,7 +154,6 @@
                 </div>
             </div>
             {{-- End Modal --}}
-            @endif
 
             <hr>
             <table id="datatable" class="table table-bordered dt-responsive table-responsive nowrap">

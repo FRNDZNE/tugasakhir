@@ -51,10 +51,10 @@
             </a>
         </li>
     @endif
-    {{-- <li>
+    <li>
         <a href="#">
             <i class="mdi mdi-view-dashboard-outline"></i>
             <span> History Daftar Magang </span>
         </a>
-    </li> --}}
+    </li>
 @endif

@@ -52,12 +52,6 @@
                                             <span class="invalid-feedback">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                    <div class="mb-3">
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="checkbox-signin" >
-                                            <label class="form-check-label" for="checkbox-signin">Remember me</label>
-                                        </div>
-                                    </div>
                                     <div class="mb-3 d-grid text-center">
                                         <button class="btn btn-primary" type="submit"> Log In </button>
                                     </div>

@@ -148,7 +148,7 @@
                     <tr>
                         <th>No</th>
                         <th>Mitra</th>
-                        <th>Alamat</th>
+                        {{-- <th>Alamat</th> --}}
                         <th>Opsi</th>
                     </tr>
                 </thead>
@@ -157,7 +157,7 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $u->agency->name }}</td>
-                            <td>{{ $u->agency->address }}</td>
+                            {{-- <td>{{ $u->agency->address }}</td> --}}
                             <td>
                                 {{-- Modal Update --}}
                                     <!-- Modal trigger button -->

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Dashboard')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -9,6 +9,7 @@
 
                 <div class="card-body">
                     <h5>Login Saat Ini Sebagai {{ Auth::user()->role->display_name }}</h5>
+                    {{-- <h5>WOY</h5> --}}
                 </div>
             </div>
         </div>
