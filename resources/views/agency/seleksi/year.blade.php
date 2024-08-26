@@ -17,7 +17,8 @@
                     @foreach ($year as $y)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td><a href="{{ route('agency.select.period', $y->id) }}">{{ $y->name }}</a></td>
+                            <td>{{ $y->name }}</td>
+                            <td><a href="{{ route('agency.select.period', $y->id) }}" class="btn btn-info btn-md">Pilih</a></td>
                         </tr>
                     @endforeach
                 </tbody>

@@ -53,7 +53,7 @@ class MagangController extends Controller
             return redirect()->back()->with('error', 'Kuota sudah penuh');
         }
 
-        $user = Auth::user()->mahasiswa->intern();
+        $user = Auth::user()->mahasiswa->intern;
         if ($user) {
             # code...
             return redirect()->back()->with('error', 'Sudah Mendaftar Magang, Silahkan Batalkan Magang Sebelumnya');
@@ -94,9 +94,9 @@ class MagangController extends Controller
 
     }
 
-    public function cancel($id)
+    public function cancel(Request $request)
     {
-        Intern::where('id', $id)->delete();
+        Intern::where('id', $request->id)->delete();
         return redirect()->back()->with('success','Berhasil Membatalkan Magang');
     }
 

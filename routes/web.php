@@ -125,22 +125,22 @@ Route::prefix('scores')->middleware(['auth','role:superadmin,admin,staff'])->gro
 // CRUD ACCOUNT
 
 Route::prefix('account')->group(function(){
-    Route::prefix('admin')->group(function(){
+    Route::prefix('admin')->middleware(['auth','role:superadmin'])->group(function(){
         Route::get('/',[UserAdminController::class,'index'])->name('user.admin.index');
         Route::post('/store',[UserAdminController::class,'store'])->name('user.admin.store');
         Route::post('/update',[UserAdminController::class,'update'])->name('user.admin.update');
     });
-    Route::prefix('staff')->group(function(){
+    Route::prefix('staff')->middleware(['auth','role:superadmin,admin'])->group(function(){
         Route::get('/',[UserStaffController::class,'index'])->name('user.staff.index');
         Route::post('/store',[UserStaffController::class,'store'])->name('user.staff.store');
         Route::post('/update',[UserStaffController::class,'update'])->name('user.staff.update');
     });
-    Route::prefix('agency')->group(function(){
+    Route::prefix('agency')->middleware(['auth','role:superadmin,admin'])->group(function(){
         Route::get('/',[UserAgencyController::class,'index'])->name('user.agency.index');
         Route::post('/store',[UserAgencyController::class,'store'])->name('user.agency.store');
         Route::post('/update',[UserAgencyController::class,'update'])->name('user.agency.update');
     });
-    Route::prefix('mentor/{agency}')->group(function(){
+    Route::prefix('mentor/{agency}')->middleware(['auth','role:superadmin,admin,agency'])->group(function(){
         Route::get('/',[UserMentorController::class,'index'])->name('user.mentor.index');
         Route::post('/store',[UserMentorController::class,'store'])->name('user.mentor.store');
         Route::post('/update',[UserMentorController::class,'update'])->name('user.mentor.update');
@@ -175,6 +175,7 @@ Route::prefix('quota/{agency}')->group(function(){
 Route::middleware(['auth','role:mahasiswa'])->prefix('mahasiswa/magang')->group(function(){
     Route::get('list-mitra',[MagangController::class,'index'])->name('mahasiswa.magang.index');
     Route::post('apply',[MagangController::class,'apply'])->name('mahasiswa.magang.apply');
+    Route::post('cancel',[MagangController::class,'cancel'])->name('mahasiswa.magang.cancel');
     Route::get('my-intern',[MagangController::class,'myIntern'])->name('mahasiswa.magang.detail');
     Route::get('nilai-akhir',[MagangController::class,'score_value'])->name('mahasiswa.magang.nilai');
 

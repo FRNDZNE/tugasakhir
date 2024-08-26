@@ -19,8 +19,17 @@ class SeleksiController extends Controller
 
     public function index_period($year)
     {
+        if (Auth::user()->role->name == 'mentor') {
+            $user = Auth::user()->mentor->agency_id;
+        }elseif (Auth::user()->role->name == 'agency') {
+            $user = Auth::user()->agency->id;
+        }
         $tahun = Year::where('id',$year)->first();
-        $period = Period::where('year_id', $year)->get();
+        $period = Period::where('year_id', $year)
+        ->whereHas('quota', function($q) use ($user){
+            $q->where('agency_id', $user);
+        })
+        ->get();
         return view('agency.seleksi.period',compact('period','tahun'));
     }
 

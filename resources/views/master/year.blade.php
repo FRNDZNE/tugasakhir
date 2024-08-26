@@ -81,18 +81,16 @@
                     <tr>
                         <th>No</th>
                         <th>Tahun Ajaran</th>
-                        @if (Auth::user()->role->name == 'superadmin' || Auth::user()->role->name == 'admin')
                         <th>Opsi</th>
-                        @endif
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($year as $y)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td><a href="{{ route('period.index', $y->id) }}">{{ $y->name }}</a></td>
-                            @if (Auth::user()->role->name == 'superadmin' || Auth::user()->role->name == 'admin')
+                            <td>{{ $y->name }}</td>
                             <td>
+                                @if (Auth::user()->role->name == 'superadmin' || Auth::user()->role->name == 'admin')
                                 {{-- Modal Update --}}
                                     <!-- Modal trigger button -->
                                     <button
@@ -222,8 +220,9 @@
                                         </div>
                                     </div>
                                 {{-- End Modal Delete --}}
+                                @endif
+                                <a href="{{ route('period.index', $y->id) }}" class="btn btn-primary btn-md">Pilih</a>
                             </td>
-                            @endif
                         </tr>
                     @endforeach
                 </tbody>

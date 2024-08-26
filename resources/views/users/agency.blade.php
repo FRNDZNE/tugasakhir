@@ -356,8 +356,8 @@
                                         </div>
                                     </div>
                                 {{-- End Modal Delete --}}
-                                <a href="{{ route('user.mentor.index', $u->agency->id) }}" class="btn btn-success btn-md"><i class="fas fa-user"></i></a>
-                                <a href="{{ route('quota.index', $u->agency->id) }}" class="btn btn-dark btn-md"><i class="fas fa-paperclip"></i></a>
+                                {{-- <a href="{{ route('user.mentor.index', $u->agency->id) }}" class="btn btn-success btn-md"><i class="fas fa-user"></i></a> --}}
+                                {{-- <a href="{{ route('quota.index', $u->agency->id) }}" class="btn btn-dark btn-md"><i class="fas fa-paperclip"></i></a> --}}
                             </td>
                         </tr>
                     @endforeach

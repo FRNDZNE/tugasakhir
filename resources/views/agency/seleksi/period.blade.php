@@ -21,9 +21,10 @@
                     @foreach ($period as $p)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td><a href="{{ route('agency.select.intern',[$tahun->id, $p->id]) }}">{{ $p->prodi->display_name }}</a></td>
+                            <td>{{ $p->prodi->display_name }}</td>
                             <td>{{ $p->start }}</td>
                             <td>{{ $p->end }}</td>
+                            <td><a href="{{ route('agency.select.intern',[$tahun->id, $p->id]) }}" class="btn btn-info btn-md">Pilih</a></td>
                         </tr>
                     @endforeach
                 </tbody>
