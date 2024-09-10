@@ -26,6 +26,7 @@ use App\Http\Controllers\BimbinganController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\ScoreValueController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\NotificationController;
 
 
 /*
@@ -81,6 +82,11 @@ foreach ($roles as $role) {
             $method = $role;
             return $controller->$method();
         })->name("$role.dashboard");
+        Route::get('notification', function() use ($role){
+            $controller = app(NotificationController::class);
+            $method = $role;
+            return $controller->$method();
+        })->name("$role.notification");
         Route::get('/profile',[ProfileController::class,'index'])->name("profile.$role");
         Route::post('/profile/update',[ProfileController::class,'update'])->name("update.$role");
     });
