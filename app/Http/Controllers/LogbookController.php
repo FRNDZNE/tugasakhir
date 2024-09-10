@@ -30,43 +30,67 @@ class LogbookController extends Controller
         $attributes = [
             'date' => ucwords('tanggal'),
             'title' => ucwords('kegiatan'),
-            'desc' => ucwords('deskripsi kegiatan'),
         ];
 
         $request->validate([
             'date' => 'required',
             'title' => 'required',
-            'desc' => 'required',
         ], $messages, $attributes);
 
-        $intern = Auth::user()->mahasiswa->intern->id;
-        $datePicker = Intern::where('id', $intern)
+        $intern = Auth::user()->mahasiswa->intern;
+
+        // Mengambil Tanggal Periode Pelaksanaan Magang Mahasiswa
+        $datePicker = Intern::where('id', $intern->id)
         ->with('period')
         ->first();
 
         $dateStart = $datePicker->period->start;
         $dateEnd = $datePicker->period->end;
 
-        if ($request->date <= $dateStart || $request->date > $dateEnd) {
+        if ($request->date < $dateStart || $request->date > $dateEnd) {
             # code...
+            // return $datePicker;
             return redirect()->back()->with('error', 'Melewati Tanggal Periode Magang');
-        }
-        $logbook = Logbook::updateOrCreate(
-            [
-                'id' => $request->id,
-            ],
-            [
-                'intern_id' => $intern,
-                'date' => $request->date,
-                'title' =>  $request->title,
-                'desc' => $request->desc,
-            ]
-        );
+        }else {
+            // Setelah Di Cek berdasarkan batas tanggal magang. Cek Validasi Absen
+            $cekAbsen = $intern->attendance->where('date', $request->date)->first();
+            if ($cekAbsen) {
+                // Cek Apakah Absen Sudah Di Validasi Oleh Mitra Magang Atau Mentor
+                if ($cekAbsen->isvalid) {
+                    // Cek Apakah Mahasiswa Hadir Pada Hari Yang dibuat
+                    if (!$cekAbsen->status == 'h') {
+                        return redirect()->back()->with('error', 'Anda Tidak Masuk Pada Tanggal Ini !');
+                    }else {
+                        try {
+                            //code...
+                            $logbook = Logbook::updateOrCreate(
+                                [
+                                    'id' => $request->id,
+                                ],
+                                [
+                                    'intern_id' => $intern->id,
+                                    'date' => $request->date,
+                                    'title' =>  $request->title,
+                                    'desc' => $request->desc,
+                                ]
+                            );
 
-        if ($logbook->wasRecentlyCreated) {
-            return redirect()->back()->with('success', 'Berhasil Menambah Data');
-        } else {
-            return redirect()->back()->with('success', 'Berhasil Mengubah Data');
+                            if ($logbook->wasRecentlyCreated) {
+                                return redirect()->back()->with('success', 'Berhasil Menambah Data');
+                            } else {
+                                return redirect()->back()->with('success', 'Berhasil Mengubah Data');
+                            }
+                        } catch (\Throwable $th) {
+                            //throw $th;
+                            return redirect()->back()->with('error', $th->getMessage());
+                        }
+                    }
+                }else {
+                    return redirect()->back()->with('error', 'Absensi Anda Belum Di Verifikasi Oleh Mentor / Mitra Magang');
+                }
+            } else {
+                return redirect()->back()->with('error', 'Anda Belum Melakukan Absensi');
+            }
         }
     }
 

@@ -69,7 +69,7 @@ class UserMentorController extends Controller
         $mentor->agency_id = $request->agent;
         $mentor->name = $request->name;
         $mentor->uuid = $request->uuid;
-        $mentor->contact = $request->contact;
+        $mentor->contact = preg_replace('/^0/', '62', $request->contact);;
         $mentor->save();
         return redirect()->back()->with('success','Berhasil Menambah Data');
     }

@@ -38,7 +38,7 @@
                                 <div class="text-center">
                                     <h1 class="text-error">Maaf !</h1>
                                     <h3 class="mt-3 mb-2">Kamu Tidak Bisa Akses</h3>
-                                    <p class="text-muted mb-3"> Route Ini Bukan Untuk Role Kamu</p>
+                                    <p class="text-muted mb-3"> {{ $message }}</p>
                                     <a href="{{ url('/home') }}" class="btn btn-danger waves-effect waves-light"><i class="fas fa-home me-1"></i> Dashboard</a>
                                 </div>
 

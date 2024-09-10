@@ -42,14 +42,11 @@ use App\Http\Controllers\ProfileController;
 Route::get('/', function () {
     return view('welcome');
 })->name('firstpage')->middleware('guest');
-
-
 // Auth::routes();
 Auth::routes([
     'register' => false,
 ]);
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
 // routing untuk redirect setelah user login menuju halaman dashboard
 Route::get('/home', function(){
     if (Auth::user()->role->name == 'superadmin') {
@@ -72,11 +69,9 @@ Route::get('/home', function(){
         }
     }
 })->middleware('auth');
-
 Route::get('mahasiswa/forbidden',function(){
     return view('layouts.forbidden');
 })->name('mahasiswa.forbidden');
-
 $roles = ['superadmin', 'admin', 'staff', 'agency', 'mentor', 'dosen', 'mahasiswa'];
 foreach ($roles as $role) {
     Route::prefix($role)->middleware(['auth', "role:$role"])->group(function () use ($role) {
@@ -96,13 +91,11 @@ Route::prefix('jurusan')->middleware(['auth','role:superadmin'])->group(function
     Route::post('/store',[JurusanController::class,'store'])->name('jurusan.store');
     Route::delete('/delete/{jurusan}',[JurusanController::class,'delete'])->name('jurusan.delete');
 });
-
 Route::prefix('jurusan/{jurusan}')->middleware(['auth','role:superadmin,admin'])->group(function(){
     Route::get('/',[ProdiController::class,'index'])->name('prodi.index');
     Route::post('/store',[ProdiController::class,'store'])->name('prodi.store');
     Route::delete('/delete/{prodi}',[ProdiController::class,'delete'])->name('prodi.delete');
 });
-
 Route::prefix('year')->middleware(['auth','role:superadmin,admin,staff'])->group(function(){
     Route::get('/',[YearController::class,'index'])->name('year.index');
     Route::post('/store',[YearController::class,'store'])->name('year.store');
@@ -114,16 +107,13 @@ Route::prefix('year')->middleware(['auth','role:superadmin,admin,staff'])->group
         Route::delete('/delete/{period}',[PeriodController::class,'delete'])->name('period.delete');
     });
 });
-
 Route::prefix('scores')->middleware(['auth','role:superadmin,admin,staff'])->group(function(){
     Route::get('/menu',[ScoreController::class,'menu'])->name('score.menu');
     Route::get('/{prodi}',[ScoreController::class,'index'])->name('score.index');
     Route::post('/store',[ScoreController::class,'store'])->name('score.store');
     Route::delete('/delete/{score}',[ScoreController::class,'delete'])->name('score.delete');
 });
-
 // CRUD ACCOUNT
-
 Route::prefix('account')->group(function(){
     Route::prefix('admin')->middleware(['auth','role:superadmin'])->group(function(){
         Route::get('/',[UserAdminController::class,'index'])->name('user.admin.index');
@@ -158,19 +148,14 @@ Route::prefix('account')->group(function(){
         Route::post('/enabled/{id}',[UserMahasiswaController::class,'enabled'])->name('user.mahasiswa.enabled');
         Route::post('/disabled/{id}',[UserMahasiswaController::class,'disabled'])->name('user.mahasiswa.disabled');
     });
-
-
     // Hapus Akun Untuk Semua Role
     Route::delete('/users/delete/{id}',[UserController::class,'delete'])->name('user.delete');
 
 });
-
 Route::prefix('quota/{agency}')->group(function(){
     Route::get('/',[QuotaController::class,'index'])->name('quota.index');
     Route::post('/store-update',[QuotaController::class,'store'])->name('quota.store');
 });
-
-
 // Route Mahasiswa
 Route::middleware(['auth','role:mahasiswa'])->prefix('mahasiswa/magang')->group(function(){
     Route::get('list-mitra',[MagangController::class,'index'])->name('mahasiswa.magang.index');
@@ -178,7 +163,6 @@ Route::middleware(['auth','role:mahasiswa'])->prefix('mahasiswa/magang')->group(
     Route::post('cancel',[MagangController::class,'cancel'])->name('mahasiswa.magang.cancel');
     Route::get('my-intern',[MagangController::class,'myIntern'])->name('mahasiswa.magang.detail');
     Route::get('nilai-akhir',[MagangController::class,'score_value'])->name('mahasiswa.magang.nilai');
-
     // Creating Logbook
     Route::prefix('logbook')->group(function(){
         Route::get('/',[LogbookController::class,'index'])->name('mahasiswa.logbook.index');
@@ -198,7 +182,6 @@ Route::middleware(['auth','role:mahasiswa'])->prefix('mahasiswa/magang')->group(
         Route::post('store',[AsistensiController::class,'store'])->name('mahasiswa.asistensi.store');
         Route::delete('delete/{id}',[AsistensiController::class,'delete'])->name('mahasiswa.asistensi.delete');
     });
-
     // Absensi
     Route::prefix('absensi')->group(function(){
         Route::get('/',[AbsensiController::class,'index'])->name('mahasiswa.absensi.index');
@@ -211,9 +194,7 @@ Route::middleware(['auth','role:mahasiswa'])->prefix('mahasiswa/magang')->group(
         Route::post('/update',[ReportController::class,'update'])->name('mahasiswa.report.update');
         // Route::delete('/delete/{id}',[ReportController::class,'delete'])->name('mahasiswa.report.delete');
     });
-
     Route::get('/history',[MagangController::class,'history'])->name('mahasiswa.history');
-
 });
 // Route Agency dan mentor
 Route::prefix('mitra')->middleware(['auth','role:agency,mentor'])->group(function(){
@@ -245,7 +226,6 @@ Route::prefix('mitra')->middleware(['auth','role:agency,mentor'])->group(functio
     });
 
 });
-
 // Route Staff Prodi
 Route::prefix('staff')->middleware(['auth','role:staff'])->group(function(){
     Route::prefix('magang')->group(function(){
@@ -257,7 +237,6 @@ Route::prefix('staff')->middleware(['auth','role:staff'])->group(function(){
         });
     });
 });
-
 // Route Dosen
 Route::prefix('dosen')->middleware(['auth','role:dosen'])->group(function(){
     Route::prefix('bimbingan')->group(function(){
@@ -277,9 +256,7 @@ Route::prefix('dosen')->middleware(['auth','role:dosen'])->group(function(){
         Route::get('/',[BimbinganController::class,'index_year'])->name('dosen.bimbingan.year');
         Route::get('/{year}',[BimbinganController::class,'index_period'])->name('dosen.bimbingan.period');
         Route::get('{year}/{period}',[BimbinganController::class,'index'])->name('dosen.bimbingan.intern');
-
         // Route Detail Mahasiswa Bimbingan
-
     });
 });
 

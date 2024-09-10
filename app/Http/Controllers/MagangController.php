@@ -105,6 +105,7 @@ class MagangController extends Controller
         $mahasiswa = Auth::user()->mahasiswa->id;
         $data = Intern::withTrashed()
         ->where('mahasiswa_id', $mahasiswa)
+        ->orderBy('created_at','DESC')
         ->get();
 
         return view('mahasiswa.history',compact('data'));

@@ -45,6 +45,7 @@ class SeleksiController extends Controller
             ->where('agency_id', $agency)
             ->with('mahasiswa')
             ->withTrashed()
+            ->orderBy('status','DESC')
             ->get();
             $mentor = Mentor::where('agency_id', $agency)->get();
         }elseif (Auth::user()->role->name == 'mentor') {
@@ -54,7 +55,6 @@ class SeleksiController extends Controller
             ->where('agency_id', $mentor->agency_id)
             ->where('mentor_id', $mentor->id)
             ->with('mahasiswa')
-            ->withTrashed()
             ->get();
             // return $intern;
         }

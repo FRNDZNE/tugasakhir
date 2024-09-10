@@ -113,8 +113,9 @@ class AbsensiController extends Controller
         ], $messages, $attributes);
 
         $user = Intern::where('id', $intern)->first();
-
-        Attendance::updateOrCreate(
+        try {
+            //code...
+            Attendance::updateOrCreate(
             [
                 'id' => $request->id,
             ],
@@ -123,10 +124,15 @@ class AbsensiController extends Controller
                 'date' => $request->day,
                 'status' => $request->status,
                 'reason' => $request->desc,
-                'isvalid' => $request->validation,
+                'isvalid' => $request->validation ? $request->validation : false,
             ]
         );
         return redirect()->back()->with('success','Berhasil Menyimpan Absen');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect('error', $th->getMessage());
+        }
+
 
     }
 

@@ -20,7 +20,6 @@
                         <th>Mulai</th>
                         <th>Selesai</th>
                         <th>Kuota</th>
-                        <th>Tersedia</th>
                         <th>Opsi</th>
                     </tr>
                 </thead>
@@ -34,7 +33,6 @@
                             <td>{{ $q->end }}</td>
                             @forelse ($q->quota as $quota)
                                 <td>{{ $quota->total }}</td>
-                                <td>0</td>
                                 <td>
                                     {{-- Modal Update --}}
                                         <!-- Modal trigger button -->
@@ -106,7 +104,6 @@
                                     {{-- End Modal Update --}}
                                 </td>
                             @empty
-                                <td>0</td>
                                 <td>N/A</td>
                                 <td>
                                     {{-- Modal Update --}}

@@ -105,6 +105,9 @@
                                         class="btn btn-danger btn-md"
                                         data-bs-toggle="modal"
                                         data-bs-target="#modalBatal-{{ $batal }}"
+                                        @if (Auth::user()->mahasiswa->process)
+                                            disabled
+                                        @endif
                                     >
                                         <i class="fas fa-trash"></i>
                                     </button>
@@ -123,7 +126,7 @@
                                         aria-hidden="true"
                                     >
                                         <div
-                                            class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md"
+                                            class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl"
                                             role="document"
                                         >
                                             <div class="modal-content">
@@ -149,8 +152,11 @@
                                                     >
                                                         Close
                                                     </button>
-                                                    <form action="{{  }}" method="post"></form>
-                                                    <button type="button" class="btn btn-primary">Save</button>
+                                                    <form action="{{ route('mahasiswa.magang.cancel') }}" method="post">
+                                                        @csrf
+                                                        <input type="hidden" name="id" value="{{ $batal }}">
+                                                        <button type="submit" class="btn btn-danger">Batalkan</button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>

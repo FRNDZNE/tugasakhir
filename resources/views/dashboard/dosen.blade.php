@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Dashboard') }}</div>
 
                 <div class="card-body">
-                    <h5></h5>
+                    <h5>Login Saat Ini Sebagai Dosen Pembimbing</h5>
                     {{-- <h5>WOY</h5> --}}
                 </div>
             </div>

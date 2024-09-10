@@ -52,7 +52,7 @@
         </li>
     @endif
     <li>
-        <a href="#">
+        <a href="{{ route('mahasiswa.history') }}">
             <i class="mdi mdi-view-dashboard-outline"></i>
             <span> History Daftar Magang </span>
         </a>

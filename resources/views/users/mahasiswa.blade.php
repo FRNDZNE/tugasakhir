@@ -182,7 +182,6 @@
                             <td>{{ $u->mahasiswa->class }}</td>
                             <td>{{ $u->mahasiswa->grade }}</td>
                             <td>{{ $u->mahasiswa->year->name }}</td>
-                            @if (Auth::user()->role->name == 'superadmin' || Auth::user()->role->name == 'staff')
                             <td>
                                 @if ($u->mahasiswa->status)
                                     <span class="badge bg-success">Aktif</span>
@@ -408,13 +407,6 @@
                                     @csrf
                                 </form>
                             </td>
-                            @else
-                                @if ($u->mahasiswa->accepted)
-                                    <td>Sudah Diterima Magang</td>
-                                @else
-                                    <td>Belum Daftar Magang</td>
-                                @endif
-                            @endif
                         </tr>
                     @endforeach
                 </tbody>

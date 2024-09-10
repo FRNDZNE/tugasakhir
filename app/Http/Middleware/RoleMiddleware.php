@@ -27,7 +27,6 @@ class RoleMiddleware
                 return $next($request);
             }
         }
-
         // Jika pengguna tidak memiliki salah satu peran yang diberikan
         abort(403, 'Unauthorized');
     }

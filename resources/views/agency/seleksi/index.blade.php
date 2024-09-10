@@ -27,7 +27,11 @@
                             <td>
                                 @switch($i->status)
                                     @case('c')
-                                        <span class="badge bg-info">Dikonfirmasi</span>
+                                        @if ($i->deleted_at)
+                                            <span class="badge bg-dark">Membatalkan</span>
+                                        @else
+                                            <span class="badge bg-info">Dikonfirmasi</span>
+                                        @endif
                                         @break
                                     @case('p')
                                         <span class="badge bg-warning">Proses</span>
@@ -42,20 +46,18 @@
                                 @endswitch
                             </td>
                             <td>
+                                @if (!$i->deleted_at)
                                 <a href="{{ route('agency.profile.mahasiswa', $i->id) }}" class="btn btn-sm btn-info">Detail</a>
+                                @endif
                                 @if (Auth::user()->role->name == 'agency')
-                                    @if ($i->status == 'c')
+                                    @if ($i->status == 'c' && !$i->deleted_at)
                                         <button type="button" onclick="document.getElementById('proses-{{ $i->id }}').submit();" class="btn btn-sm btn-warning">Proses</button>
                                     @elseif ($i->status == 'p')
                                         <button type="button" onclick="document.getElementById('terima-{{ $i->id }}').submit();" class="btn btn-sm btn-success">Terima</button>
                                         <button type="button" onclick="document.getElementById('tolak-{{ $i->id }}').submit();" class="btn btn-sm btn-danger">Tolak</button>
 
-                                    @elseif ($i->status == 'd')
-                                        <button type="button" onclick="document.getElementById('restore-{{ $i->id }}').submit();" class="btn btn-sm btn-dark">Restore</button>
                                     @elseif ($i->status == 'a')
                                         <!-- Modal trigger button -->
-
-                                        <button type="button" onclick="document.getElementById('proses-{{ $i->id }}').submit();" class="btn btn-sm btn-warning">Proses</button>
                                         <button
                                             type="button"
                                             class="btn btn-pink btn-sm"

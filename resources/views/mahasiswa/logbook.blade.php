@@ -101,7 +101,6 @@
                         <th>No</th>
                         <th>Tanggal</th>
                         <th>Kegiatan</th>
-                        <th>Deskripsi Kegiatan</th>
                         <th>Opsi</th>
                     </tr>
                 </thead>
@@ -111,7 +110,6 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $d->date }}</td>
                             <td>{{ $d->title }}</td>
-                            <td>{{ $d->desc }}</td>
                             <td>
                                 @if (Auth::user()->role->name == 'mahasiswa')
 
@@ -224,7 +222,7 @@
                                         aria-hidden="true"
                                     >
                                         <div
-                                            class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md"
+                                            class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl"
                                             role="document"
                                         >
                                             <div class="modal-content">
