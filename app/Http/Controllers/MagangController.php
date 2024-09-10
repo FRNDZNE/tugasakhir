@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use DB;
 use Auth;
 use App\Models\Quota;
+use App\Models\User;
 use App\Models\Intern;
 use App\Models\Score;
 use Illuminate\Http\Request;
+use App\Notifications\ApplyIntern;
+use Illuminate\Support\Facades\Notification;
 class MagangController extends Controller
 {
     // Controller ini berisi alur pendaftaran mahasiswa ketika mendaftar PKL
@@ -59,11 +62,19 @@ class MagangController extends Controller
             return redirect()->back()->with('error', 'Sudah Mendaftar Magang, Silahkan Batalkan Magang Sebelumnya');
 
         }
-        Intern::create([
+        $intern = Intern::create([
             'agency_id' => $request->mitra,
             'period_id' => $request->period,
             'mahasiswa_id' => $request->mahasiswa,
         ]);
+
+        $mitra = User::whereHas('agency', function($q) use ($intern) {
+            $q->where('id', $intern->agency_id);
+        })->with('agency')->first();
+        if ($mitra) {
+            // Send Notifikasi Ke Mitra Magang
+            Notification::send($mitra, new ApplyIntern($intern));
+        }
         return redirect()->back()->with('success','Berhasil Mengajukan Tempat PKL');
     }
 
