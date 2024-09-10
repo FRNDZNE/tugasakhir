@@ -49,7 +49,7 @@ class ApplyIntern extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'data' => 'Mahasiswa dengan nama '. $this->apply .' mendaftar magang',
+            'data' => 'Mahasiswa dengan nama '. $this->apply .' mendaftar magang.',
         ];
     }
 }

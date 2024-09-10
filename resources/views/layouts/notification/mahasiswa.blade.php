@@ -1,7 +1,7 @@
 @if (Auth::user()->role->name == 'mahasiswa')
     <a class="nav-link dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
         <i class="fe-bell noti-icon"></i>
-        <span class="badge bg-danger rounded-circle noti-icon-badge">9</span>
+        <span class="badge bg-danger rounded-circle noti-icon-badge">{{auth()->user()->unreadNotifications->count()}}</span>
     </a>
     <div class="dropdown-menu dropdown-menu-end dropdown-lg">
         <!-- item-->
