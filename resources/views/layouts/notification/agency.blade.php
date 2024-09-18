@@ -11,7 +11,7 @@
                     <a href="" class="text-dark">
                         <small>Clear All</small>
                     </a>
-                </span>Notification Agency
+                </span>Notifikasi
             </h5>
         </div>
 
@@ -20,18 +20,19 @@
             @foreach (auth()->user()->unreadNotifications as $notification)
 
             <a href="javascript:void(0);" class="dropdown-item notify-item active">
-                <div class="notify-icon">
-                    <img src="assets/images/users/user-1.jpg" class="img-fluid rounded-circle" alt="" /> </div>
-                <p class="notify-details">Cristina Pride</p>
+                <div class="notify-icon {{ $notification->data['background'] }}">
+                    <i class="{{ $notification->data['icon'] }}"></i>
+                </div>
+                <p class="notify-details">{{ $notification->data['heading'] }}</p>
                 <p class="text-muted mb-0 user-msg">
-                    <small>{{ $notification->data['data'] }}</small>
+                    <small>{{ $notification->data['message'] }}</small>
                 </p>
             </a>
             @endforeach
             </div>
 
         <!-- All-->
-        <a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-all">
+        <a href="{{ route('notification.agency') }}" class="dropdown-item text-center text-primary notify-item notify-all">
             View all
             <i class="fe-arrow-right"></i>
         </a>

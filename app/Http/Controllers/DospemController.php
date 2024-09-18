@@ -8,6 +8,8 @@ use App\Models\Period;
 use App\Models\Intern;
 use App\Models\User;
 use Auth;
+use App\Notifications\SelectedLecture;
+use Illuminate\Support\Facades\Notification;
 
 class DospemController extends Controller
 {
@@ -51,6 +53,11 @@ class DospemController extends Controller
         $intern->dosen_id = $request->dosen;
         $intern->save();
 
+        $dosen = User::whereHas('dosen', function($q) use ($intern) {
+            $q->where('id', $intern->dosen_id);
+        })->with('dosen')->first();
+        // Send Notifikasi Ke dosen
+        Notification::send($dosen, new SelectedLecture($intern->mahasiswa->name, $intern->mahasiswa->year->name, $intern->mahasiswa->prodi->display_name));
         return redirect()->back()->with('success','Berhasil Memilih Dosen Pembimbing');
     }
 }

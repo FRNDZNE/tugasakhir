@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ApplyIntern extends Notification
+class SelectedMentor extends Notification
 {
     use Queueable;
 
@@ -22,7 +22,6 @@ class ApplyIntern extends Notification
         $this->nama = $nama;
         $this->tahun = $tahun;
         $this->prodi = $prodi;
-
     }
 
     /**
@@ -55,9 +54,9 @@ class ApplyIntern extends Notification
     {
         return [
             'background' => 'bg-info',
-            'icon' => 'mdi mdi-information-outline',
-            'heading' => 'Mengajukan Magang',
-            'message' => 'Mahasiswa dengan nama '. $this->nama .' dari Prodi ' . $this->prodi . ' Tahun Akademik ' . $this->tahun . ' Mendaftar Magang. Silahkan Cek Di Halaman Pengajuan Magang,',
+            'icon' => 'mdi mdi-account',
+            'heading' => 'Mahasiswa Magang',
+            'message' => 'Mahasiswa tahun akademik ' . $this->tahun . ' program studi ' . $this->prodi . ' dengan nama '. $this->nama . ' menjadi mahasiswa bimbingan anda.',
         ];
     }
 }

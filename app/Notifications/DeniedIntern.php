@@ -7,22 +7,17 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ApplyIntern extends Notification
+class DeniedIntern extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    protected $nama;
-    protected $tahun;
-    protected $prodi;
-    public function __construct($nama, $tahun, $prodi)
+    protected $mitra;
+    public function __construct($mitra)
     {
-        $this->nama = $nama;
-        $this->tahun = $tahun;
-        $this->prodi = $prodi;
-
+        $this->mitra = $mitra;
     }
 
     /**
@@ -54,10 +49,10 @@ class ApplyIntern extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'background' => 'bg-info',
-            'icon' => 'mdi mdi-information-outline',
-            'heading' => 'Mengajukan Magang',
-            'message' => 'Mahasiswa dengan nama '. $this->nama .' dari Prodi ' . $this->prodi . ' Tahun Akademik ' . $this->tahun . ' Mendaftar Magang. Silahkan Cek Di Halaman Pengajuan Magang,',
+            'background' => 'bg-danger',
+            'icon' => 'mdi mdi-account-remove',
+            'heading' => 'Ditolak Magang',
+            'message' => 'Mohon maaf kamu belum diterima di ' . $this->mitra . '. Silahkan cari tempat magang yang lain.',
         ];
     }
 }

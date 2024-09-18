@@ -79,7 +79,7 @@
         </div>
 
         <!-- All-->
-        <a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-all">
+        <a href="{{ route('notification.admin') }}" class="dropdown-item text-center text-primary notify-item notify-all">
             View all
             <i class="fe-arrow-right"></i>
         </a>

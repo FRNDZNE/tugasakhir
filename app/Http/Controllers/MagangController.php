@@ -20,22 +20,21 @@ class MagangController extends Controller
         $year = Auth::user()->mahasiswa->year_id;
         $data = Quota::select('quotas.*', DB::raw('count(it.id) as intern_count'))
             ->whereHas('period', function($query) use ($year, $prodi) {
-            $query->where('prodi_id', $prodi)
-            ->whereHas('year', function($query) use ($year){
-                $query->where('year_id', $year);
-            });
-        })
-        ->with(['agency'])
-        ->join('agencies as ag', 'ag.id', '=', 'quotas.agency_id')
-        ->leftJoin('interns as it', function($join) {
-            $join->on('it.agency_id', '=', 'quotas.agency_id');
-            $join->on('it.period_id', '=', 'quotas.period_id');
-            $join->where('it.status', 'a');
-        })
-        ->groupBy('quotas.id')
-        ->groupBy('quotas.agency_id')
-        ->groupBy('quotas.period_id')
-        ->get();
+                $query->where('prodi_id', $prodi)
+                      ->whereHas('year', function($query) use ($year) {
+                          $query->where('year_id', $year);
+                      });
+            })
+            ->with(['agency'])
+            ->join('agencies as ag', 'ag.id', '=', 'quotas.agency_id')
+            ->leftJoin('interns as it', function($join) {
+                $join->on('it.agency_id', '=', 'quotas.agency_id');
+                $join->on('it.period_id', '=', 'quotas.period_id');
+                $join->where('it.status', 'a');
+            })
+            ->groupBy('quotas.id', 'quotas.agency_id', 'quotas.period_id')
+            ->havingRaw('quotas.total > 0') // Menambahkan kondisi where total quota > 0
+            ->get();
         // return $data;
 
         return view('mahasiswa.magang',compact('data'));
@@ -73,7 +72,7 @@ class MagangController extends Controller
         })->with('agency')->first();
         if ($mitra) {
             // Send Notifikasi Ke Mitra Magang
-            Notification::send($mitra, new ApplyIntern($intern));
+            Notification::send($mitra, new ApplyIntern($intern->mahasiswa->name, $intern->mahasiswa->year->name, $intern->mahasiswa->prodi->display_name));
         }
         return redirect()->back()->with('success','Berhasil Mengajukan Tempat PKL');
     }

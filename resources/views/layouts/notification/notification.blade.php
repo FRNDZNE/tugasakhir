@@ -1,9 +1,50 @@
 <li class="dropdown notification-list topbar-dropdown">
-    @include('layouts.notification.superadmin')
-    @include('layouts.notification.admin')
-    @include('layouts.notification.staff')
-    @include('layouts.notification.agency')
-    @include('layouts.notification.mentor')
-    @include('layouts.notification.dosen')
-    @include('layouts.notification.mahasiswa')
+    <a class="nav-link dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+        <i class="fe-bell noti-icon"></i>
+        <span class="badge bg-danger rounded-circle noti-icon-badge">{{auth()->user()->unreadNotifications->count()}}</span>
+    </a>
+    <div class="dropdown-menu dropdown-menu-end dropdown-lg">
+        <!-- item-->
+        <div class="dropdown-item noti-title">
+            <h5 class="m-0">
+                <span class="float-end">
+                    <a href="" class="text-dark">
+                        <small>Clear All</small>
+                    </a>
+                </span>Notifikasi
+            </h5>
+        </div>
+
+        <div class="noti-scroll" data-simplebar>
+            <!-- item-->
+            @foreach (auth()->user()->unreadNotifications as $notification)
+
+            <a href="javascript:void(0);" class="dropdown-item notify-item active">
+                <div class="notify-icon {{ $notification->data['background'] }}">
+                    <i class="{{ $notification->data['icon'] }}"></i>
+                </div>
+                <p class="notify-details">{{ $notification->data['heading'] }}</p>
+                <p class="text-muted mb-0 user-msg">
+                    <small>{{ $notification->data['message'] }}</small>
+                </p>
+            </a>
+            @endforeach
+            </div>
+
+        <!-- All-->
+        @php
+            $roles = ['superadmin', 'admin', 'staff', 'agency', 'mentor', 'dosen', 'mahasiswa'];
+            $route = '';
+            foreach($roles as $role) {
+                if (Auth::user()->role->name == $role) {
+                    $route = route('notification.'.$role);
+                    break;
+                }
+            }
+        @endphp
+        <a href="{{ $route }}" class="dropdown-item text-center text-primary notify-item notify-all">
+            View all
+            <i class="fe-arrow-right"></i>
+        </a>
+    </div>
 </li>

@@ -92,7 +92,7 @@
                     @foreach ($jurusan as $j)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td><a href="{{ route('prodi.index', $j->id) }}">{{ $j->display_name }}</a></td>
+                            <td>{{ $j->display_name }}</td>
                             <td>
                                 {{-- Modal Update --}}
                                     <!-- Modal trigger button -->
@@ -231,6 +231,7 @@
                                     </div>
 
                                 {{-- End Modal Delete --}}
+                                <a href="{{ route('prodi.index', $j->id) }}" class="btn btn-md btn-info">Pilih</a>
                             </td>
                         </tr>
                     @endforeach

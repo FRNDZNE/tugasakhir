@@ -16,68 +16,22 @@
         </div>
         <div class="noti-scroll" data-simplebar>
             <!-- item-->
+            @foreach (auth()->user()->unreadNotifications as $notification)
+
             <a href="javascript:void(0);" class="dropdown-item notify-item active">
-                <div class="notify-icon">
-                    <img src="assets/images/users/user-1.jpg" class="img-fluid rounded-circle" alt="" /> </div>
-                <p class="notify-details">Cristina Pride</p>
+                <div class="notify-icon {{ $notification->data['background'] }}">
+                    <i class="{{ $notification->data['icon'] }}"></i>
+                </div>
+                <p class="notify-details">{{ $notification->data['heading'] }}</p>
                 <p class="text-muted mb-0 user-msg">
-                    <small>Hi, How are you? What about our next meeting</small>
+                    <small>{{ $notification->data['message'] }}</small>
                 </p>
             </a>
-            <!-- item-->
-            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                <div class="notify-icon bg-primary">
-                    <i class="mdi mdi-comment-account-outline"></i>
-                </div>
-                <p class="notify-details">Caleb Flakelar commented on Admin
-                    <small class="text-muted">1 min ago</small>
-                </p>
-            </a>
-
-            <!-- item-->
-            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                <div class="notify-icon">
-                    <img src="assets/images/users/user-4.jpg" class="img-fluid rounded-circle" alt="" /> </div>
-                <p class="notify-details">Karen Robinson</p>
-                <p class="text-muted mb-0 user-msg">
-                    <small>Wow ! this admin looks good and awesome design</small>
-                </p>
-            </a>
-
-            <!-- item-->
-            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                <div class="notify-icon bg-warning">
-                    <i class="mdi mdi-account-plus"></i>
-                </div>
-                <p class="notify-details">New user registered.
-                    <small class="text-muted">5 hours ago</small>
-                </p>
-            </a>
-
-            <!-- item-->
-            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                <div class="notify-icon bg-info">
-                    <i class="mdi mdi-comment-account-outline"></i>
-                </div>
-                <p class="notify-details">Caleb Flakelar commented on Admin
-                    <small class="text-muted">4 days ago</small>
-                </p>
-            </a>
-
-            <!-- item-->
-            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                <div class="notify-icon bg-secondary">
-                    <i class="mdi mdi-heart"></i>
-                </div>
-                <p class="notify-details">Carlos Crouch liked
-                    <b>Admin</b>
-                    <small class="text-muted">13 days ago</small>
-                </p>
-            </a>
+            @endforeach
         </div>
 
         <!-- All-->
-        <a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-all">
+        <a href="{{ route('notification.mahasiswa') }}" class="dropdown-item text-center text-primary notify-item notify-all">
             View all
             <i class="fe-arrow-right"></i>
         </a>

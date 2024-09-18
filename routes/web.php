@@ -82,11 +82,7 @@ foreach ($roles as $role) {
             $method = $role;
             return $controller->$method();
         })->name("$role.dashboard");
-        Route::get('notification', function() use ($role){
-            $controller = app(NotificationController::class);
-            $method = $role;
-            return $controller->$method();
-        })->name("$role.notification");
+        Route::get('/notification',[NotificationController::class,'index'])->name("notification.$role");
         Route::get('/profile',[ProfileController::class,'index'])->name("profile.$role");
         Route::post('/profile/update',[ProfileController::class,'update'])->name("update.$role");
     });
