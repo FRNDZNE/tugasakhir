@@ -63,11 +63,7 @@ Route::get('/home', function(){
     } else if (Auth::user()->role->name == 'dosen') {
         return redirect()->route('dosen.dashboard');
     } else if (Auth::user()->role->name == 'mahasiswa') {
-        if (Auth::user()->mahasiswa->status == true) {
-            return redirect()->route('mahasiswa.dashboard');
-        } else {
-            return redirect()->route('mahasiswa.forbidden');
-        }
+        return redirect()->route('mahasiswa.dashboard');
     }
 })->middleware('auth');
 Route::get('mahasiswa/forbidden',function(){
@@ -159,7 +155,7 @@ Route::prefix('quota/{agency}')->group(function(){
     Route::post('/store-update',[QuotaController::class,'store'])->name('quota.store');
 });
 // Route Mahasiswa
-Route::middleware(['auth','role:mahasiswa'])->prefix('mahasiswa/magang')->group(function(){
+Route::middleware(['auth','role:mahasiswa','access:active'])->prefix('mahasiswa/magang')->group(function(){
     Route::get('list-mitra',[MagangController::class,'index'])->name('mahasiswa.magang.index');
     Route::post('apply',[MagangController::class,'apply'])->name('mahasiswa.magang.apply');
     Route::post('cancel',[MagangController::class,'cancel'])->name('mahasiswa.magang.cancel');

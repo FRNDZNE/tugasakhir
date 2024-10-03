@@ -28,7 +28,7 @@ class RoleMiddleware
             }
         }
         // Jika pengguna tidak memiliki salah satu peran yang diberikan
-        abort(403, 'Unauthorized');
+        return abort(403, 'Anda Tidak Memiliki Akses Ke Halaman Ini');
     }
 
 }

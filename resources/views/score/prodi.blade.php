@@ -12,13 +12,15 @@
                     <tr>
                         <th>No</th>
                         <th>Program Studi</th>
+                        <th>Opsi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($prodi as $p)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td><a href="{{ route('score.index', $p->id) }}">{{ $p->display_name }}</a></td>
+                            <td>{{ $p->display_name }}</td>
+                            <td><a href="{{ route('score.index', $p->id) }}" class="btn btn-primary btn-md">Pilih</a></td>
                         </tr>
                     @endforeach
                 </tbody>
