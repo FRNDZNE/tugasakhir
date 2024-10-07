@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\Role;
-use App\Models\Mahasiswa;
-use App\Models\Prodi;
-use App\Models\Year;
 use Auth;
+use Excel;
+use App\Models\Role;
+use App\Models\User;
+use App\Models\Year;
+use App\Models\Prodi;
+use App\Models\Mahasiswa;
+use Illuminate\Http\Request;
+use App\Imports\MahasiswaImport;
 
 class UserMahasiswaController extends Controller
 {
@@ -181,6 +183,18 @@ class UserMahasiswaController extends Controller
 
         // Redirect kembali dengan pesan sukses
         return redirect()->back()->with('success', 'Berhasil Menonaktifkan Akun');
+    }
+
+    public function import(Request $request)
+    {
+        try {
+            //code...
+            Excel::import(new MahasiswaImport, $request->file);
+            return redirect()->back()->with('success','Berhasil Upload');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('error', __($th->getMessage()));
+        }
     }
 
 }

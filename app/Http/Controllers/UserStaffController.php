@@ -7,7 +7,8 @@ use App\Models\User;
 use App\Models\Prodi;
 use App\Models\Staff;
 use App\Models\Role;
-use App\Models\Agency;
+use App\Imports\StaffImport;
+use Excel;
 use Auth;
 
 class UserStaffController extends Controller
@@ -120,5 +121,17 @@ class UserStaffController extends Controller
         $staff->save();
 
         return redirect()->back()->with('success','Berhasil Mengubah Data');
+    }
+
+    public function import()
+    {
+        try {
+            //code...
+            Excel::import(new StaffImport, request()->file('file'));
+            return redirect()->back()->with('success','Berhasil Upload');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('error', $th->getMessage());
+        }
     }
 }

@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\Dosen;
 use App\Models\Prodi;
+use App\Imports\DosenImport;
+use Excel;
 use Auth;
 
 
@@ -142,5 +144,16 @@ class UserDosenController extends Controller
         return redirect()->back()->with('success','Berhasil Mengubah Data');
     }
 
+    public function import()
+    {
+        try {
+            //code...
+            Excel::import(new DosenImport, request()->file('file'));
+            return redirect()->back()->with('success','Berhasil Upload');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('error', $th->getMessage());
+        }
+    }
 
 }

@@ -8,133 +8,145 @@
         <div class="card-body">
             {{-- Start Modal Tambah --}}
             <!-- Modal trigger button -->
-            <button
-                type="button"
-                class="btn btn-primary btn-md"
-                data-bs-toggle="modal"
-                data-bs-target="#modalTambah"
-            >
-                Tambah Dosen
-            </button>
+            <div class="row">
+                <div class="col">
+                    <button
+                        type="button"
+                        class="btn btn-primary btn-md"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalTambah"
+                    >
+                        Tambah Dosen
+                    </button>
 
-            <!-- Modal Body -->
-            <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
-            <div
-                class="modal fade"
-                id="modalTambah"
-                tabindex="-1"
-                data-bs-backdrop="static"
-                data-bs-keyboard="false"
+                    <!-- Modal Body -->
+                    <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+                    <div
+                        class="modal fade"
+                        id="modalTambah"
+                        tabindex="-1"
+                        data-bs-backdrop="static"
+                        data-bs-keyboard="false"
 
-                role="dialog"
-                aria-labelledby="modalTitleId"
-                aria-hidden="true"
-            >
-                <div
-                    class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg"
-                    role="document"
-                >
-                    <div class="modal-content">
-                        <div class="modal-header bg-primary">
-                            <h5 class="modal-title" id="modalTitleId">
-                                Tambah Dosen
-                            </h5>
-                            <button
-                                type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                            ></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="{{ route('user.dosen.store') }}" method="POST" id="storeDosen">
-                                @csrf
-                                <div class="row mb-2">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="uuid" class="form-label">NIP/NUPTK</label>
-                                            <input type="text" name="uuid" id="uuid" class="form-control @error('uuid') is-invalid @enderror">
-                                            @error('uuid')
-                                                <span class="invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
+                        role="dialog"
+                        aria-labelledby="modalTitleId"
+                        aria-hidden="true"
+                    >
+                        <div
+                            class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg"
+                            role="document"
+                        >
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary">
+                                    <h5 class="modal-title" id="modalTitleId">
+                                        Tambah Dosen
+                                    </h5>
+                                    <button
+                                        type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"
+                                    ></button>
                                 </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-7">
-                                        <div class="form-group">
-                                            <label for="fullname" class="form-label">Nama Lengkap</label>
-                                            <input type="text" name="fullname" id="fullname" class="form-control @error('fullname') is-invalid @enderror">
-                                            @error('fullname')
-                                                <span class="invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <div class="form-group">
-                                            <label for="contact" class="form-label">No Telepon</label>
-                                            <input type="number" name="contact" min="0" id="contact" class="form-control @error('contact') is-invalid @enderror">
-                                            @error('contact')
-                                                <span class="invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="email" class="form-label">Email</label>
-                                            <input type="text" name="email" id="email" class="form-control @error('email') is-invalid @enderror">
-                                            @error('email')
-                                                <span class="invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="password" class="form-label">Password</label>
-                                            <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror">
-                                            @error('password')
-                                                <span class="invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="prodi" class="form-label">Prodi</label>
-                                            <div class="row">
-                                                @foreach ($data['prodi'] as $prodi)
-                                                <div class="col-md-4">
-                                                    <div class="form-check">
-                                                        <input type="checkbox" name="prodi[]" class="form-check-input" id="{{ $prodi->id }}" value="{{ $prodi->id }}">
-                                                        <label class="form-check-label" for="{{ $prodi->id }}">{{ $prodi->display_name }}</label>
-                                                    </div>
+                                <div class="modal-body">
+                                    <form action="{{ route('user.dosen.store') }}" method="POST" id="storeDosen">
+                                        @csrf
+                                        <div class="row mb-2">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="uuid" class="form-label">NIP/NUPTK</label>
+                                                    <input type="text" name="uuid" id="uuid" class="form-control @error('uuid') is-invalid @enderror">
+                                                    @error('uuid')
+                                                        <span class="invalid-feedback">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
-                                                @endforeach
                                             </div>
-                                            @error('prodi')
-                                                <span class="invalid-feedback">{{ $message }}</span>
-                                            @enderror
                                         </div>
-                                    </div>
+                                        <div class="row mb-2">
+                                            <div class="col-md-7">
+                                                <div class="form-group">
+                                                    <label for="fullname" class="form-label">Nama Lengkap</label>
+                                                    <input type="text" name="fullname" id="fullname" class="form-control @error('fullname') is-invalid @enderror">
+                                                    @error('fullname')
+                                                        <span class="invalid-feedback">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="contact" class="form-label">No Telepon</label>
+                                                    <input type="number" name="contact" min="0" id="contact" class="form-control @error('contact') is-invalid @enderror">
+                                                    @error('contact')
+                                                        <span class="invalid-feedback">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="email" class="form-label">Email</label>
+                                                    <input type="text" name="email" id="email" class="form-control @error('email') is-invalid @enderror">
+                                                    @error('email')
+                                                        <span class="invalid-feedback">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="password" class="form-label">Password</label>
+                                                    <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror">
+                                                    @error('password')
+                                                        <span class="invalid-feedback">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="prodi" class="form-label">Prodi</label>
+                                                    <div class="row">
+                                                        @foreach ($data['prodi'] as $prodi)
+                                                        <div class="col-md-4">
+                                                            <div class="form-check">
+                                                                <input type="checkbox" name="prodi[]" class="form-check-input" id="{{ $prodi->id }}" value="{{ $prodi->id }}">
+                                                                <label class="form-check-label" for="{{ $prodi->id }}">{{ $prodi->display_name }}</label>
+                                                            </div>
+                                                        </div>
+                                                        @endforeach
+                                                    </div>
+                                                    @error('prodi')
+                                                        <span class="invalid-feedback">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button
-                                type="button"
-                                class="btn btn-secondary"
-                                data-bs-dismiss="modal"
-                            >
-                                Close
-                            </button>
-                            <button type="button" class="btn btn-primary" onclick="document.getElementById('storeDosen').submit();">Save</button>
+                                <div class="modal-footer">
+                                    <button
+                                        type="button"
+                                        class="btn btn-secondary"
+                                        data-bs-dismiss="modal"
+                                    >
+                                        Close
+                                    </button>
+                                    <button type="button" class="btn btn-primary" onclick="document.getElementById('storeDosen').submit();">Save</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="col text-end">
+                    <form action="{{ route('user.dosen.import') }}" method="post" class="d-inline-flex" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" name="file" id="" class="form-control me-2" accept=".xlsx"> <!-- me-2 menambahkan margin kanan -->
+                        <button type="submit" class="btn btn-md btn-success">Import</button>
+                    </form>
+                </div>
             </div>
+
             {{-- End Modal --}}
             <hr>
             <table id="datatable" class="table table-bordered dt-responsive table-responsive nowrap">
@@ -154,11 +166,15 @@
                             <td>{{ $u->dosen->uuid }}</td>
                             <td>{{ $u->dosen->name }}</td>
                             <td>
-                                @foreach ($u->dosen->prodi as $d)
+                                @forelse ($u->dosen->prodi as $d)
                                     <ul>
                                         <li>{{ $d->display_name }}</li>
                                     </ul>
-                                @endforeach
+                                @empty
+                                    <ul>
+                                        <li>Belum Mendapatkan Lingkup Program Studi</li>
+                                    </ul>
+                                @endforelse
                             </td>
                             <td>
                                 {{-- Modal Update --}}

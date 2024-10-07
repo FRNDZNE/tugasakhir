@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\Role;
-use App\Models\Mentor;
-use App\Models\Agency;
 use Auth;
+use Excel;
+use App\Models\Role;
+use App\Models\User;
+use App\Models\Agency;
+use App\Models\Mentor;
+use Illuminate\Http\Request;
+use App\Imports\MentorImport;
 
 
 class UserMentorController extends Controller
@@ -116,5 +118,17 @@ class UserMentorController extends Controller
         $mentor->contact = preg_replace('/^0/', '62', $request->contact);
         $mentor->save();
         return redirect()->back()->with('success','Berhasil Mengubah Data');
+    }
+
+    public function import()
+    {
+        try {
+            //code...
+            Excel::import(new MentorImport, request()->file('file'));
+            return redirect()->back()->with('success','Berhasil Upload');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('error', $th->getMessage());
+        }
     }
 }

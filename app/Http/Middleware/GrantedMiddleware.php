@@ -17,7 +17,7 @@ class GrantedMiddleware
     public function handle(Request $request, Closure $next, $status): Response
     {
         $user = Auth::user();
-        if ($user->mahasiswa->status == $status) {
+        if ($user->mahasiswa->status) {
             return $next($request);
         }
 

@@ -41,8 +41,6 @@
                                     <p class="text-muted mb-3"> @yield('message') </p>
                                     @yield('button')
                                 </div>
-
-
                             </div> <!-- end card-body -->
                         </div>
                         <!-- end card -->

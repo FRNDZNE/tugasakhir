@@ -9,7 +9,9 @@
 
                 <div class="card-body">
                     <h5>Login Saat Ini Sebagai Mahasiswa Magang</h5>
-                    {{-- <h5>WOY</h5> --}}
+                    @if (!Auth::user()->mahasiswa->status)
+                        <p>Akun Anda Belum Diaktifkan, Silahkan Hubungi Staff Prodi Untuk Aktivasi Akun</p>
+                    @endif
                 </div>
             </div>
         </div>

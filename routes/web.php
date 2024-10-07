@@ -117,26 +117,32 @@ Route::prefix('account')->group(function(){
         Route::get('/',[UserAdminController::class,'index'])->name('user.admin.index');
         Route::post('/store',[UserAdminController::class,'store'])->name('user.admin.store');
         Route::post('/update',[UserAdminController::class,'update'])->name('user.admin.update');
+        Route::post('import',[UserAdminController::class,'import'])->name('user.admin.import');
     });
     Route::prefix('staff')->middleware(['auth','role:superadmin,admin'])->group(function(){
         Route::get('/',[UserStaffController::class,'index'])->name('user.staff.index');
         Route::post('/store',[UserStaffController::class,'store'])->name('user.staff.store');
         Route::post('/update',[UserStaffController::class,'update'])->name('user.staff.update');
+        Route::post('/import',[UserStaffController::class,'import'])->name('user.staff.import');
+
     });
     Route::prefix('agency')->middleware(['auth','role:superadmin,admin'])->group(function(){
         Route::get('/',[UserAgencyController::class,'index'])->name('user.agency.index');
         Route::post('/store',[UserAgencyController::class,'store'])->name('user.agency.store');
         Route::post('/update',[UserAgencyController::class,'update'])->name('user.agency.update');
+        Route::post('import',[UserAgencyController::class,'import'])->name('user.agency.import');
     });
     Route::prefix('mentor/{agency}')->middleware(['auth','role:superadmin,admin,agency'])->group(function(){
         Route::get('/',[UserMentorController::class,'index'])->name('user.mentor.index');
         Route::post('/store',[UserMentorController::class,'store'])->name('user.mentor.store');
         Route::post('/update',[UserMentorController::class,'update'])->name('user.mentor.update');
+        Route::post('/import/{id}',[UserMentorController::class,'import'])->name('user.mentor.import');
     });
     Route::prefix('dosen')->group(function(){
         Route::get('/',[UserDosenController::class,'index'])->name('user.dosen.index');
         Route::post('/store',[UserDosenController::class,'store'])->name('user.dosen.store');
         Route::post('/update',[UserDosenController::class,'update'])->name('user.dosen.update');
+        Route::post('/import',[UserDosenController::class,'import'])->name('user.dosen.import');
     });
     Route::prefix('/mahasiswa')->group(function(){
         Route::get('/menu',[UserMahasiswaController::class,'menu'])->name('user.mahasiswa.menu');
@@ -145,6 +151,7 @@ Route::prefix('account')->group(function(){
         Route::post('/update',[UserMahasiswaController::class,'update'])->name('user.mahasiswa.update');
         Route::post('/enabled/{id}',[UserMahasiswaController::class,'enabled'])->name('user.mahasiswa.enabled');
         Route::post('/disabled/{id}',[UserMahasiswaController::class,'disabled'])->name('user.mahasiswa.disabled');
+        Route::post('/import',[UserMahasiswaController::class,'import'])->name('user.mahasiswa.import');
     });
     // Hapus Akun Untuk Semua Role
     Route::delete('/users/delete/{id}',[UserController::class,'delete'])->name('user.delete');

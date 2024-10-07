@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Auth;
+use Excel;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Agency;
-use App\Models\Role;
-use Auth;
+use Illuminate\Http\Request;
+use App\Imports\AgencyImport;
 
 class UserAgencyController extends Controller
 {
@@ -128,5 +130,17 @@ class UserAgencyController extends Controller
         $agent->day = $request->day;
         $agent->save();
         return redirect()->back()->with('success','Berhasil Mengubah Data');
+    }
+
+    public function import(Request $request)
+    {
+        try {
+            //code...
+            Excel::import(new AgencyImport, $request->file('file'));
+            return redirect()->back()->with('success','Berhasil Upload');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('error', $th->getMessage());
+        }
     }
 }
