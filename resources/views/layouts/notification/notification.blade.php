@@ -8,7 +8,7 @@
         <div class="dropdown-item noti-title">
             <h5 class="m-0">
                 <span class="float-end">
-                    <a href="" class="text-dark">
+                    <a href="{{ route('markAll') }}" class="text-dark">
                         <small>Clear All</small>
                     </a>
                 </span>Notifikasi

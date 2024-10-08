@@ -19,8 +19,22 @@ class NotificationController extends Controller
         return view('notification.index',compact('user','readNotif','unreadNotif'));
     }
 
-    public function read()
+    public function markAsRead()
     {
+        Auth::user()->unreadNotifications->markAsRead();
+        return redirect()->back();
+    }
+
+    public function markAsReadById($id)
+    {
+        // Ambil notifikasi yang belum dibaca berdasarkan ID
+        $notification = Auth::user()->unreadNotifications()->where('id', $id)->first();
+
+        // Jika notifikasi ditemukan, tandai sebagai dibaca
+        if ($notification) {
+            $notification->markAsRead();
+        }
+        return redirect()->back();
 
     }
 

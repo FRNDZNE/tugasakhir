@@ -23,7 +23,7 @@
                             <td>{{ $unread->data['heading'] }}</td>
                             <td>{{ $unread->data['message'] }}</td>
                             <td>
-                                <a href="" class="btn btn-success btn-sm">Tandai Sudah Dibaca</a>
+                                <a href="{{ route('markId', $unread->id) }}" class="btn btn-success btn-sm">Tandai Sudah Dibaca</a>
                             </td>
                         </tr>
                     @endforeach

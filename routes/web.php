@@ -83,6 +83,10 @@ foreach ($roles as $role) {
         Route::post('/profile/update',[ProfileController::class,'update'])->name("update.$role");
     });
 }
+
+// Read Notifikasi
+Route::get('mark-read-all',[NotificationController::class,'markAsRead'])->name('markAll');
+Route::get('mark-read-by-id/{id}',[NotificationController::class,'markAsReadById'])->name('markId');
 // CRUD Jurusan dan Prsodi
 Route::prefix('jurusan')->middleware(['auth','role:superadmin'])->group(function(){
     Route::get('/',[JurusanController::class,'index'])->name('jurusan.index');
